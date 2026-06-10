@@ -312,56 +312,6 @@ tr:hover td{background:#f6faff}
           <div class="sec-h" onclick="togSec(this)"><h3>⚠️ Alert ล่าสุด (7 วัน)</h3><span class="tog">▼</span></div>
           <div class="sec-b" style="padding:0"><div class="tw"><table><thead><tr><th>เวลา</th><th>ระบบ</th><th>อาคาร</th><th>ผู้ตรวจ</th><th>หมายเหตุ</th></tr></thead><tbody id="main-al"></tbody></table></div></div>
         </div>
-        <div class="sec">
-          <div class="sec-h" onclick="togSec(this)">
-            <h3>🗃️ ข้อมูล Archive (ข้อมูลเก่า)</h3>
-            <span class="tog">▼</span>
-          </div>
-          <div class="sec-b col" id="archive-body">
-            <!-- filter bar -->
-            <div class="fbar" style="margin-bottom:12px">
-              <label>ระบบ</label>
-              <select id="arc-sys" onchange="loadArchive()">
-                <option value="">ทุกระบบ</option>
-              </select>
-              <label>อาคาร</label>
-              <select id="arc-bld" onchange="loadArchive()">
-                <option value="">ทุกอาคาร</option>
-              </select>
-              <label>จาก</label>
-              <input type="date" id="arc-from" onchange="loadArchive()">
-              <label>ถึง</label>
-              <input type="date" id="arc-to" onchange="loadArchive()">
-              <button class="btn btn-o btn-sm" onclick="clearArc()">✕ ล้าง</button>
-              <button class="btn btn-o btn-sm" onclick="loadArchive()">🔄</button>
-              <div style="margin-left:auto;display:flex;gap:6px">
-                <button class="btn btn-o btn-sm" onclick="exportArc('csv')">⬇ CSV</button>
-                <button class="btn btn-o btn-sm" onclick="exportArc('xlsx')">⬇ Excel</button>
-                <button class="btn btn-o btn-sm" onclick="exportArc('pdf')">⬇ PDF</button>
-              </div>
-            </div>
-            <!-- stats mini cards -->
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:12px">
-              <div class="sc b" style="padding:10px 12px"><div class="sc-l">Archive ทั้งหมด</div><div class="sc-v b" style="font-size:20px" id="arc-tot">—</div></div>
-              <div class="sc r" style="padding:10px 12px"><div class="sc-l">Alert ใน Archive</div><div class="sc-v r" style="font-size:20px" id="arc-al">—</div></div>
-              <div class="sc y" style="padding:10px 12px"><div class="sc-l">ช่วงข้อมูล</div><div class="sc-v" style="font-size:12px;color:var(--yellow)" id="arc-range">—</div></div>
-            </div>
-            <!-- table -->
-            <div class="tw">
-              <table>
-                <thead><tr id="arc-th"></tr></thead>
-                <tbody id="arc-tb"><tr><td colspan="6" class="empty"><div class="ei">📂</div><p>กดลูกศร ▼ เพื่อเปิดดูข้อมูล Archive</p></td></tr></tbody>
-              </table>
-            </div>
-            <div class="pgs">
-              <span class="pinfo" id="arc-pi"></span>
-              <button onclick="goArcPg(-1)" id="arc-prev" disabled>←</button>
-              <span id="arc-ns"></span>
-              <button onclick="goArcPg(1)" id="arc-next" disabled>→</button>
-            </div>
-          </div>
-        </div>
-
       </div>
 
       <!-- ══ SYSTEM PAGES ══ -->
@@ -433,40 +383,12 @@ tr:hover td{background:#f6faff}
         </div>
         <div class="admc">
           <h3>🗃️ Archive ข้อมูลเก่า</h3>
-          <p style="font-size:12px;color:var(--muted);margin-bottom:10px">ย้ายข้อมูลที่เกินกำหนดไปยังตาราง archive (แนะนำทุก 2 ปี)</p>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:10px">ย้ายข้อมูลที่เกินกำหนดไปยังตาราง archive</p>
           <div style="display:flex;gap:8px;align-items:center">
             <input type="number" class="fc" id="adm-mo" value="24" min="1" style="width:80px">
             <span style="font-size:12px;color:var(--muted)">เดือน</span>
             <button class="btn btn-d btn-sm" onclick="runArchive()">🗃 Archive</button>
           </div>
-        </div>
-        <div class="admc">
-          <h3>⚡ ประสิทธิภาพ — SQL Index</h3>
-          <p style="font-size:12px;color:var(--muted);margin-bottom:10px">คัดลอก SQL นี้ไปรันใน Supabase SQL Editor เพื่อเพิ่มความเร็ว</p>
-          <pre id="idx-sql" style="background:var(--bg3);padding:12px;border-radius:6px;font-size:11px;font-family:'IBM Plex Mono',monospace;overflow-x:auto;white-space:pre-wrap;cursor:pointer" onclick="copyIdx()" title="คลิกเพื่อคัดลอก">-- คลิกเพื่อคัดลอก
-CREATE INDEX IF NOT EXISTS idx_ir_sys_date
-  ON inspection_records(system_type, recorded_at DESC);
-
-CREATE INDEX IF NOT EXISTS idx_ir_status
-  ON inspection_records(status);
-
-CREATE INDEX IF NOT EXISTS idx_ir_building
-  ON inspection_records(system_type, building);
-
-CREATE INDEX IF NOT EXISTS idx_ir_sys_status
-  ON inspection_records(system_type, status)
-  WHERE status = 'alert';</pre>
-          <button class="btn btn-o btn-sm" onclick="copyIdx()" style="margin-top:8px">📋 คัดลอก SQL</button>
-          <span id="idx-copied" style="font-size:11px;color:var(--green);margin-left:8px;display:none">✅ คัดลอกแล้ว!</span>
-        </div>
-        <div class="admc">
-          <h3>🔔 ป้องกัน Supabase Pause (Free Tier)</h3>
-          <p style="font-size:12px;color:var(--muted);margin-bottom:10px">Supabase Free จะ pause หากไม่มีการใช้งาน 7 วัน — กดปุ่มนี้เพื่อ ping ฐานข้อมูล</p>
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-            <button class="btn btn-o btn-sm" onclick="pingDB()">🏓 Ping ฐานข้อมูล</button>
-            <span id="ping-status" style="font-size:11px;color:var(--muted)">—</span>
-          </div>
-          <p style="font-size:11px;color:var(--muted);margin-top:8px">💡 หากใช้งานโรงพยาบาลทุกวัน ไม่ต้องกังวล — แต่ถ้ามีวันหยุดยาว ให้กด Ping ก่อนกลับมาใช้</p>
         </div>
       </div>
 
@@ -718,24 +640,12 @@ async function fetchCount(sys,bld,fromV,toV,stVal){
 }
 
 async function fetchAll(sys,bld,fromV,toV,stVal){
-  // ดึงทีละ 1000 แถว จนครบ (รองรับข้อมูลมากๆ ไม่ timeout)
   const p=buildFilterParams(sys,bld,fromV,toV,stVal);
-  const baseUrl=SUPA+'/rest/v1/inspection_records?'+paramsToURL(p)+'&order=recorded_at.desc';
-  const CHUNK=1000;
-  let all=[], offset=0, done=false;
-  while(!done){
-    const url=baseUrl+'&limit='+CHUNK+'&offset='+offset;
-    const r=await fetch(url,{headers:{...H,'Prefer':'return=representation'}});
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    const batch=await r.json();
-    if(!batch||!batch.length){ done=true; break; }
-    all=[...all,...batch];
-    if(batch.length<CHUNK) done=true;
-    else offset+=CHUNK;
-    // safety: ไม่เกิน 50,000 แถวต่อการ export ครั้งหนึ่ง
-    if(all.length>=50000){ done=true; toast('Export จำกัดที่ 50,000 แถว — กรุณาใช้ filter วันที่เพื่อแบ่ง','if'); break; }
-  }
-  return all;
+  let url=SUPA+'/rest/v1/inspection_records?'+paramsToURL(p);
+  url+='&order=recorded_at.desc&limit=10000';
+  const r=await fetch(url,{headers:{...H,'Prefer':'return=representation'}});
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  return r.json();
 }
 
 // ════════════════════════════════════════════════════════
@@ -856,18 +766,15 @@ async function loadMain(){
     document.getElementById('mc-day').textContent=getCount(dayRes);
     document.getElementById('mc-al').textContent=getCount(alRes);
 
-    // 2. per-system summary — query count per system (ไม่ดึงข้อมูลทั้งหมด)
+    // 2. per-system summary (count+last per system)
+    const sumData = await fetch(SUPA+'/rest/v1/inspection_records?select=system_type,recorded_at,status&limit=5000&order=recorded_at.desc',{headers:H}).then(r=>r.json());
     const smap={};
-    const sysKeys=Object.keys(SYS);
-    await Promise.all(sysKeys.map(async sk=>{
-      const [totR,alR,lastR]=await Promise.all([
-        fetch(SUPA+'/rest/v1/inspection_records?system_type=eq.'+encodeURIComponent(sk),{method:'HEAD',headers:{...H,'Prefer':'count=exact'}}),
-        fetch(SUPA+'/rest/v1/inspection_records?system_type=eq.'+encodeURIComponent(sk)+'&status=eq.alert',{method:'HEAD',headers:{...H,'Prefer':'count=exact'}}),
-        fetch(SUPA+'/rest/v1/inspection_records?system_type=eq.'+encodeURIComponent(sk)+'&select=recorded_at&order=recorded_at.desc&limit=1',{headers:H}).then(r=>r.json()),
-      ]);
-      const gc=r=>{ const cr=r.headers.get('content-range'); if(cr){const m=cr.match(/\/(\d+)$/);if(m)return parseInt(m[1]);}return 0; };
-      smap[sk]={tot:gc(totR),al:gc(alR),last:(lastR[0]?.recorded_at)||null};
-    }));
+    (sumData||[]).forEach(r=>{
+      if(!smap[r.system_type]) smap[r.system_type]={tot:0,al:0,last:null};
+      smap[r.system_type].tot++;
+      if(r.status==='alert') smap[r.system_type].al++;
+      if(!smap[r.system_type].last) smap[r.system_type].last=r.recorded_at;
+    });
 
     document.getElementById('main-sys').innerHTML=Object.entries(SYS).map(([k,s])=>{
       const m=smap[k]||{tot:0,al:0,last:null};
@@ -1099,7 +1006,7 @@ async function doExport(fmt){
     if(fmt==='csv'){
       const csv=[cols,...data].map(row=>row.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
       dlBlob(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}),fn+'.csv');
-      document.getElementById('exp-toast')?.remove(); toast(`ดาวน์โหลด CSV แล้ว (${rows.length} รายการ)`,'ok');
+      toast(`ดาวน์โหลด CSV แล้ว (${rows.length} รายการ)`,'ok');
     }
     else if(fmt==='xlsx'){
       const ws=XLSX.utils.aoa_to_sheet([cols,...data]);
@@ -1112,7 +1019,7 @@ async function doExport(fmt){
       const wb=XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb,ws,s.l.slice(0,31));
       XLSX.writeFile(wb,fn+'.xlsx');
-      document.getElementById('exp-toast')?.remove(); toast(`ดาวน์โหลด Excel แล้ว (${rows.length} รายการ)`,'ok');
+      toast(`ดาวน์โหลด Excel แล้ว (${rows.length} รายการ)`,'ok');
     }
     else if(fmt==='pdf'){
       // Print-to-PDF — ภาษาไทยถูกต้อง 100% ผ่าน browser print
@@ -1482,49 +1389,16 @@ async function saveEdit(){
 // ════════════════════════════════════════════════════════
 async function loadAdminStats(){
   try{
-    // รวม count ทุกระบบพร้อมกัน
-    const sysKeys=Object.keys(SYS);
-    const results=await Promise.all([
-      fetch(SUPA+'/rest/v1/inspection_records',{method:'HEAD',headers:{...H,'Prefer':'count=exact'}}),
-      ...sysKeys.map(sk=>fetch(SUPA+'/rest/v1/inspection_records?system_type=eq.'+encodeURIComponent(sk),{method:'HEAD',headers:{...H,'Prefer':'count=exact'}}))
-    ]);
-    const gc=r=>{ const cr=r.headers.get('content-range'); if(cr){const m=cr.match(/\/(\d+)$/);if(m)return parseInt(m[1]);}return 0; };
-    const tot=gc(results[0]);
-    const sysCounts=sysKeys.map((k,i)=>({k,l:SYS[k].l,ic:SYS[k].ic,n:gc(results[i+1])}));
-
-    const today=new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Bangkok'});
-    const estMonths=Math.max(1,Math.round(tot/800));
-
+    const r=await fetch(SUPA+'/rest/v1/inspection_records',{method:'HEAD',headers:{...H,'Prefer':'count=exact'}});
+    const cr=r.headers.get('content-range');
+    let tot=0; if(cr){ const m=cr.match(/\/(\d+)$/); if(m) tot=parseInt(m[1]); }
     document.getElementById('adm-stats').innerHTML=`
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:14px">
-        <div style="background:var(--blue-lt);border-radius:6px;padding:10px">
-          <div style="font-size:10px;color:var(--muted)">รายการทั้งหมด</div>
-          <div style="font-size:22px;font-weight:700;color:var(--blue)">${tot.toLocaleString()}</div>
-        </div>
-        <div style="background:var(--green-lt);border-radius:6px;padding:10px">
-          <div style="font-size:10px;color:var(--muted)">ประมาณ</div>
-          <div style="font-size:22px;font-weight:700;color:var(--green)">${estMonths} เดือน</div>
-          <div style="font-size:10px;color:var(--muted)">ที่ 800 records/เดือน</div>
-        </div>
-        <div style="background:var(--bg3);border-radius:6px;padding:10px">
-          <div style="font-size:10px;color:var(--muted)">Supabase Project</div>
-          <div style="font-size:12px;font-weight:600">ounsxkmbzoojypwzzaan</div>
-          <div style="font-size:10px;color:var(--muted)">Version 3.0.0</div>
-        </div>
-        <div style="background:var(--bg3);border-radius:6px;padding:10px">
-          <div style="font-size:10px;color:var(--muted)">วันที่ดูสถิติ</div>
-          <div style="font-size:12px;font-weight:600">${new Date().toLocaleDateString('th-TH',{dateStyle:'medium'})}</div>
-        </div>
-      </div>
-      <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px">แยกตามระบบ</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:6px">
-        ${sysCounts.map(s=>`<div style="background:var(--bg3);border-radius:6px;padding:8px;display:flex;align-items:center;gap:8px">
-          <span style="font-size:18px">${s.ic}</span>
-          <div><div style="font-size:11px;font-weight:600">${s.l}</div>
-          <div style="font-size:12px;color:var(--blue);font-weight:700">${s.n.toLocaleString()}</div></div>
-        </div>`).join('')}
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;font-size:12px">
+        <div>รายการทั้งหมด: <b>${tot.toLocaleString()} แถว</b></div>
+        <div>Supabase Project: <b>ounsxkmbzoojypwzzaan</b></div>
+        <div>Version: <b>3.0.0</b></div>
       </div>`;
-  }catch(e){ document.getElementById('adm-stats').innerHTML='<span style="color:var(--red)">โหลดล้มเหลว: '+e.message+'</span>'; }
+  }catch(e){ document.getElementById('adm-stats').innerHTML='ไม่สามารถโหลดได้: '+e.message; }
 }
 
 function chgPin(){
@@ -1583,10 +1457,6 @@ function togSec(h){
   const b=h.nextElementSibling;
   b.classList.toggle('col');
   h.querySelector('.tog').textContent=b.classList.contains('col')?'▶':'▼';
-  // เมื่อเปิด Archive section ครั้งแรก ให้โหลดข้อมูล
-  if(!b.classList.contains('col') && b.closest('#archive-body') || b.id==='archive-body'){
-    if(!b.dataset.loaded){ b.dataset.loaded='1'; initArchive(); }
-  }
 }
 function toast(msg,type='if'){
   const el=document.createElement('div');
@@ -1594,244 +1464,6 @@ function toast(msg,type='if'){
   document.getElementById('toasts').appendChild(el);
   setTimeout(()=>el.remove(),3200);
 }
-
-// ════════════════════════════════════════════════════════
-//  UTILITY FUNCTIONS
-// ════════════════════════════════════════════════════════
-async function pingDB(){
-  const el=document.getElementById('ping-status');
-  el.textContent='กำลัง ping…'; el.style.color='var(--muted)';
-  try{
-    const t0=Date.now();
-    const r=await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:H});
-    const ms=Date.now()-t0;
-    if(r.ok){
-      el.textContent=`✅ เชื่อมต่อสำเร็จ (${ms}ms) — ${new Date().toLocaleTimeString('th-TH')}`;
-      el.style.color='var(--green)';
-    } else {
-      el.textContent=`❌ HTTP ${r.status}`;
-      el.style.color='var(--red)';
-    }
-  }catch(e){
-    el.textContent='❌ ไม่สามารถเชื่อมต่อได้: '+e.message;
-    el.style.color='var(--red)';
-  }
-}
-
-function copyIdx(){
-  const sql=document.getElementById('idx-sql')?.textContent||'';
-  navigator.clipboard.writeText(sql.replace('-- คลิกเพื่อคัดลอก\n','').trim());
-  const el=document.getElementById('idx-copied');
-  if(el){ el.style.display='inline'; setTimeout(()=>el.style.display='none',2000); }
-  toast('คัดลอก SQL แล้ว','ok');
-}
-
-// ════════════════════════════════════════════════════════
-//  ARCHIVE VIEWER
-// ════════════════════════════════════════════════════════
-let arcPage=1;
-const ARC_PER=50;
-let arcAllRows=[];
-
-function initArchive(){
-  // populate sys selector
-  const arcSys=document.getElementById('arc-sys');
-  if(arcSys && arcSys.options.length===1){
-    arcSys.innerHTML='<option value="">ทุกระบบ</option>'+
-      Object.entries(SYS).map(([k,s])=>`<option value="${k}">${s.ic} ${s.l}</option>`).join('');
-  }
-  loadArchiveStats();
-  loadArchive();
-}
-
-async function loadArchiveStats(){
-  try{
-    // count total + alert + date range
-    const [totR, alR, rangeR] = await Promise.all([
-      fetch(SUPA+'/rest/v1/inspection_archive',{method:'HEAD',headers:{...H,'Prefer':'count=exact'}}),
-      fetch(SUPA+'/rest/v1/inspection_archive?status=eq.alert',{method:'HEAD',headers:{...H,'Prefer':'count=exact'}}),
-      fetch(SUPA+'/rest/v1/inspection_archive?select=recorded_at&order=recorded_at.asc&limit=1',{headers:H}).then(r=>r.json()),
-    ]);
-    const gc=r=>{ const cr=r.headers.get('content-range'); if(cr){const m=cr.match(/\/(\d+)$/);if(m)return parseInt(m[1]);}return 0; };
-    const tot=gc(totR), al=gc(alR);
-    document.getElementById('arc-tot').textContent=tot.toLocaleString();
-    document.getElementById('arc-al').textContent=al.toLocaleString();
-    const oldest=rangeR?.[0]?.recorded_at;
-    document.getElementById('arc-range').textContent=oldest?
-      fmtDate(oldest)+' →
-ปัจจุบัน':'ไม่มีข้อมูล';
-  }catch(e){
-    // ถ้าตาราง archive ยังไม่มี แสดง message
-    document.getElementById('arc-tot').textContent='—';
-    document.getElementById('arc-al').textContent='—';
-    document.getElementById('arc-range').textContent='ยังไม่มีข้อมูล';
-  }
-}
-
-async function loadArchive(){
-  const sys=(document.getElementById('arc-sys')?.value||'').trim();
-  const bld=(document.getElementById('arc-bld')?.value||'').trim();
-  const from=(document.getElementById('arc-from')?.value||'').trim();
-  const to=(document.getElementById('arc-to')?.value||'').trim();
-  const tb=document.getElementById('arc-tb');
-  const th=document.getElementById('arc-th');
-  if(!tb||!th) return;
-
-  // update building dropdown based on selected sys
-  const bldEl=document.getElementById('arc-bld');
-  if(sys && bldEl){
-    const blds=BLD[sys]||[];
-    const curBld=bldEl.value;
-    bldEl.innerHTML='<option value="">ทุกอาคาร</option>'+blds.map(b=>`<option value="${b}">${b}</option>`).join('');
-    if(curBld) bldEl.value=curBld;
-  }
-
-  tb.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--muted)"><span class="spin"></span> กำลังโหลด…</td></tr>`;
-
-  // build URL
-  const off=(arcPage-1)*ARC_PER;
-  let url=SUPA+'/rest/v1/inspection_archive?';
-  const q=[];
-  if(sys) q.push('system_type=eq.'+encodeURIComponent(sys));
-  if(bld) q.push('building=eq.'+encodeURIComponent(bld));
-  if(from) q.push('recorded_at=gte.'+encodeURIComponent(new Date(from+'T00:00:00+07:00').toISOString()));
-  if(to)   q.push('recorded_at=lte.'+encodeURIComponent(new Date(to+'T23:59:59+07:00').toISOString()));
-  if(q.length) url+=q.join('&')+'&';
-  url+='order=recorded_at.desc&offset='+off+'&limit='+ARC_PER;
-
-  try{
-    // fetch data + count
-    const [rows, cntR] = await Promise.all([
-      fetch(url,{headers:{...H,'Prefer':'return=representation'}}).then(r=>{
-        if(!r.ok) throw new Error('HTTP '+r.status);
-        return r.json();
-      }),
-      fetch(url.replace('offset='+off+'&limit='+ARC_PER,''),{method:'HEAD',headers:{...H,'Prefer':'count=exact'}}),
-    ]);
-
-    const gc=r=>{ const cr=r.headers.get('content-range'); if(cr){const m=cr.match(/\/(\d+)$/);if(m)return parseInt(m[1]);}return 0; };
-    const tot=gc(cntR)||rows.length;
-    arcAllRows=rows||[];
-
-    if(!arcAllRows.length){
-      th.innerHTML='';
-      tb.innerHTML=`<tr><td colspan="8"><div class="empty"><div class="ei">📭</div><p>ไม่มีข้อมูลใน Archive${sys?' สำหรับ '+SYS[sys]?.l:''}</p></div></td></tr>`;
-      updArcPager(0,0); document.getElementById('arc-pi').textContent='';
-      return;
-    }
-
-    // detect sys for columns (use first row if not filtered)
-    const dispSys=sys||arcAllRows[0]?.system_type||'o2_manifold';
-    const cols=COLS[dispSys]||COLS.o2_manifold;
-
-    // thead — เพิ่มคอลัมน์ระบบถ้าไม่ได้ filter ระบบ
-    const showSysCols=!sys;
-    th.innerHTML=(showSysCols?'<th>ระบบ</th>':'')+
-      cols.slice(0,-1).map(c=>`<th>${c}</th>`).join('');
-
-    tb.innerHTML=arcAllRows.map((r,i)=>{
-      const rowSys=r.system_type||dispSys;
-      const sysCols=COLS[rowSys]||COLS.o2_manifold;
-      const rowCells=showSysCols?
-        `<td><span title="${SYS[rowSys]?.l||rowSys}">${SYS[rowSys]?.ic||'?'} ${SYS[rowSys]?.l||rowSys}</span></td>`:
-        '';
-      return `<tr class="${i===0&&arcPage===1?'tr-new':''}">
-        ${rowCells}${mkRowCells(rowSys,r).replace(/<div style="display:flex.*?<\/div><\/td>$/,'')}
-      </tr>`;
-    }).join('');
-
-    updArcPager(arcPage,Math.ceil(tot/ARC_PER));
-    document.getElementById('arc-pi').textContent=`แสดง ${off+1}–${Math.min(off+arcAllRows.length,tot)} จาก ${tot.toLocaleString()} รายการ`;
-  }catch(e){
-    th.innerHTML='';
-    tb.innerHTML=`<tr><td colspan="8" style="color:var(--red);text-align:center;padding:20px">
-      ❌ ${e.message.includes('404')||e.message.includes('42P01')?
-        'ตาราง inspection_archive ยังไม่มี — กรุณา Archive ข้อมูลก่อนในหน้า Admin':
-        e.message}
-    </td></tr>`;
-    console.error('loadArchive:',e);
-  }
-}
-
-function updArcPager(pg,tot){
-  document.getElementById('arc-prev').disabled=pg<=1;
-  document.getElementById('arc-next').disabled=pg>=tot;
-  const ns=document.getElementById('arc-ns'); if(!ns) return; ns.innerHTML='';
-  for(let i=Math.max(1,pg-2);i<=Math.min(tot,pg+2);i++) ns.innerHTML+=`<button class="${i===pg?'on':''}" onclick="goArcPgN(${i})">${i}</button>`;
-}
-function goArcPg(d){ arcPage+=d; loadArchive(); }
-function goArcPgN(n){ arcPage=n; loadArchive(); }
-function clearArc(){
-  ['arc-sys','arc-bld','arc-from','arc-to'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-  arcPage=1; loadArchive();
-}
-
-async function exportArc(fmt){
-  toast('กำลังดึงข้อมูล Archive…','if');
-  const sys=(document.getElementById('arc-sys')?.value||'').trim();
-  const bld=(document.getElementById('arc-bld')?.value||'').trim();
-  const from=(document.getElementById('arc-from')?.value||'').trim();
-  const to=(document.getElementById('arc-to')?.value||'').trim();
-
-  let url=SUPA+'/rest/v1/inspection_archive?';
-  const q=[];
-  if(sys) q.push('system_type=eq.'+encodeURIComponent(sys));
-  if(bld) q.push('building=eq.'+encodeURIComponent(bld));
-  if(from) q.push('recorded_at=gte.'+encodeURIComponent(new Date(from+'T00:00:00+07:00').toISOString()));
-  if(to)   q.push('recorded_at=lte.'+encodeURIComponent(new Date(to+'T23:59:59+07:00').toISOString()));
-  if(q.length) url+=q.join('&')+'&';
-  url+='order=recorded_at.desc&limit=10000';
-
-  try{
-    const rows=await fetch(url,{headers:H}).then(r=>r.json());
-    if(!rows||!rows.length){ toast('ไม่มีข้อมูล Archive','er'); return; }
-
-    const dispSys=sys||rows[0]?.system_type||'o2_manifold';
-    const cols=getExportCols(dispSys);
-    const data=rows.map(r=>rowToArr(r.system_type||dispSys,r));
-    const fn='Archive_'+(sys?SYS[sys]?.l:'ทุกระบบ')+'_'+new Date().toLocaleDateString('sv-SE');
-
-    if(fmt==='csv'){
-      const csv=[cols,...data].map(row=>row.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('
-');
-      dlBlob(new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}),fn+'.csv');
-      toast('ดาวน์โหลด CSV Archive แล้ว ('+rows.length+' รายการ)','ok');
-    } else if(fmt==='xlsx'){
-      const ws=XLSX.utils.aoa_to_sheet([cols,...data]);
-      const wb=XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb,ws,'Archive');
-      XLSX.writeFile(wb,fn+'.xlsx');
-      toast('ดาวน์โหลด Excel Archive แล้ว ('+rows.length+' รายการ)','ok');
-    } else if(fmt==='pdf'){
-      const thHtml=cols.map(c=>`<th>${c}</th>`).join('');
-      const tbHtml=data.map((row,i)=>`<tr class="${i%2===0?'ev':'od'}">${row.map(v=>{const vs=String(v??'—');return`<td class="${/ผิดปกติ|ไม่สะอาด/.test(vs)?'al':''}">${vs}</td>`;}).join('')}</tr>`).join('');
-      const w=window.open('','_blank');
-      if(!w){ toast('อนุญาต pop-up ก่อนครับ','er'); return; }
-      w.document.write(`<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><title>Archive Report</title>
-        <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
-        <style>*{box-sizing:border-box}body{font-family:'Sarabun',sans-serif;font-size:9px;padding:10mm}
-        .hd{border-bottom:2px solid #1a6fbd;padding-bottom:7px;margin-bottom:10px}
-        .hd .t{font-size:15px;font-weight:700}.hd .s{font-size:10px;color:#6b7f96}
-        table{width:100%;border-collapse:collapse}thead tr{background:#1a2f50}
-        th{padding:4px 5px;color:#fff;font-weight:700;font-size:8px}
-        td{padding:3px 5px;border-bottom:1px solid #e8eef5;font-size:8px}
-        tr.ev td{background:#f7faff}.al{color:#c0392b;font-weight:700}
-        .pbn{position:fixed;top:8px;right:8px;background:#1a6fbd;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-family:'Sarabun',sans-serif;font-size:12px}
-        @media print{.pbn{display:none}@page{size:A4 landscape;margin:8mm}}</style></head>
-        <body><button class="pbn" onclick="window.print()">🖨️ พิมพ์/PDF</button>
-        <div class="hd"><div class="t">🗃️ รายงาน Archive${sys?' — '+SYS[sys]?.l:''}</div>
-        <div class="s">ข้อมูลที่ Archive แล้ว | รายการ: ${rows.length} | พิมพ์: ${new Date().toLocaleString('th-TH')}</div></div>
-        <table><thead><tr>${thHtml}</tr></thead><tbody>${tbHtml}</tbody></table></body></html>`);
-      w.document.close();
-      toast('เปิดหน้า PDF Archive แล้ว','ok');
-    }
-  }catch(e){ toast('Export Archive ล้มเหลว: '+e.message,'er'); }
-}
-
-// Auto-ping ทุก 6 ชั่วโมง (ป้องกัน pause)
-setInterval(async ()=>{
-  try{ await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:H}); }catch(e){}
-}, 6*3600*1000);
 
 // ════════════════════════════════════════════════════════
 //  BOOT
