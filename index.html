@@ -215,6 +215,90 @@ tr:hover td{background:#f6faff}
 /* Admin */
 .admc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--sh);margin-bottom:12px}
 .admc h3{font-size:13px;font-weight:700;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid var(--bg3)}
+
+/* ── MOBILE HAMBURGER (ซ่อนบน desktop) ── */
+#mob-menu-btn{display:none;background:none;border:none;cursor:pointer;padding:6px;border-radius:6px;font-size:18px;color:var(--text);line-height:1;flex-shrink:0}
+#mob-menu-btn:hover{background:var(--bg3)}
+#sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:998;-webkit-tap-highlight-color:transparent}
+
+/* ── RESPONSIVE ≤ 768px ── */
+@media(max-width:768px){
+
+  /* hamburger visible */
+  #mob-menu-btn{display:flex;align-items:center;justify-content:center}
+
+  /* sidebar: hidden off-screen by default, slide in as overlay */
+  .sb{
+    position:fixed;top:0;left:0;height:100%;z-index:999;
+    transform:translateX(-100%);transition:transform .22s ease;
+    width:220px;
+  }
+  .sb.mob-open{transform:translateX(0)}
+  #sb-overlay.mob-open{display:block}
+
+  /* main wrapper takes full width */
+  .mw{width:100%;min-width:0}
+
+  /* topbar: tighter, hide status text on very small */
+  .topbar{padding:0 10px;gap:8px}
+  .tb-title{font-size:13px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ctxt{display:none}
+
+  /* tabs: scrollable horizontally */
+  .tabs{padding:0 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{padding:10px 12px;font-size:12px;flex-shrink:0}
+
+  /* content: less padding */
+  .content{padding:10px 10px}
+
+  /* filter bar: inputs full row */
+  .fbar{gap:6px;padding:8px 10px}
+  .fbar select,.fbar input[type=date]{width:100%;max-width:none}
+  .fbar label{width:100%;margin-top:2px}
+
+  /* form table: stack label on top of value */
+  .form-tbl .fl{display:block;width:100%;padding:8px 12px 2px;white-space:normal}
+  .form-tbl .fv{display:block;width:100%;padding:4px 12px 10px}
+  .form-tbl tr{display:block;border-bottom:1px solid var(--bg3)}
+  .form-tbl tr:last-child{border-bottom:none}
+
+  /* input max-width: full on mobile */
+  .uw{max-width:100%}
+  .fc{font-size:14px}/* slightly bigger tap target */
+
+  /* building grid: 1 column on very small screens */
+  .bld-g{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+
+  /* charts: already 1-col at 860px; ensure on mobile too */
+  .cgrd{grid-template-columns:1fr}
+
+  /* stat cards: 2 columns min on mobile */
+  .cards{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+
+  /* sys-grid: 1 col */
+  .sys-grid{grid-template-columns:1fr}
+
+  /* modal: full-width on mobile */
+  .modal{width:96%;max-height:88vh}
+
+  /* PIN modal: fits small screens */
+  .pmod{width:280px;padding:20px 16px}
+
+  /* export buttons wrap properly */
+  .fbar>div[style*="margin-left:auto"]{margin-left:0!important;width:100%;justify-content:flex-start}
+
+  /* toast: left-right margin */
+  #toasts{left:10px;right:10px;bottom:10px}
+  .toast{max-width:100%}
+}
+
+/* ── RESPONSIVE ≤ 400px (very small phones) ── */
+@media(max-width:400px){
+  .cards{grid-template-columns:1fr 1fr}
+  .pmod{width:92vw}
+  .tab{padding:9px 10px;font-size:11px}
+}
 </style>
 </head>
 <body>
@@ -253,8 +337,11 @@ tr:hover td{background:#f6faff}
 </div>
 
 <div id="app">
+  <!-- Mobile sidebar overlay (ทำงานเฉพาะมือถือ) -->
+  <div id="sb-overlay" onclick="closeSb()"></div>
+
   <!-- SIDEBAR -->
-  <div class="sb">
+  <div class="sb" id="sidebar">
     <div class="sb-logo">
       <div class="t">⚕ GasMed</div>
       <div class="s">บันทึกการตรวจสอบ<br>ระบบแก๊สทางการแพทย์</div>
@@ -278,6 +365,7 @@ tr:hover td{background:#f6faff}
 
   <div class="mw">
     <div class="topbar">
+      <button id="mob-menu-btn" onclick="openSb()" title="เมนู" aria-label="เปิดเมนู">☰</button>
       <div class="tb-title" id="tb-title">Dashboard</div>
       <div class="tb-right">
         <div class="cdot" id="cdot"></div>
@@ -702,6 +790,7 @@ async function fetchAll(sys,bld,fromV,toV,stVal){
 // ════════════════════════════════════════════════════════
 function goSys(sys){
   curSys=sys;
+  closeSb();
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
   const ni=document.getElementById('ni-'+sys); if(ni) ni.classList.add('on');
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
@@ -744,6 +833,7 @@ function _showTab(t){
 }
 
 function openAdmin(){
+  closeSb();
   pinOnce(()=>{
     document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
     document.getElementById('pg-admin').classList.add('on');
@@ -1653,6 +1743,18 @@ CREATE INDEX IF NOT EXISTS idx_ir_sys_status
 setInterval(async ()=>{
   try{ await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:H}); }catch(e){}
 }, 6*3600*1000);
+
+// ════════════════════════════════════════════════════════
+//  MOBILE SIDEBAR
+// ════════════════════════════════════════════════════════
+function openSb(){
+  document.getElementById('sidebar').classList.add('mob-open');
+  document.getElementById('sb-overlay').classList.add('mob-open');
+}
+function closeSb(){
+  document.getElementById('sidebar').classList.remove('mob-open');
+  document.getElementById('sb-overlay').classList.remove('mob-open');
+}
 
 // ════════════════════════════════════════════════════════
 //  BOOT
