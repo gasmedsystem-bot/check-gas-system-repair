@@ -158,7 +158,7 @@ tr:hover td{background:#f6faff}
 .bc{border:1.5px solid var(--border);border-radius:var(--r);padding:10px 12px;cursor:pointer;transition:.12s;background:var(--card)}
 .bc:hover{border-color:var(--blue)}
 .bc.on{background:var(--blue-lt);border-color:var(--blue)}
-.bc .bn{font-size:12px;font-weight:600}
+.bc .bn{font-size:12px;font-weight:600;white-space:normal;word-break:break-word;line-height:1.35}
 .bc .bp{font-size:10px;color:var(--muted);margin-top:2px}
 .bc.on .bn{color:var(--blue)}
 
@@ -515,8 +515,8 @@ const TH = {
   },
   liquid_o2:{
     '*':{ volume:{mn:null,mx:null,h:'เลือกถังก่อน'}, pressure_tank:{mn:null,mx:null,h:'เลือกถังก่อน'}, reg_from_tank:{mn:null,mx:null,h:'เลือกถังก่อน'}, reg_working:{mn:50,mx:60,h:'50–60 PSI'} },
-    'อาคารบริการ Tank No.255':{ volume:{mn:45,mx:160,h:'45–160 Inches H₂O'}, pressure_tank:{mn:180,mx:250,h:'180–250 PSI'}, reg_from_tank:{mn:180,mx:250,h:'180–250 PSI'} },
-    'อาคารโภชนบำบัด Tank No.774':{ volume:{mn:65,mx:225,h:'65–225 Inches H₂O'}, pressure_tank:{mn:130,mx:250,h:'130–250 PSI'}, reg_from_tank:{mn:130,mx:250,h:'130–250 PSI'} },
+    'อาคารบริการ Tank No.255':{ volume:{mn:45,mx:160,h:'45–160 InH₂O'}, pressure_tank:{mn:180,mx:250,h:'180–250 PSI'}, reg_from_tank:{mn:180,mx:250,h:'180–250 PSI'} },
+    'อาคารโภชนบำบัด Tank No.774':{ volume:{mn:65,mx:225,h:'65–225 InH₂O'}, pressure_tank:{mn:130,mx:250,h:'130–250 PSI'}, reg_from_tank:{mn:130,mx:250,h:'130–250 PSI'} },
   },
   area_alarm:{},
 };
@@ -527,7 +527,7 @@ const FIELDS = {
   medical_air:   [{k:'storage_pressure',l:'แรงดันเก็บ (Storage Pressure)',t:'n',u:'PSI'},{k:'working_pressure',l:'แรงดันใช้งาน (Working Pressure)',t:'n',u:'PSI'},{k:'motor_condition',l:'Motor Condition',t:'tgl',o:['ปกติ','ไม่ปกติ']},{k:'control_panel',l:'ตู้ Control',t:'tgl',o:['ปกติ','ไม่ปกติ']},{k:'air_dryer_1',l:'Air Dryer 1',t:'tgl',o:['ปกติ','ไม่ปกติ','ปิดสลับ']},{k:'air_dryer_2',l:'Air Dryer 2',t:'tgl',o:['ปกติ','ไม่ปกติ','ปิดสลับ']},{k:'auto_drain',l:'Auto Drain',t:'tgl',o:['ปกติ','ไม่ปกติ']},{k:'room_temp',l:'อุณหภูมิห้อง',t:'n',u:'°C'},{k:'cleanliness',l:'ความสะอาด',t:'tgl',o:['สะอาด','ไม่สะอาด']}],
   vacuum:        [{k:'pressure',l:'Pressure ในถัง',t:'n',u:''},{k:'motor_condition',l:'Motor Condition',t:'tgl',o:['ปกติ','ไม่ปกติ']},{k:'control_panel',l:'ตู้ Control',t:'tgl',o:['ปกติ','ไม่ปกติ']},{k:'oil_level',l:'Oil Level',t:'tgl',o:['ปกติ','ไม่ปกติ']},{k:'room_temp',l:'อุณหภูมิห้อง',t:'n',u:'°C'},{k:'cleanliness',l:'ความสะอาด',t:'tgl',o:['สะอาด','ไม่สะอาด']}],
   wagd:          [{k:'pressure',l:'Pressure ในถัง',t:'n',u:'inHg'},{k:'motor_condition',l:'Motor Condition',t:'tgl',o:['ปกติ','ไม่ปกติ']},{k:'control_panel',l:'ตู้ Control',t:'tgl',o:['ปกติ','ไม่ปกติ']},{k:'oil_level',l:'Oil Level',t:'tgl',o:['ปกติ','ไม่ปกติ']},{k:'room_temp',l:'อุณหภูมิห้อง',t:'n',u:'°C'},{k:'cleanliness',l:'ความสะอาด',t:'tgl',o:['สะอาด','ไม่สะอาด']}],
-  liquid_o2:     [{k:'volume',l:'ปริมาตร O2 เหลว',t:'n',u:'%'},{k:'pressure_tank',l:'แรงดันในถัง',t:'n',u:'PSI'},{k:'reg_from_tank',l:'REGULATOR จากถัง',t:'n',u:'PSI'},{k:'reg_working',l:'REGULATOR ใช้งาน',t:'n',u:'PSI'},{k:'vaporizer',l:'ชุด Vapolizer',t:'tgl',o:['ปกติ','ไม่ปกติ','สลับVapolizer']}],
+  liquid_o2:     [{k:'volume',l:'ปริมาตร O2 เหลว',t:'n',u:'InH₂O'},{k:'pressure_tank',l:'แรงดันในถัง',t:'n',u:'PSI'},{k:'reg_from_tank',l:'REGULATOR จากถัง',t:'n',u:'PSI'},{k:'reg_working',l:'REGULATOR ใช้งาน',t:'n',u:'PSI'},{k:'vaporizer',l:'ชุด Vapolizer',t:'tgl',o:['ปกติ','ไม่ปกติ','สลับVapolizer']}],
   area_alarm:    [{k:'floor_location',l:'ชั้น/หอผู้ป่วย/แผนก',t:'afloor'},{k:'sound',l:'เสียง (≥80dB)',t:'tgl',o:['ปกติ','ผิดปกติ','ไม่มีเสียง','ปิดตึก','ปิดรอซ่อม','ปิดชำรุด']},{k:'light',l:'ไฟแสดงสถานะ',t:'tgl',o:['ปกติ','ผิดปกติ','ปิดตึก','ปิดรอซ่อม','ปิดชำรุด']},{k:'display',l:'ตัวเลขแสดงผล',t:'tgl',o:['ปกติ','ผิดปกติ','ปิดตึก','ปิดรอซ่อม','ปิดชำรุด']}],
 };
 FIELDS.nitrogen      = FIELDS.o2_manifold;
@@ -550,7 +550,7 @@ const COLS = {
   medical_air:   ['วันที่-เวลา','อาคาร','Storage(PSI)','Working(PSI)','มอเตอร์','ตู้Control','Dryer1','Dryer2','AutoDrain','อุณหภูมิ(°C)','ความสะอาด','สถานะ','ผู้ตรวจ',''],
   vacuum:        ['วันที่-เวลา','อาคาร','แรงดัน','มอเตอร์','ตู้Control','OilLevel','อุณหภูมิ(°C)','ความสะอาด','สถานะ','ผู้ตรวจ',''],
   wagd:          ['วันที่-เวลา','อาคาร','แรงดัน(inHg)','มอเตอร์','ตู้Control','OilLevel','อุณหภูมิ(°C)','ความสะอาด','สถานะ','ผู้ตรวจ',''],
-  liquid_o2:     ['วันที่-เวลา','อาคาร/ถัง','ปริมาตร','แรงดันถัง(PSI)','Reg จากถัง(PSI)','Reg ใช้งาน(PSI)','Vaporizer','สถานะ','ผู้ตรวจ',''],
+  liquid_o2:     ['วันที่-เวลา','อาคาร/ถัง','ปริมาตร(InH₂O)','แรงดันถัง(PSI)','Reg จากถัง(PSI)','Reg ใช้งาน(PSI)','Vaporizer','สถานะ','ผู้ตรวจ',''],
   area_alarm:    ['วันที่-เวลา','อาคาร','ชั้น/หอผู้ป่วย','เสียง','ไฟ','ตัวเลข','สถานะ','ผู้ตรวจ',''],
 };
 COLS.nitrogen=COLS.nitrous_oxide=COLS.co2=COLS.o2_manifold;
@@ -993,7 +993,12 @@ function mkRowCells(sys,r){
     medical_air:()=>base+ncell(d.storage_pressure,null,null)+ncell(d.working_pressure,null,null)+`<td>${stag(d.motor_condition)}</td><td>${stag(d.control_panel)}</td><td>${stag(d.air_dryer_1)}</td><td>${stag(d.air_dryer_2)}</td><td>${stag(d.auto_drain)}</td>`+ncell(d.room_temp,null,53.9)+`<td>${stag(d.cleanliness)}</td>`,
     vacuum:()=>base+ncell(d.pressure,null,null)+`<td>${stag(d.motor_condition)}</td><td>${stag(d.control_panel)}</td><td>${stag(d.oil_level)}</td>`+ncell(d.room_temp,null,53.9)+`<td>${stag(d.cleanliness)}</td>`,
     wagd:()=>base+ncell(d.pressure,null,null)+`<td>${stag(d.motor_condition)}</td><td>${stag(d.control_panel)}</td><td>${stag(d.oil_level)}</td>`+ncell(d.room_temp,null,53.9)+`<td>${stag(d.cleanliness)}</td>`,
-    liquid_o2:()=>base+ncell(d.volume,null,null)+ncell(d.pressure_tank,null,null)+ncell(d.reg_from_tank,null,null)+ncell(d.reg_working,50,60)+`<td>${stag(d.vaporizer)}</td>`,
+    liquid_o2:()=>{
+      const vTH  = getLiqO2TH(r.building,'volume');
+      const ptTH = getLiqO2TH(r.building,'pressure_tank');
+      const rfTH = getLiqO2TH(r.building,'reg_from_tank');
+      return base+ncell(d.volume,vTH.mn,vTH.mx)+ncell(d.pressure_tank,ptTH.mn,ptTH.mx)+ncell(d.reg_from_tank,rfTH.mn,rfTH.mx)+ncell(d.reg_working,50,60)+`<td>${stag(d.vaporizer)}</td>`;
+    },
     area_alarm:()=>base+`<td>${d.floor_location||'—'}</td><td>${stag(d.sound)}</td><td>${stag(d.light)}</td><td>${stag(d.display)}</td>`,
   };
   m.nitrogen=m.nitrous_oxide=m.co2=m.o2_manifold;
@@ -1513,6 +1518,13 @@ async function runArchive(){
 // ════════════════════════════════════════════════════════
 //  HELPERS
 // ════════════════════════════════════════════════════════
+// Lookup merged threshold (base + building override) for liquid_o2
+function getLiqO2TH(bld, field){
+  const base = (TH.liquid_o2?.['*']?.[field])   || {};
+  const over = (TH.liquid_o2?.[bld]?.[field])   || {};
+  const merged = {...base, ...over};
+  return { mn: merged.mn??null, mx: merged.mx??null };
+}
 function ncell(v,mn,mx){
   if(v===null||v===undefined||v==='') return `<td style="color:var(--muted)">—</td>`;
   const n=Number(v);
