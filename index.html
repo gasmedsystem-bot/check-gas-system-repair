@@ -1782,6 +1782,7 @@ async function pingDB(){
     const t0=Date.now();
     const r=await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:getH()});
     const ms=Date.now()-t0;
+    if(r.ok){
       if(el){ el.textContent='✅ เชื่อมต่อสำเร็จ ('+ms+'ms) — '+new Date().toLocaleTimeString('th-TH'); el.style.color='var(--green)'; }
       toast('Ping สำเร็จ ('+ms+'ms)','ok');
     } else {
@@ -1848,28 +1849,40 @@ function _showLogin(){
 
 // ── login ─────────────────────────────────────────────────
 async function doLogin(){
+  // ป้องกันค้างถ้าเปิดจาก file:// (browser บล็อก fetch)
+  if(location.protocol==='file:'){
+    _lsSetErr('❌ ต้องเปิดผ่าน HTTP Server — ไม่สามารถเปิดจาก file:// ได้');
+    return;
+  }
+
   const email = (document.getElementById('ls-email')?.value||'').trim();
   const pass  =  document.getElementById('ls-pass')?.value||'';
   if(!email || !pass){ _lsSetErr('กรุณากรอก Email และ Password'); return; }
 
   _lsSetBusy(true);
   _lsSetErr('');
+
+  // timeout 15 วินาที ป้องกันค้างตลอด
+  const controller = new AbortController();
+  const timer = setTimeout(()=> controller.abort(), 15000);
+
   try{
     const res = await fetch(SUPA+'/auth/v1/token?grant_type=password',{
       method:'POST',
       headers:{'apikey':AKEY,'Content-Type':'application/json'},
-      body:JSON.stringify({email, password:pass})
+      body:JSON.stringify({email, password:pass}),
+      signal: controller.signal
     });
+    clearTimeout(timer);
     const data = await res.json();
 
     if(!res.ok){
-      // แปลง error message เป็นภาษาไทย
       const msg = data.error_description || data.msg || data.error || 'เข้าระบบไม่สำเร็จ';
       const thMsg =
         msg.includes('Invalid login') || msg.includes('invalid_credentials') ? 'Email หรือ Password ไม่ถูกต้อง' :
-        msg.includes('Email not confirmed') ? 'Email ยังไม่ได้ยืนยัน — ตรวจสอบกล่องจดหมาย' :
-        msg.includes('Too many requests')   ? 'พยายามเข้าหลายครั้งเกินไป — รอสักครู่' :
-        'เข้าระบบไม่สำเร็จ: ' + msg;
+        msg.includes('Email not confirmed') ? 'Email ยังไม่ได้ยืนยัน' :
+        msg.includes('Too many') ? 'พยายามเข้าหลายครั้งเกินไป — รอสักครู่' :
+        'เข้าระบบไม่สำเร็จ (' + res.status + ')';
       _lsSetErr('❌ ' + thMsg);
       _lsSetBusy(false);
       return;
@@ -1878,15 +1891,17 @@ async function doLogin(){
     // ✅ สำเร็จ — เก็บ token
     sessionStorage.setItem(SES_K, data.access_token);
     if(data.refresh_token) sessionStorage.setItem('gm_ref', data.refresh_token);
-    // กำหนดเวลาหมดอายุ (expires_in = วินาที, default 3600)
     const expiresAt = Date.now() + (data.expires_in||3600)*1000;
     sessionStorage.setItem('gm_exp', String(expiresAt));
 
+    _lsSetBusy(false); // คืนปุ่มก่อนเข้า app
     _enterApp();
     init();
 
   }catch(e){
-    _lsSetErr('❌ เชื่อมต่อไม่ได้: ' + e.message);
+    clearTimeout(timer);
+    const msg = e.name==='AbortError' ? 'หมดเวลาเชื่อมต่อ (15s) — ตรวจสอบอินเทอร์เน็ต' : 'เชื่อมต่อไม่ได้: '+e.message;
+    _lsSetErr('❌ ' + msg);
     _lsSetBusy(false);
   }
 }
