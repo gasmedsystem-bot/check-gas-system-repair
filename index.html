@@ -216,6 +216,43 @@ tr:hover td{background:#f6faff}
 .admc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--sh);margin-bottom:12px}
 .admc h3{font-size:13px;font-weight:700;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid var(--bg3)}
 
+/* ── LOGIN SCREEN ── */
+#login-screen{
+  position:fixed;inset:0;z-index:20000;
+  background:linear-gradient(135deg,#0f1e32 0%,#1a3a5c 60%,#0d2540 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Sarabun',sans-serif;
+}
+#login-screen.h{display:none}
+.ls-card{
+  background:#fff;border-radius:18px;padding:36px 32px 28px;
+  width:340px;text-align:center;
+  box-shadow:0 24px 64px rgba(0,0,0,.35);
+  animation:ls-in .22s ease;
+}
+@keyframes ls-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.ls-logo{font-size:38px;margin-bottom:6px}
+.ls-title{font-size:20px;font-weight:700;color:var(--text);margin-bottom:2px}
+.ls-sub{font-size:11px;color:var(--muted);margin-bottom:24px;line-height:1.5}
+.ls-field{margin-bottom:14px;text-align:left}
+.ls-field label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:5px}
+.ls-input{
+  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;
+  font-size:13px;font-family:'Sarabun',sans-serif;color:var(--text);
+  background:var(--bg3);outline:none;transition:.12s;
+}
+.ls-input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(26,111,189,.1)}
+.ls-btn{
+  width:100%;padding:11px;background:var(--blue);color:#fff;border:none;
+  border-radius:8px;font-size:14px;font-weight:600;font-family:'Sarabun',sans-serif;
+  cursor:pointer;transition:.12s;margin-top:4px;
+}
+.ls-btn:hover{background:var(--blue2)}
+.ls-btn:disabled{opacity:.5;cursor:not-allowed}
+.ls-err{min-height:18px;font-size:12px;color:var(--red);font-weight:600;margin-top:10px;text-align:center}
+.ls-loading{font-size:12px;color:var(--muted);margin-top:10px;text-align:center}
+.ls-version{font-size:10px;color:var(--muted);margin-top:16px;opacity:.7}
+
 /* ── MOBILE HAMBURGER (ซ่อนบน desktop) ── */
 #mob-menu-btn{display:none;background:none;border:none;cursor:pointer;padding:6px;border-radius:6px;font-size:18px;color:var(--text);line-height:1;flex-shrink:0}
 #mob-menu-btn:hover{background:var(--bg3)}
@@ -336,7 +373,31 @@ tr:hover td{background:#f6faff}
   </div>
 </div>
 
-<div id="app">
+<!-- ══ LOGIN SCREEN ══ -->
+<div id="login-screen">
+  <div class="ls-card">
+    <div class="ls-logo">⚕</div>
+    <div class="ls-title">GasMed</div>
+    <div class="ls-sub">บันทึกการตรวจสอบ<br>ระบบแก๊สทางการแพทย์</div>
+    <div class="ls-field">
+      <label for="ls-email">อีเมล</label>
+      <input class="ls-input" id="ls-email" type="email" placeholder="email@hospital.th"
+        autocomplete="email" autocapitalize="none" spellcheck="false"
+        onkeydown="if(event.key==='Enter')document.getElementById('ls-pass').focus()">
+    </div>
+    <div class="ls-field">
+      <label for="ls-pass">รหัสผ่าน</label>
+      <input class="ls-input" id="ls-pass" type="password" placeholder="••••••••"
+        autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="ls-btn" id="ls-btn" onclick="doLogin()">เข้าสู่ระบบ</button>
+    <div class="ls-err" id="ls-err"></div>
+    <div class="ls-version">v2.0 · Medical Gas Inspection System</div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
   <!-- Mobile sidebar overlay (ทำงานเฉพาะมือถือ) -->
   <div id="sb-overlay" onclick="closeSb()"></div>
 
@@ -360,6 +421,7 @@ tr:hover td{background:#f6faff}
     <div class="ni" onclick="goSys('area_alarm')"    id="ni-area_alarm"><span class="ic">🚨</span>Area Alarm</div>
     <div class="sb-bot">
       <div class="ni" onclick="openAdmin()" id="ni-admin"><span class="ic">🔧</span>Admin</div>
+      <div class="ni" onclick="doLogout()" style="color:#f87171;margin-top:2px"><span class="ic">🚪</span>ออกจากระบบ</div>
     </div>
   </div>
 
@@ -371,6 +433,7 @@ tr:hover td{background:#f6faff}
         <div class="cdot" id="cdot"></div>
         <span class="ctxt" id="ctxt">กำลังเชื่อมต่อ…</span>
         <button class="btn btn-o btn-sm" onclick="refresh()" title="รีเฟรช">🔄 รีเฟรช</button>
+        <button class="btn btn-o btn-sm" onclick="doLogout()" title="ออกจากระบบ" style="color:var(--red);border-color:var(--red)" id="logout-btn">🚪 ออก</button>
       </div>
     </div>
 
@@ -540,10 +603,19 @@ CREATE INDEX IF NOT EXISTS idx_ir_sys_status
 // ════════════════════════════════════════════════════════
 const SUPA   = 'https://ounsxkmbzoojypwzzaan.supabase.co';
 const AKEY   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91bnN4a21iem9vanlwd3p6YWFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3OTc0MjQsImV4cCI6MjA5NjM3MzQyNH0.ckg7zsI9yfnuALwhge6OTc0twHm4EoyY-g6pLrIKgCU';
-const H      = {'apikey':AKEY,'Authorization':'Bearer '+AKEY,'Content-Type':'application/json'};
 const PIN_K  = 'gm_pin';
-const SES_K  = 'gm_ses';
+const SES_K  = 'gm_ses';   // เก็บ Supabase access_token
 const getPin = ()=> localStorage.getItem(PIN_K)||'4321';
+
+// getH() — คืน header พร้อม JWT token ปัจจุบันเสมอ
+// ใช้แทน H โดยตรง เพื่อให้ token refresh อัตโนมัติ
+function getH(extra){
+  const tok = sessionStorage.getItem(SES_K) || AKEY;
+  return {'apikey':AKEY,'Authorization':'Bearer '+tok,'Content-Type':'application/json',...(extra||{})};
+}
+// H ยังคงไว้เพื่อ backward-compat กับโค้ดเดิมที่ใช้ spread {...H,...}
+// แต่จะถูก override ด้วย getH() ใน fetch ทุกจุด
+let H = getH();
 
 // ════════════════════════════════════════════════════════
 //  SYSTEM DEFINITIONS (Single source of truth)
@@ -654,11 +726,12 @@ const PER=50;
 // ════════════════════════════════════════════════════════
 //  PIN ENGINE
 // ════════════════════════════════════════════════════════
+const PIN_SES_K = 'gm_pin_ses'; // แยกจาก SES_K (JWT) ป้องกันชนกัน
 let _pinBuf='', _pinCb=null, _pinMode=''; // mode: 'session'|'once'
 
 function pinSession(cb){
-  // บันทึกข้อมูล — ถ้า session ยังอยู่ไม่ต้องกรอกอีก
-  const t=sessionStorage.getItem(SES_K);
+  // บันทึกข้อมูล — ถ้า PIN session ยังอยู่ไม่ต้องกรอกอีก (8 ชั่วโมง)
+  const t=sessionStorage.getItem(PIN_SES_K);
   if(t&&Date.now()-Number(t)<8*3600*1000){ cb(); return; }
   _pinCb=cb; _pinMode='session';
   _showPin('🔐','ยืนยันตัวตน','กรอก PIN เพื่อบันทึกข้อมูล',true);
@@ -685,7 +758,7 @@ function _chkPin(){
     _pinBuf=''; _updDots();
     document.getElementById('ov-pin').classList.add('h');
     document.getElementById('pin-err').textContent='';
-    if(_pinMode==='session') sessionStorage.setItem(SES_K,Date.now());
+    if(_pinMode==='session') sessionStorage.setItem(PIN_SES_K,Date.now());
     const cb=_pinCb; _pinCb=null; if(cb) cb();
   } else {
     document.getElementById('pin-err').textContent='❌ PIN ไม่ถูกต้อง';
@@ -868,7 +941,7 @@ async function init(){
     return;
   }
   try{
-    const r=await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:H});
+    const r=await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:getH()});
     const ok=r.ok;
     document.getElementById('cdot').className='cdot'+(ok?'':' off');
     document.getElementById('ctxt').textContent=ok?'เชื่อมต่อแล้ว':'เชื่อมต่อไม่ได้';
@@ -1590,8 +1663,8 @@ function chgPin(){
   if(old!==getPin()){ toast('PIN เดิมไม่ถูกต้อง','er'); return; }
   if(!/^\d{4}$/.test(nw)){ toast('PIN ต้องเป็นตัวเลข 4 หลัก','er'); return; }
   localStorage.setItem(PIN_K,nw);
-  sessionStorage.removeItem(SES_K);
-  toast('เปลี่ยน PIN สำเร็จ — session ถูก reset','ok');
+  sessionStorage.removeItem(PIN_SES_K); // reset PIN session (ไม่แตะ JWT)
+  toast('เปลี่ยน PIN สำเร็จ — กรุณากรอก PIN ใหม่ครั้งต่อไป','ok');
 }
 
 async function runArchive(){
@@ -1707,9 +1780,8 @@ async function pingDB(){
   if(el){ el.textContent='กำลัง ping…'; el.style.color='var(--muted)'; }
   try{
     const t0=Date.now();
-    const r=await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:H});
+    const r=await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:getH()});
     const ms=Date.now()-t0;
-    if(r.ok){
       if(el){ el.textContent='✅ เชื่อมต่อสำเร็จ ('+ms+'ms) — '+new Date().toLocaleTimeString('th-TH'); el.style.color='var(--green)'; }
       toast('Ping สำเร็จ ('+ms+'ms)','ok');
     } else {
@@ -1741,8 +1813,147 @@ CREATE INDEX IF NOT EXISTS idx_ir_sys_status
 
 // Auto-ping ทุก 6 ชั่วโมง ป้องกัน Supabase Free Tier pause
 setInterval(async ()=>{
-  try{ await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:H}); }catch(e){}
+  if(!sessionStorage.getItem(SES_K)) return; // ไม่ ping ถ้าไม่ได้ login
+  try{ await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:getH()}); }catch(e){}
 }, 6*3600*1000);
+
+// ════════════════════════════════════════════════════════
+//  SUPABASE AUTH — LOGIN / LOGOUT / TOKEN REFRESH
+// ════════════════════════════════════════════════════════
+
+// ── helpers ──────────────────────────────────────────────
+function _lsSetErr(msg){ document.getElementById('ls-err').textContent = msg; }
+function _lsSetBusy(busy){
+  const btn = document.getElementById('ls-btn');
+  if(btn){ btn.disabled = busy; btn.textContent = busy ? '⏳ กำลังเข้าระบบ…' : 'เข้าสู่ระบบ'; }
+}
+function _enterApp(){
+  // อัพเดท H ให้ใช้ token ล่าสุดก่อนโหลดข้อมูล
+  H = getH();
+  document.getElementById('login-screen').classList.add('h');
+  document.getElementById('app').style.display = 'flex';
+  _lsSetErr('');
+}
+function _showLogin(){
+  document.getElementById('login-screen').classList.remove('h');
+  document.getElementById('app').style.display = 'none';
+  closeSb();
+  const em = document.getElementById('ls-email');
+  const ps = document.getElementById('ls-pass');
+  if(ps) ps.value = '';
+  _lsSetErr('');
+  _lsSetBusy(false);
+  setTimeout(()=>{ if(em) em.focus(); }, 150);
+}
+
+// ── login ─────────────────────────────────────────────────
+async function doLogin(){
+  const email = (document.getElementById('ls-email')?.value||'').trim();
+  const pass  =  document.getElementById('ls-pass')?.value||'';
+  if(!email || !pass){ _lsSetErr('กรุณากรอก Email และ Password'); return; }
+
+  _lsSetBusy(true);
+  _lsSetErr('');
+  try{
+    const res = await fetch(SUPA+'/auth/v1/token?grant_type=password',{
+      method:'POST',
+      headers:{'apikey':AKEY,'Content-Type':'application/json'},
+      body:JSON.stringify({email, password:pass})
+    });
+    const data = await res.json();
+
+    if(!res.ok){
+      // แปลง error message เป็นภาษาไทย
+      const msg = data.error_description || data.msg || data.error || 'เข้าระบบไม่สำเร็จ';
+      const thMsg =
+        msg.includes('Invalid login') || msg.includes('invalid_credentials') ? 'Email หรือ Password ไม่ถูกต้อง' :
+        msg.includes('Email not confirmed') ? 'Email ยังไม่ได้ยืนยัน — ตรวจสอบกล่องจดหมาย' :
+        msg.includes('Too many requests')   ? 'พยายามเข้าหลายครั้งเกินไป — รอสักครู่' :
+        'เข้าระบบไม่สำเร็จ: ' + msg;
+      _lsSetErr('❌ ' + thMsg);
+      _lsSetBusy(false);
+      return;
+    }
+
+    // ✅ สำเร็จ — เก็บ token
+    sessionStorage.setItem(SES_K, data.access_token);
+    if(data.refresh_token) sessionStorage.setItem('gm_ref', data.refresh_token);
+    // กำหนดเวลาหมดอายุ (expires_in = วินาที, default 3600)
+    const expiresAt = Date.now() + (data.expires_in||3600)*1000;
+    sessionStorage.setItem('gm_exp', String(expiresAt));
+
+    _enterApp();
+    init();
+
+  }catch(e){
+    _lsSetErr('❌ เชื่อมต่อไม่ได้: ' + e.message);
+    _lsSetBusy(false);
+  }
+}
+
+// ── logout ────────────────────────────────────────────────
+async function doLogout(){
+  if(!confirm('ออกจากระบบ?')) return;
+  try{
+    // แจ้ง Supabase ให้ revoke token (best-effort)
+    await fetch(SUPA+'/auth/v1/logout',{
+      method:'POST',
+      headers:{'apikey':AKEY,'Authorization':'Bearer '+(sessionStorage.getItem(SES_K)||''),'Content-Type':'application/json'}
+    });
+  }catch(_){}
+  // ล้าง session ทั้งหมด
+  sessionStorage.removeItem(SES_K);
+  sessionStorage.removeItem('gm_ref');
+  sessionStorage.removeItem('gm_exp');
+  _showLogin();
+}
+
+// ── token refresh ─────────────────────────────────────────
+// เรียกก่อนทุก fetch สำคัญ — ถ้าใกล้หมดอายุ (<5 นาที) ให้ refresh อัตโนมัติ
+async function ensureToken(){
+  const exp = Number(sessionStorage.getItem('gm_exp')||0);
+  const ref = sessionStorage.getItem('gm_ref');
+  if(!ref || !exp) return;                      // ไม่มี refresh token → ข้าม
+  if(Date.now() < exp - 5*60*1000) return;      // ยังไม่ถึงเวลา → ข้าม
+
+  try{
+    const res  = await fetch(SUPA+'/auth/v1/token?grant_type=refresh_token',{
+      method:'POST',
+      headers:{'apikey':AKEY,'Content-Type':'application/json'},
+      body:JSON.stringify({refresh_token:ref})
+    });
+    if(!res.ok) throw new Error('refresh failed');
+    const data = await res.json();
+    sessionStorage.setItem(SES_K, data.access_token);
+    if(data.refresh_token) sessionStorage.setItem('gm_ref', data.refresh_token);
+    sessionStorage.setItem('gm_exp', String(Date.now()+(data.expires_in||3600)*1000));
+    H = getH(); // อัพเดท H ทันที
+  }catch(_){
+    // refresh ล้มเหลว → บังคับ logout
+    toast('Session หมดอายุ — กรุณาเข้าระบบใหม่','er');
+    sessionStorage.removeItem(SES_K);
+    sessionStorage.removeItem('gm_ref');
+    sessionStorage.removeItem('gm_exp');
+    _showLogin();
+  }
+}
+
+// ── auto-refresh ทุก 50 นาที (token อายุ 1 ชั่วโมง) ─────
+setInterval(async ()=>{
+  if(sessionStorage.getItem(SES_K)) await ensureToken();
+}, 50*60*1000);
+
+// ── ตรวจ session เมื่อโหลดหน้า ────────────────────────────
+(function checkLoginGate(){
+  const tok = sessionStorage.getItem(SES_K);
+  const exp = Number(sessionStorage.getItem('gm_exp')||0);
+  const valid = tok && (exp===0 || Date.now() < exp);  // exp===0 = legacy fallback
+  if(valid){
+    _enterApp();
+    init();
+  }
+  // ไม่มี / หมดอายุ → login-screen แสดงอยู่แล้วตามค่าเริ่มต้น
+})();
 
 // ════════════════════════════════════════════════════════
 //  MOBILE SIDEBAR
@@ -1757,9 +1968,9 @@ function closeSb(){
 }
 
 // ════════════════════════════════════════════════════════
-//  BOOT
+//  BOOT — init() ถูกเรียกโดย checkLoginGate() หรือ _lsCheck() เท่านั้น
 // ════════════════════════════════════════════════════════
-init();
+// (ไม่เรียก init() ตรงนี้อีกต่อไป เพื่อป้องกันข้อมูลรั่วก่อน login)
 
 </script>
 </body>
