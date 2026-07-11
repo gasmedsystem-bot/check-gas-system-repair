@@ -230,6 +230,24 @@ tr:hover td{background:#f6faff}
 .gm-add-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
 .gm-add-row select,.gm-add-row input{flex:1;min-width:120px}
 .gm-empty{text-align:center;color:var(--muted);font-size:12px;padding:16px 0}
+
+/* ── LOGIN SCREEN ── */
+#login-screen{position:fixed;inset:0;z-index:20000;background:linear-gradient(135deg,#0f1e32 0%,#1a3a5c 60%,#0d2540 100%);display:flex;align-items:center;justify-content:center;font-family:'Sarabun',sans-serif}
+#login-screen.h{display:none}
+.ls-card{background:#fff;border-radius:18px;padding:36px 32px 28px;width:340px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.35);animation:ls-in .22s ease}
+@keyframes ls-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.ls-logo{font-size:38px;margin-bottom:6px}
+.ls-title{font-size:20px;font-weight:700;color:var(--text);margin-bottom:2px}
+.ls-sub{font-size:11px;color:var(--muted);margin-bottom:24px;line-height:1.5}
+.ls-field{margin-bottom:14px;text-align:left}
+.ls-field label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:5px}
+.ls-input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Sarabun',sans-serif;color:var(--text);background:var(--bg3);outline:none;transition:.12s}
+.ls-input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(26,111,189,.1)}
+.ls-btn{width:100%;padding:11px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;font-family:'Sarabun',sans-serif;cursor:pointer;transition:.12s;margin-top:4px}
+.ls-btn:hover{background:var(--blue2)}
+.ls-btn:disabled{opacity:.5;cursor:not-allowed}
+.ls-err{min-height:18px;font-size:12px;color:var(--red);font-weight:600;margin-top:10px;text-align:center}
+.ls-version{font-size:10px;color:var(--muted);margin-top:16px;opacity:.7}
 </style>
 </head>
 <body>
@@ -267,7 +285,31 @@ tr:hover td{background:#f6faff}
   </div>
 </div>
 
-<div id="app">
+<!-- ══ LOGIN SCREEN ══ -->
+<div id="login-screen">
+  <div class="ls-card">
+    <div class="ls-logo">⚕</div>
+    <div class="ls-title">GasMed</div>
+    <div class="ls-sub">บันทึกการตรวจสอบ<br>ระบบแก๊สทางการแพทย์</div>
+    <div class="ls-field">
+      <label for="ls-email">อีเมล</label>
+      <input class="ls-input" id="ls-email" type="email" placeholder="email@hospital.th"
+        autocomplete="email" autocapitalize="none" spellcheck="false"
+        onkeydown="if(event.key==='Enter')document.getElementById('ls-pass').focus()">
+    </div>
+    <div class="ls-field">
+      <label for="ls-pass">รหัสผ่าน</label>
+      <input class="ls-input" id="ls-pass" type="password" placeholder="••••••••"
+        autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="ls-btn" id="ls-btn" onclick="doLogin()">เข้าสู่ระบบ</button>
+    <div class="ls-err" id="ls-err"></div>
+    <div class="ls-version">GasMed v3.0 · Medical Gas Inspection System</div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
   <!-- SIDEBAR -->
   <div class="sb">
     <div class="sb-logo">
@@ -297,7 +339,9 @@ tr:hover td{background:#f6faff}
       <div class="tb-right">
         <div class="cdot" id="cdot"></div>
         <span class="ctxt" id="ctxt">กำลังเชื่อมต่อ…</span>
+        <span class="ctxt" id="tb-user" style="color:var(--blue);font-weight:600"></span>
         <button class="btn btn-o btn-sm" onclick="refresh()" title="รีเฟรช">🔄 รีเฟรช</button>
+        <button class="btn btn-o btn-sm" onclick="doLogout()" style="color:var(--red);border-color:var(--red)" title="ออกจากระบบ">🚪 ออก</button>
       </div>
     </div>
 
@@ -521,10 +565,22 @@ CREATE INDEX IF NOT EXISTS idx_ir_sys_status
 // ════════════════════════════════════════════════════════
 const SUPA   = 'https://ounsxkmbzoojypwzzaan.supabase.co';
 const AKEY   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91bnN4a21iem9vanlwd3p6YWFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3OTc0MjQsImV4cCI6MjA5NjM3MzQyNH0.ckg7zsI9yfnuALwhge6OTc0twHm4EoyY-g6pLrIKgCU';
-const H      = {'apikey':AKEY,'Authorization':'Bearer '+AKEY,'Content-Type':'application/json'};
 const PIN_K  = 'gm_pin';
 const SES_K  = 'gm_ses';
 const getPin = ()=> localStorage.getItem(PIN_K)||'4321';
+
+// JWT_K เก็บ Supabase access token (แยกจาก SES_K ที่ใช้กับ PIN session)
+const JWT_K  = 'gm_jwt';
+const REF_K  = 'gm_ref';
+const EXP_K  = 'gm_exp';
+
+// getH() — คืน header ที่ใช้ JWT token ล่าสุดเสมอ
+function getH(extra){
+  const tok = sessionStorage.getItem(JWT_K) || AKEY;
+  return {'apikey':AKEY,'Authorization':'Bearer '+tok,'Content-Type':'application/json',...(extra||{})};
+}
+// H ใช้เป็น shorthand — อัพเดทหลัง login ทุกครั้ง
+let H = getH();
 
 // ════════════════════════════════════════════════════════
 //  SYSTEM DEFINITIONS (Single source of truth)
@@ -859,7 +915,7 @@ async function init(){
     return;
   }
   try{
-    const r=await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:H});
+    const r=await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:getH()});
     const ok=r.ok;
     document.getElementById('cdot').className='cdot'+(ok?'':' off');
     document.getElementById('ctxt').textContent=ok?'เชื่อมต่อแล้ว':'เชื่อมต่อไม่ได้';
@@ -1919,7 +1975,7 @@ async function pingDB(){
   if(el){ el.textContent='กำลัง ping…'; el.style.color='var(--muted)'; }
   try{
     const t0=Date.now();
-    const r=await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:H});
+    const r=await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:getH()});
     const ms=Date.now()-t0;
     if(r.ok){
       if(el){ el.textContent='✅ เชื่อมต่อสำเร็จ ('+ms+'ms) — '+new Date().toLocaleTimeString('th-TH'); el.style.color='var(--green)'; }
@@ -1953,13 +2009,140 @@ CREATE INDEX IF NOT EXISTS idx_ir_sys_status
 
 // Auto-ping ทุก 6 ชั่วโมง ป้องกัน Supabase Free Tier pause
 setInterval(async ()=>{
-  try{ await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:H}); }catch(e){}
+  if(!sessionStorage.getItem(JWT_K)) return; // ไม่ ping ถ้าไม่ได้ login
+  try{ await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:getH()}); }catch(e){}
 }, 6*3600*1000);
 
 // ════════════════════════════════════════════════════════
-//  BOOT
+//  SUPABASE AUTH — LOGIN / LOGOUT / TOKEN REFRESH
 // ════════════════════════════════════════════════════════
-init();
+
+function _lsSetErr(msg){ const el=document.getElementById('ls-err'); if(el) el.textContent=msg; }
+function _lsSetBusy(busy){
+  const btn=document.getElementById('ls-btn');
+  if(btn){ btn.disabled=busy; btn.textContent=busy?'⏳ กำลังเข้าระบบ…':'เข้าสู่ระบบ'; }
+}
+function _enterApp(email){
+  H = getH(); // อัพเดท H ให้ใช้ JWT ล่าสุด
+  document.getElementById('login-screen').classList.add('h');
+  const app = document.getElementById('app');
+  app.style.display='flex';
+  _lsSetErr('');
+  // แสดง email ใน topbar
+  const tbUser = document.getElementById('tb-user');
+  if(tbUser) tbUser.textContent = email ? '👤 '+email.split('@')[0] : '';
+}
+function _showLogin(){
+  document.getElementById('login-screen').classList.remove('h');
+  document.getElementById('app').style.display='none';
+  const ps=document.getElementById('ls-pass');
+  if(ps) ps.value='';
+  _lsSetErr(''); _lsSetBusy(false);
+  setTimeout(()=>{ const em=document.getElementById('ls-email'); if(em) em.focus(); },150);
+}
+
+async function doLogin(){
+  if(location.protocol==='file:'){
+    _lsSetErr('❌ ต้องเปิดผ่าน HTTP Server — ไม่สามารถเปิดจาก file:// ได้');
+    return;
+  }
+  const email=(document.getElementById('ls-email')?.value||'').trim();
+  const pass =document.getElementById('ls-pass')?.value||'';
+  if(!email||!pass){ _lsSetErr('กรุณากรอก Email และ Password'); return; }
+  _lsSetBusy(true); _lsSetErr('');
+  const ctrl=new AbortController();
+  const timer=setTimeout(()=>ctrl.abort(),15000);
+  try{
+    const res=await fetch(SUPA+'/auth/v1/token?grant_type=password',{
+      method:'POST',
+      headers:{'apikey':AKEY,'Content-Type':'application/json'},
+      body:JSON.stringify({email,password:pass}),
+      signal:ctrl.signal
+    });
+    clearTimeout(timer);
+    const data=await res.json();
+    if(!res.ok){
+      const msg=data.error_description||data.msg||data.error||'เข้าระบบไม่สำเร็จ';
+      const th=msg.includes('Invalid login')||msg.includes('invalid_credentials')?'Email หรือ Password ไม่ถูกต้อง':
+               msg.includes('Email not confirmed')?'Email ยังไม่ได้ยืนยัน':
+               msg.includes('Too many')?'พยายามเข้าหลายครั้งเกินไป — รอสักครู่':
+               'เข้าระบบไม่สำเร็จ ('+res.status+')';
+      _lsSetErr('❌ '+th); _lsSetBusy(false); return;
+    }
+    // ✅ สำเร็จ
+    sessionStorage.setItem(JWT_K, data.access_token);
+    if(data.refresh_token) sessionStorage.setItem(REF_K, data.refresh_token);
+    sessionStorage.setItem(EXP_K, String(Date.now()+(data.expires_in||3600)*1000));
+    _lsSetBusy(false);
+    _enterApp(email);
+    init();
+  }catch(e){
+    clearTimeout(timer);
+    _lsSetErr('❌ '+(e.name==='AbortError'?'หมดเวลาเชื่อมต่อ (15s)':'เชื่อมต่อไม่ได้: '+e.message));
+    _lsSetBusy(false);
+  }
+}
+
+async function doLogout(){
+  if(!confirm('ออกจากระบบ?')) return;
+  try{
+    await fetch(SUPA+'/auth/v1/logout',{
+      method:'POST',
+      headers:{'apikey':AKEY,'Authorization':'Bearer '+(sessionStorage.getItem(JWT_K)||''),'Content-Type':'application/json'}
+    });
+  }catch(_){}
+  sessionStorage.removeItem(JWT_K);
+  sessionStorage.removeItem(REF_K);
+  sessionStorage.removeItem(EXP_K);
+  _showLogin();
+}
+
+async function ensureToken(){
+  const exp=Number(sessionStorage.getItem(EXP_K)||0);
+  const ref=sessionStorage.getItem(REF_K);
+  if(!ref||!exp) return;
+  if(Date.now()<exp-5*60*1000) return; // ยังไม่ถึงเวลา
+  try{
+    const res=await fetch(SUPA+'/auth/v1/token?grant_type=refresh_token',{
+      method:'POST',
+      headers:{'apikey':AKEY,'Content-Type':'application/json'},
+      body:JSON.stringify({refresh_token:ref})
+    });
+    if(!res.ok) throw new Error('refresh failed');
+    const data=await res.json();
+    sessionStorage.setItem(JWT_K, data.access_token);
+    if(data.refresh_token) sessionStorage.setItem(REF_K, data.refresh_token);
+    sessionStorage.setItem(EXP_K, String(Date.now()+(data.expires_in||3600)*1000));
+    H=getH();
+  }catch(_){
+    toast('Session หมดอายุ — กรุณาเข้าระบบใหม่','er');
+    sessionStorage.removeItem(JWT_K);
+    sessionStorage.removeItem(REF_K);
+    sessionStorage.removeItem(EXP_K);
+    _showLogin();
+  }
+}
+
+// auto-refresh ทุก 50 นาที
+setInterval(async ()=>{ if(sessionStorage.getItem(JWT_K)) await ensureToken(); },50*60*1000);
+
+// ตรวจ session เมื่อโหลดหน้า
+(function checkLoginGate(){
+  const tok=sessionStorage.getItem(JWT_K);
+  const exp=Number(sessionStorage.getItem(EXP_K)||0);
+  if(tok&&(exp===0||Date.now()<exp)){
+    // มี session อยู่ — ดึง email จาก token payload
+    let email='';
+    try{ email=JSON.parse(atob(tok.split('.')[1])).email||''; }catch(_){}
+    _enterApp(email);
+    init();
+  }
+  // ไม่มี session → login-screen แสดงอยู่แล้ว
+})();
+
+// ════════════════════════════════════════════════════════
+//  BOOT — init() เรียกโดย doLogin() / checkLoginGate() เท่านั้น
+// ════════════════════════════════════════════════════════
 
 </script>
 </body>
