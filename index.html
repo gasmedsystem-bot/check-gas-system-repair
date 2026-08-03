@@ -231,6 +231,19 @@ tr:hover td{background:#f6faff}
 .gm-add-row select,.gm-add-row input{flex:1;min-width:120px}
 .gm-empty{text-align:center;color:var(--muted);font-size:12px;padding:16px 0}
 
+/* ── MAIN DASHBOARD FILTER ── */
+.mf-bar{display:flex;flex-wrap:wrap;gap:7px;align-items:center;background:var(--bg3);padding:9px 12px;border-radius:var(--r);border:1px solid var(--border);margin-bottom:12px}
+.mf-qbtn{padding:5px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;font-size:11px;font-family:'Sarabun',sans-serif;font-weight:500;transition:.12s}
+.mf-qbtn:hover{border-color:var(--blue);color:var(--blue)}
+.mf-qbtn.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.mf-sep{width:1px;height:20px;background:var(--border);margin:0 2px}
+/* ── MAIN DASHBOARD CHARTS ── */
+.mc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.mc-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px;box-shadow:var(--sh)}
+.mc-box h4{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.mc-ci{position:relative;height:160px}
+@media(max-width:860px){.mc-grid{grid-template-columns:1fr}}
+
 /* ── LOGIN SCREEN ── */
 #login-screen{position:fixed;inset:0;z-index:20000;background:linear-gradient(135deg,#0f1e32 0%,#1a3a5c 60%,#0d2540 100%);display:flex;align-items:center;justify-content:center;font-family:'Sarabun',sans-serif}
 #login-screen.h{display:none}
@@ -355,24 +368,69 @@ tr:hover td{background:#f6faff}
 
       <!-- ══ MAIN DASHBOARD ══ -->
       <div class="pg on" id="pg-main">
+
+        <!-- ── Filter Bar ── -->
+        <div class="mf-bar">
+          <button class="mf-qbtn on" id="mfq-today"  onclick="mfQuick('today')">วันนี้</button>
+          <button class="mf-qbtn"    id="mfq-7d"     onclick="mfQuick('7d')">7 วัน</button>
+          <button class="mf-qbtn"    id="mfq-30d"    onclick="mfQuick('30d')">30 วัน</button>
+          <button class="mf-qbtn"    id="mfq-month"  onclick="mfQuick('month')">เดือนนี้</button>
+          <button class="mf-qbtn"    id="mfq-all"    onclick="mfQuick('all')">ทั้งหมด</button>
+          <div class="mf-sep"></div>
+          <label style="font-size:11px;font-weight:600;color:var(--muted)">จาก</label>
+          <input type="date" id="mf-from" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:4px 8px;border-radius:6px;font-size:12px;height:30px;outline:none" onchange="mfDateChange()">
+          <label style="font-size:11px;font-weight:600;color:var(--muted)">ถึง</label>
+          <input type="date" id="mf-to" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:4px 8px;border-radius:6px;font-size:12px;height:30px;outline:none" onchange="mfDateChange()">
+          <div class="mf-sep"></div>
+          <label style="font-size:11px;font-weight:600;color:var(--muted)">ระบบ</label>
+          <select id="mf-sys" onchange="loadMain()" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:4px 8px;border-radius:6px;font-size:12px;height:30px;outline:none">
+            <option value="">ทุกระบบ</option>
+            <option value="o2_manifold">🫁 O2 Manifold</option>
+            <option value="nitrogen">🔵 Nitrogen</option>
+            <option value="nitrous_oxide">💉 Nitrous Oxide</option>
+            <option value="co2">🟤 CO₂</option>
+            <option value="medical_air">💨 Medical Air</option>
+            <option value="vacuum">🌀 Medical Vacuum</option>
+            <option value="wagd">🔄 WAGD</option>
+            <option value="liquid_o2">🧊 Liquid O2</option>
+            <option value="area_alarm">🚨 Area Alarm</option>
+          </select>
+          <button class="btn btn-o btn-sm" onclick="mfQuick('today')" style="margin-left:auto">↺ รีเซ็ต</button>
+        </div>
+
+        <!-- ── Stat Cards ── -->
         <div class="cards">
-          <div class="sc b"><div class="sc-l">บันทึกทั้งหมด</div><div class="sc-v b" id="mc-tot">—</div><div class="sc-s">ทุกระบบ</div></div>
+          <div class="sc b"><div class="sc-l">บันทึกทั้งหมด</div><div class="sc-v b" id="mc-tot">—</div><div class="sc-s" id="mc-tot-s">ทุกระบบ</div></div>
           <div class="sc g"><div class="sc-l">วันนี้</div><div class="sc-v g" id="mc-day">—</div><div class="sc-s">รายการตรวจ</div></div>
-          <div class="sc r"><div class="sc-l">Alert</div><div class="sc-v r alert-clickable" id="mc-al" onclick="showAllAlerts()" title="คลิกดูทั้งหมด">—</div><div class="sc-s">ค่าผิดปกติ (คลิกดูได้)</div></div>
+          <div class="sc r"><div class="sc-l">Alert</div><div class="sc-v r alert-clickable" id="mc-al" onclick="showAllAlerts()" title="คลิกดูทั้งหมด">—</div><div class="sc-s" id="mc-al-s">ค่าผิดปกติ (คลิกดูได้)</div></div>
           <div class="sc y"><div class="sc-l">ระบบ Gas</div><div class="sc-v y">9</div><div class="sc-s">ระบบทั้งหมด</div></div>
         </div>
+
+        <!-- ── Charts 4 แบบ ── -->
+        <div class="mc-grid">
+          <div class="mc-box"><h4>📅 รายการตรวจต่อวัน</h4><div class="mc-ci"><canvas id="mc-ch-daily"></canvas></div></div>
+          <div class="mc-box"><h4>⚠️ แนวโน้ม Alert</h4><div class="mc-ci"><canvas id="mc-ch-alert"></canvas></div></div>
+          <div class="mc-box"><h4>🥧 สัดส่วนแต่ละระบบ</h4><div class="mc-ci"><canvas id="mc-ch-pie"></canvas></div></div>
+          <div class="mc-box"><h4>🚨 Alert แต่ละระบบ</h4><div class="mc-ci"><canvas id="mc-ch-sysalert"></canvas></div></div>
+        </div>
+
+        <!-- ── ภาพรวมทุกระบบ ── -->
         <div class="sec">
           <div class="sec-h" onclick="togSec(this)"><h3>🏥 ภาพรวมทุกระบบ</h3><span class="tog">▼</span></div>
           <div class="sec-b"><div class="sys-grid" id="main-sys"></div></div>
         </div>
+
+        <!-- ── Alert ทั้งหมด (expandable) ── -->
         <div class="sec" id="all-alert-sec" style="display:none">
           <div class="sec-h"><h3>⚠️ Alert ทั้งหมด</h3>
             <button class="btn btn-o btn-sm" style="margin-left:auto" onclick="document.getElementById('all-alert-sec').style.display='none'">✕ ปิด</button>
           </div>
           <div class="sec-b" style="padding:0"><div class="tw"><table><thead><tr><th>เวลา</th><th>ระบบ</th><th>อาคาร</th><th>ผู้ตรวจ</th><th>หมายเหตุ</th></tr></thead><tbody id="all-al-tb"></tbody></table></div></div>
         </div>
+
+        <!-- ── Alert ล่าสุด ── -->
         <div class="sec">
-          <div class="sec-h" onclick="togSec(this)"><h3>⚠️ Alert ล่าสุด (7 วัน)</h3><span class="tog">▼</span></div>
+          <div class="sec-h" onclick="togSec(this)"><h3 id="main-al-title">⚠️ Alert ล่าสุด</h3><span class="tog">▼</span></div>
           <div class="sec-b" style="padding:0"><div class="tw"><table><thead><tr><th>เวลา</th><th>ระบบ</th><th>อาคาร</th><th>ผู้ตรวจ</th><th>หมายเหตุ</th></tr></thead><tbody id="main-al"></tbody></table></div></div>
         </div>
       </div>
@@ -933,6 +991,7 @@ async function init(){
   // โหลด GM data ล่วงหน้า (background) — ไม่บล็อก UI
   gmLoadAll().catch(()=>{});
 
+  // URL routing (QR link)
   if(sys&&SYS[sys]){
     goSys(sys); _showTab('data');
     setTimeout(()=>{
@@ -943,43 +1002,150 @@ async function init(){
       loadData();
     },200);
   } else {
-    loadMain();
+    // ตั้ง default filter = วันนี้ แล้วโหลด dashboard
+    mfQuick('today');
   }
+}
+
+// ════════════════════════════════════════════════════════
+//  MAIN DASHBOARD FILTER STATE
+// ════════════════════════════════════════════════════════
+let mfFrom='', mfTo='', mfSys='', mfCharts={};
+
+function mfGetRange(){
+  // คืน {from, to} เป็น ISO UTC string สำหรับ query
+  const f = mfFrom, t = mfTo;
+  return {
+    from: f ? new Date(f+'T00:00:00+07:00').toISOString() : null,
+    to:   t ? new Date(t+'T23:59:59+07:00').toISOString() : null,
+  };
+}
+
+function mfBuildQ(extra=''){
+  // สร้าง query string จาก filter state
+  const {from,to} = mfGetRange();
+  let q = '';
+  if(mfSys)  q += '&system_type=eq.'+encodeURIComponent(mfSys);
+  if(from)   q += '&recorded_at=gte.'+encodeURIComponent(from);
+  if(to)     q += '&recorded_at=lte.'+encodeURIComponent(to);
+  return q + extra;
+}
+
+function mfQuick(mode){
+  const today = new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Bangkok'});
+  const d = new Date(today);
+  // reset quick buttons
+  ['today','7d','30d','month','all'].forEach(k=>{
+    document.getElementById('mfq-'+k)?.classList.remove('on');
+  });
+  document.getElementById('mfq-'+mode)?.classList.add('on');
+
+  if(mode==='today'){
+    mfFrom=today; mfTo=today;
+  } else if(mode==='7d'){
+    const s=new Date(d); s.setDate(s.getDate()-6);
+    mfFrom=s.toLocaleDateString('sv-SE'); mfTo=today;
+  } else if(mode==='30d'){
+    const s=new Date(d); s.setDate(s.getDate()-29);
+    mfFrom=s.toLocaleDateString('sv-SE'); mfTo=today;
+  } else if(mode==='month'){
+    mfFrom=today.slice(0,7)+'-01'; mfTo=today;
+  } else {
+    mfFrom=''; mfTo='';
+  }
+  // sync date inputs
+  const fi=document.getElementById('mf-from');
+  const ti=document.getElementById('mf-to');
+  if(fi) fi.value=mfFrom;
+  if(ti) ti.value=mfTo;
+  loadMain();
+}
+
+function mfDateChange(){
+  // เมื่อกรอกวันที่เอง — ล้าง quick button
+  mfFrom = document.getElementById('mf-from')?.value||'';
+  mfTo   = document.getElementById('mf-to')?.value||'';
+  ['today','7d','30d','month','all'].forEach(k=>{
+    document.getElementById('mfq-'+k)?.classList.remove('on');
+  });
+  loadMain();
+}
+
+function mfDestroy(){
+  // destroy existing charts ป้องกัน canvas reuse error
+  Object.values(mfCharts).forEach(c=>{ try{ c.destroy(); }catch(_){} });
+  mfCharts={};
 }
 
 // ════════════════════════════════════════════════════════
 //  MAIN DASHBOARD — ใช้ aggregate query (ไม่ดึงข้อมูลทั้งหมด)
 // ════════════════════════════════════════════════════════
 async function loadMain(){
-  // ดึงเฉพาะ field ที่ต้องการ ไม่ใช่ select('*')
+  mfDestroy();
+  // sync sys filter
+  mfSys = document.getElementById('mf-sys')?.value||'';
   const today=new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Bangkok'});
   const todayUTC=new Date(today+'T00:00:00+07:00').toISOString();
-  const tmrUTC=new Date(today+'T23:59:59+07:00').toISOString();
+  const tmrUTC  =new Date(today+'T23:59:59+07:00').toISOString();
+  const q = mfBuildQ();
+  const qSys = mfSys ? '&system_type=eq.'+encodeURIComponent(mfSys) : '';
 
   try{
-    // 1. total count
+    // ── 1. Stat cards — HEAD count (รวดเร็ว ไม่ดึง rows) ──────────────
     const [totRes, dayRes, alRes] = await Promise.all([
-      fetch(SUPA+'/rest/v1/inspection_records?select=id',{method:'HEAD',headers:{...H,'Prefer':'count=exact'}}),
-      fetch(SUPA+'/rest/v1/inspection_records?recorded_at=gte.'+encodeURIComponent(todayUTC)+'&recorded_at=lte.'+encodeURIComponent(tmrUTC),{method:'HEAD',headers:{...H,'Prefer':'count=exact'}}),
-      fetch(SUPA+'/rest/v1/inspection_records?status=eq.alert',{method:'HEAD',headers:{...H,'Prefer':'count=exact'}}),
+      fetch(SUPA+'/rest/v1/inspection_records?select=id'+q,
+        {method:'HEAD',headers:{...getH(),'Prefer':'count=exact'}}),
+      fetch(SUPA+'/rest/v1/inspection_records?recorded_at=gte.'+encodeURIComponent(todayUTC)
+        +'&recorded_at=lte.'+encodeURIComponent(tmrUTC)+qSys,
+        {method:'HEAD',headers:{...getH(),'Prefer':'count=exact'}}),
+      fetch(SUPA+'/rest/v1/inspection_records?status=eq.alert'+q,
+        {method:'HEAD',headers:{...getH(),'Prefer':'count=exact'}}),
     ]);
-    const getCount=r=>{ const cr=r.headers.get('content-range'); if(cr){ const m=cr.match(/\/(\d+)$/); if(m) return parseInt(m[1]); } return 0; };
-    document.getElementById('mc-tot').textContent=getCount(totRes).toLocaleString();
-    document.getElementById('mc-day').textContent=getCount(dayRes);
-    document.getElementById('mc-al').textContent=getCount(alRes);
+    const gc=r=>{const cr=r.headers.get('content-range');if(cr){const m=cr.match(/\/(\d+)$/);if(m)return parseInt(m[1]);}return 0;};
+    const totN=gc(totRes), dayN=gc(dayRes), alN=gc(alRes);
+    document.getElementById('mc-tot').textContent=totN.toLocaleString();
+    document.getElementById('mc-day').textContent=dayN;
+    document.getElementById('mc-al').textContent=alN;
+    // update subtitle
+    const rLabel = mfFrom&&mfTo ? `${mfFrom} – ${mfTo}` : mfFrom ? `ตั้งแต่ ${mfFrom}` : 'ทุกช่วงเวลา';
+    document.getElementById('mc-tot-s').textContent = mfSys ? (SYS[mfSys]?.l||mfSys) : 'ทุกระบบ';
+    document.getElementById('mc-al-s').textContent  = rLabel;
 
-    // 2. per-system summary (count+last per system)
-    const sumData = await fetch(SUPA+'/rest/v1/inspection_records?select=system_type,recorded_at,status&limit=5000&order=recorded_at.desc',{headers:H}).then(r=>r.json());
+    // ── 2. ภาพรวมทุกระบบ — GROUP BY system_type (ไม่ดึง rows ดิบ) ──────
+    // ใช้ select=system_type,status + HEAD count ต่อระบบ
+    // เพื่อรองรับข้อมูลไม่จำกัด ใช้ Promise.all 9 requests พร้อมกัน
+    const sysKeys = Object.keys(SYS);
+    const [sysCountRes, sysAlRes, sysLastRes] = await Promise.all([
+      // count per system
+      Promise.all(sysKeys.map(k=>
+        fetch(SUPA+'/rest/v1/inspection_records?system_type=eq.'+k+mfBuildQ().replace(/&system_type=[^&]*/,''),
+          {method:'HEAD',headers:{...getH(),'Prefer':'count=exact'}})
+      )),
+      // alert count per system
+      Promise.all(sysKeys.map(k=>
+        fetch(SUPA+'/rest/v1/inspection_records?system_type=eq.'+k+'&status=eq.alert'+mfBuildQ().replace(/&system_type=[^&]*/,''),
+          {method:'HEAD',headers:{...getH(),'Prefer':'count=exact'}})
+      )),
+      // last recorded_at per system (limit=1)
+      Promise.all(sysKeys.map(k=>
+        fetch(SUPA+'/rest/v1/inspection_records?system_type=eq.'+k
+          +mfBuildQ().replace(/&system_type=[^&]*/,'')
+          +'&select=recorded_at&order=recorded_at.desc&limit=1',
+          {headers:getH()}).then(r=>r.json())
+      )),
+    ]);
+
     const smap={};
-    (sumData||[]).forEach(r=>{
-      if(!smap[r.system_type]) smap[r.system_type]={tot:0,al:0,last:null};
-      smap[r.system_type].tot++;
-      if(r.status==='alert') smap[r.system_type].al++;
-      if(!smap[r.system_type].last) smap[r.system_type].last=r.recorded_at;
+    sysKeys.forEach((k,i)=>{
+      smap[k]={
+        tot: gc(sysCountRes[i]),
+        al:  gc(sysAlRes[i]),
+        last:(sysLastRes[i]?.[0]?.recorded_at)||null,
+      };
     });
 
-    document.getElementById('main-sys').innerHTML=Object.entries(SYS).map(([k,s])=>{
-      const m=smap[k]||{tot:0,al:0,last:null};
+    document.getElementById('main-sys').innerHTML=sysKeys.map(k=>{
+      const s=SYS[k], m=smap[k];
       return `<div class="sysc" onclick="goSys('${k}')">
         <div class="si">${s.ic}</div>
         <div><div class="sn">${s.l}</div><div class="ss">${m.tot.toLocaleString()} รายการ${m.last?' · '+fmtShort(m.last):''}</div></div>
@@ -987,17 +1153,105 @@ async function loadMain(){
       </div>`;
     }).join('');
 
-    // 3. recent alerts 7 days
-    const cut7=new Date(); cut7.setDate(cut7.getDate()-7);
-    const alRows=await fetch(SUPA+'/rest/v1/inspection_records?status=eq.alert&recorded_at=gte.'+encodeURIComponent(cut7.toISOString())+'&order=recorded_at.desc&limit=30',{headers:H}).then(r=>r.json());
+    // ── 3. กราฟ — ดึงข้อมูลสำหรับ chart ทั้ง 4 แบบ ─────────────────────
+    // ใช้ select=system_type,recorded_at,status — ไม่ดึง data column
+    // limit=2000 รองรับกราฟ 30-60 วัน (วันละ ~67 records × 9 ระบบ)
+    const chartRows = await fetch(
+      SUPA+'/rest/v1/inspection_records?select=system_type,recorded_at,status'
+      +q+'&order=recorded_at.asc&limit=2000',
+      {headers:getH()}
+    ).then(r=>r.json());
+
+    _drawMainCharts(chartRows||[]);
+
+    // ── 4. Alert table — limit 50 ตาม filter ──────────────────────────
+    const alRows = await fetch(
+      SUPA+'/rest/v1/inspection_records?status=eq.alert'+q
+      +'&select=system_type,building,recorded_at,inspector,note'
+      +'&order=recorded_at.desc&limit=50',
+      {headers:getH()}
+    ).then(r=>r.json());
+
+    const alRange = mfFrom||mfTo ? `(${rLabel})` : '(7 วันล่าสุด)';
+    document.getElementById('main-al-title').textContent='⚠️ Alert ล่าสุด '+alRange;
     const atb=document.getElementById('main-al');
-    atb.innerHTML=(alRows||[]).length?(alRows||[]).map(r=>`<tr>
-      <td style="color:var(--muted);font-size:11px">${fmtDate(r.recorded_at)}</td>
-      <td>${SYS[r.system_type]?.ic||''} ${SYS[r.system_type]?.l||r.system_type}</td>
-      <td>${r.building}</td><td style="color:var(--muted)">${r.inspector||'—'}</td>
-      <td style="color:var(--muted);max-width:120px;overflow:hidden;text-overflow:ellipsis">${r.note||'—'}</td>
-    </tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--green);padding:16px">✅ ไม่มี Alert 7 วันที่ผ่านมา</td></tr>';
+    atb.innerHTML=(alRows||[]).length
+      ?(alRows||[]).map(r=>`<tr>
+        <td style="color:var(--muted);font-size:11px">${fmtDate(r.recorded_at)}</td>
+        <td>${SYS[r.system_type]?.ic||''} ${SYS[r.system_type]?.l||r.system_type}</td>
+        <td>${r.building}</td>
+        <td style="color:var(--muted)">${r.inspector||'—'}</td>
+        <td style="color:var(--muted);max-width:120px;overflow:hidden;text-overflow:ellipsis">${r.note||'—'}</td>
+      </tr>`).join('')
+      :'<tr><td colspan="5" style="text-align:center;color:var(--green);padding:16px">✅ ไม่มี Alert ในช่วงนี้</td></tr>';
+
   }catch(e){ toast('โหลด Dashboard ล้มเหลว: '+e.message,'er'); }
+}
+
+// ── วาดกราฟ 4 แบบ ──────────────────────────────────────────────────────
+function _drawMainCharts(rows){
+  const co={responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{font:{size:10},color:'#6b7f96'}}},
+    scales:{x:{ticks:{color:'#6b7f96',font:{size:9},maxTicksLimit:10},grid:{color:'#e8eef5'}},
+            y:{ticks:{color:'#6b7f96',font:{size:9}},grid:{color:'#e8eef5'}}}};
+
+  // รวบรวมข้อมูลจาก rows
+  const byDate={}, sysCount={}, sysAlert={}, byDateAlert={};
+  rows.forEach(r=>{
+    const d=r.recorded_at?.slice(0,10); if(!d) return;
+    const s=r.system_type;
+    // A: รายการต่อวัน
+    byDate[d]=(byDate[d]||0)+1;
+    // B: Alert ต่อวัน
+    if(r.status==='alert') byDateAlert[d]=(byDateAlert[d]||0)+1;
+    // C: count ต่อระบบ
+    sysCount[s]=(sysCount[s]||0)+1;
+    // D: alert ต่อระบบ
+    if(r.status==='alert') sysAlert[s]=(sysAlert[s]||0)+1;
+  });
+
+  const dates=Object.keys(byDate).sort().slice(-60);
+  const sysKeys=Object.keys(SYS);
+  const COLORS=['#1a6fbd','#0891b2','#0f766e','#7c3aed','#92400e','#0369a1','#1d4ed8','#dc2626','#b07d00'];
+
+  // A — รายการตรวจต่อวัน
+  const ctxA=document.getElementById('mc-ch-daily');
+  if(ctxA) mfCharts.A=new Chart(ctxA,{type:'bar',
+    data:{labels:dates.map(d=>d.slice(5)),
+      datasets:[{label:'รายการ',data:dates.map(d=>byDate[d]||0),
+        backgroundColor:'rgba(26,111,189,.35)',borderColor:'#1a6fbd',borderWidth:1}]},
+    options:{...co,plugins:{...co.plugins,legend:{display:false}}}});
+
+  // B — แนวโน้ม Alert
+  const ctxB=document.getElementById('mc-ch-alert');
+  if(ctxB) mfCharts.B=new Chart(ctxB,{type:'line',
+    data:{labels:dates.map(d=>d.slice(5)),
+      datasets:[{label:'Alert',data:dates.map(d=>byDateAlert[d]||0),
+        borderColor:'#c0392b',backgroundColor:'rgba(192,57,43,.15)',
+        tension:.3,pointRadius:2,borderWidth:2,fill:true}]},
+    options:{...co,plugins:{...co.plugins,legend:{display:false}}}});
+
+  // C — สัดส่วนแต่ละระบบ (pie)
+  const pieData=sysKeys.map(k=>sysCount[k]||0);
+  const pieLabels=sysKeys.map(k=>SYS[k].ic+' '+SYS[k].l);
+  const ctxC=document.getElementById('mc-ch-pie');
+  if(ctxC) mfCharts.C=new Chart(ctxC,{type:'doughnut',
+    data:{labels:pieLabels,datasets:[{data:pieData,backgroundColor:COLORS,borderWidth:1}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'right',labels:{font:{size:9},color:'#6b7f96',boxWidth:10}}}}});
+
+  // D — Alert แต่ละระบบ (bar horizontal)
+  const dData=sysKeys.map(k=>sysAlert[k]||0);
+  const dLabels=sysKeys.map(k=>SYS[k].ic+' '+SYS[k].l);
+  const ctxD=document.getElementById('mc-ch-sysalert');
+  if(ctxD) mfCharts.D=new Chart(ctxD,{type:'bar',
+    data:{labels:dLabels,
+      datasets:[{label:'Alert',data:dData,
+        backgroundColor:dData.map(v=>v>0?'rgba(192,57,43,.5)':'rgba(200,200,200,.3)'),
+        borderColor:dData.map(v=>v>0?'#c0392b':'#ccc'),borderWidth:1}]},
+    options:{...co,indexAxis:'y',
+      plugins:{...co.plugins,legend:{display:false}},
+      scales:{x:{...co.scales.x},y:{ticks:{color:'#6b7f96',font:{size:9}},grid:{display:false}}}}});
 }
 
 async function showAllAlerts(){
@@ -1022,22 +1276,44 @@ async function loadSysDash(){
   const sys=curSys;
   document.getElementById('sd-cards').innerHTML='<div style="color:var(--muted);padding:10px"><span class="spin"></span> กำลังโหลด…</div>';
   try{
-    // ดึงเฉพาะ field ที่ต้องการ
-    const rows=await fetch(SUPA+'/rest/v1/inspection_records?system_type=eq.'+encodeURIComponent(sys)+'&select=building,recorded_at,status,data,inspector,note&order=recorded_at.desc&limit=500',{headers:H}).then(r=>r.json());
     const today=new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Bangkok'});
-    const tot=rows.length, dayCnt=rows.filter(r=>r.recorded_at?.slice(0,10)===today).length, alCnt=rows.filter(r=>r.status==='alert').length;
+    const todayUTC=new Date(today+'T00:00:00+07:00').toISOString();
+    const tmrUTC  =new Date(today+'T23:59:59+07:00').toISOString();
+    const baseQ='system_type=eq.'+encodeURIComponent(sys);
+
+    // ── stat cards — HEAD count (ไม่ดึง rows ดิบ) ──
+    const [totR,dayR,alR,lastR] = await Promise.all([
+      fetch(SUPA+'/rest/v1/inspection_records?'+baseQ,
+        {method:'HEAD',headers:{...getH(),'Prefer':'count=exact'}}),
+      fetch(SUPA+'/rest/v1/inspection_records?'+baseQ+'&recorded_at=gte.'+encodeURIComponent(todayUTC)+'&recorded_at=lte.'+encodeURIComponent(tmrUTC),
+        {method:'HEAD',headers:{...getH(),'Prefer':'count=exact'}}),
+      fetch(SUPA+'/rest/v1/inspection_records?'+baseQ+'&status=eq.alert',
+        {method:'HEAD',headers:{...getH(),'Prefer':'count=exact'}}),
+      fetch(SUPA+'/rest/v1/inspection_records?'+baseQ+'&select=recorded_at&order=recorded_at.desc&limit=1',
+        {headers:getH()}).then(r=>r.json()),
+    ]);
+    const gc=r=>{const cr=r.headers.get('content-range');if(cr){const m=cr.match(/\/(\d+)$/);if(m)return parseInt(m[1]);}return 0;};
+    const tot=gc(totR), dayCnt=gc(dayR), alCnt=gc(alR);
+    const lastTs=lastR?.[0]?.recorded_at||null;
 
     document.getElementById('sd-cards').innerHTML=`
       <div class="sc b"><div class="sc-l">บันทึกทั้งหมด</div><div class="sc-v b">${tot.toLocaleString()}</div></div>
       <div class="sc g"><div class="sc-l">วันนี้</div><div class="sc-v g">${dayCnt}</div></div>
       <div class="sc r"><div class="sc-l">Alert</div><div class="sc-v r">${alCnt}</div></div>
-      <div class="sc y"><div class="sc-l">อัปเดตล่าสุด</div><div class="sc-v" style="font-size:13px;color:var(--yellow)">${rows[0]?.recorded_at?fmtDate(rows[0].recorded_at):'—'}</div></div>`;
+      <div class="sc y"><div class="sc-l">อัปเดตล่าสุด</div><div class="sc-v" style="font-size:13px;color:var(--yellow)">${lastTs?fmtDate(lastTs):'—'}</div></div>`;
 
-    drawCharts(sys,rows);
+    // ── chart — ดึงเฉพาะ field ที่ต้องการ limit=500 (สำหรับ trend chart) ──
+    const chartRows=await fetch(
+      SUPA+'/rest/v1/inspection_records?'+baseQ
+      +'&select=building,recorded_at,status,data,inspector,note'
+      +'&order=recorded_at.desc&limit=500',
+      {headers:getH()}).then(r=>r.json());
 
-    // latest per building
+    drawCharts(sys,chartRows||[]);
+
+    // ── latest per building ──
     const lmap={};
-    rows.forEach(r=>{ if(!lmap[r.building]) lmap[r.building]=r; });
+    (chartRows||[]).forEach(r=>{ if(!lmap[r.building]) lmap[r.building]=r; });
     const nf=getNumFields(sys);
     const bthCols=['อาคาร',...nf.slice(0,3).map(f=>f.l),'สถานะ','เวลา','ผู้ตรวจ'];
     document.getElementById('sd-bth').innerHTML=bthCols.map(c=>`<th>${c}</th>`).join('');
@@ -1051,9 +1327,9 @@ async function loadSysDash(){
       <td style="color:var(--muted)">${r.inspector||'—'}</td>
     </tr>`).join(''):'<tr><td colspan="8"><div class="empty"><div class="ei">📭</div><p>ยังไม่มีข้อมูล</p></div></td></tr>';
 
-    // alerts 30d
+    // ── alerts 30d ──
     const cut=new Date(); cut.setDate(cut.getDate()-30);
-    const als=rows.filter(r=>r.status==='alert'&&new Date(r.recorded_at)>=cut);
+    const als=(chartRows||[]).filter(r=>r.status==='alert'&&new Date(r.recorded_at)>=cut);
     document.getElementById('sd-ath').innerHTML=['วันที่-เวลา','อาคาร',...nf.slice(0,3).map(f=>f.l),'ผู้ตรวจ','หมายเหตุ'].map(c=>`<th>${c}</th>`).join('');
     const atb=document.getElementById('sd-atb');
     atb.innerHTML=als.length?als.map(r=>`<tr>
