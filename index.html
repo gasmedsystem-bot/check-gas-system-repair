@@ -2007,11 +2007,15 @@ CREATE INDEX IF NOT EXISTS idx_ir_sys_status
   toast('คัดลอก SQL แล้ว','ok');
 }
 
-// Auto-ping ทุก 6 ชั่วโมง ป้องกัน Supabase Free Tier pause
-setInterval(async ()=>{
-  if(!sessionStorage.getItem(JWT_K)) return; // ไม่ ping ถ้าไม่ได้ login
-  try{ await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:getH()}); }catch(e){}
-}, 6*3600*1000);
+// Auto-ping ทุก 6 ชั่วโมง — ใช้ anon key เสมอ ไม่ต้องรอ login
+// ป้องกัน Supabase Free Tier pause แม้ยังไม่ได้เข้าระบบ
+(function startKeepalive(){
+  const ping = ()=> fetch(SUPA+'/rest/v1/inspection_records?limit=1',{
+    headers:{'apikey':AKEY,'Authorization':'Bearer '+AKEY}
+  }).catch(()=>{});
+  ping(); // ping ทันทีที่หน้าโหลด
+  setInterval(ping, 6*3600*1000);
+})();
 
 // ════════════════════════════════════════════════════════
 //  SUPABASE AUTH — LOGIN / LOGOUT / TOKEN REFRESH
