@@ -244,6 +244,42 @@ tr:hover td{background:#f6faff}
 .mc-ci{position:relative;height:160px}
 @media(max-width:860px){.mc-grid{grid-template-columns:1fr}}
 
+/* ── MOBILE ── */
+#mob-btn{display:none;background:none;border:none;cursor:pointer;padding:6px 8px;border-radius:6px;font-size:20px;color:var(--text);line-height:1;flex-shrink:0}
+#mob-btn:hover{background:var(--bg3)}
+#sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:998}
+@media(max-width:768px){
+  #mob-btn{display:flex;align-items:center}
+  .sb{position:fixed;top:0;left:0;height:100%;z-index:999;transform:translateX(-100%);transition:transform .22s ease;width:220px}
+  .sb.mob-open{transform:translateX(0)}
+  #sb-overlay.mob-open{display:block}
+  .mw{width:100%;min-width:0}
+  .topbar{padding:0 10px;gap:8px}
+  .tb-title{font-size:13px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ctxt{display:none}
+  #tb-user{display:none}
+  .tabs{padding:0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{padding:10px 10px;font-size:11px;flex-shrink:0}
+  .content{padding:10px}
+  .mf-bar{gap:5px;padding:8px}
+  .mf-sep{display:none}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .mc-grid{grid-template-columns:1fr}
+  .sys-grid{grid-template-columns:1fr}
+  .modal{width:96%;max-height:88vh}
+  .pmod{width:88vw;padding:20px 16px}
+  .form-tbl .fl{display:block;width:100%;padding:8px 12px 2px;white-space:normal}
+  .form-tbl .fv{display:block;width:100%;padding:4px 12px 10px}
+  .form-tbl tr{display:block;border-bottom:1px solid var(--bg3)}
+  .bld-g{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+  .uw{max-width:100%}
+  .fbar{gap:5px;padding:8px}
+  .fbar select,.fbar input[type=date]{width:100%;max-width:none}
+  #toasts{left:10px;right:10px;bottom:10px}
+  .toast{max-width:100%}
+}
+
 /* ── LOGIN SCREEN ── */
 #login-screen{position:fixed;inset:0;z-index:20000;background:linear-gradient(135deg,#0f1e32 0%,#1a3a5c 60%,#0d2540 100%);display:flex;align-items:center;justify-content:center;font-family:'Sarabun',sans-serif}
 #login-screen.h{display:none}
@@ -323,8 +359,9 @@ tr:hover td{background:#f6faff}
 </div>
 
 <div id="app" style="display:none">
+  <div id="sb-overlay" onclick="closeSb()"></div>
   <!-- SIDEBAR -->
-  <div class="sb">
+  <div class="sb" id="sidebar">
     <div class="sb-logo">
       <div class="t">⚕ GasMed</div>
       <div class="s">บันทึกการตรวจสอบ<br>ระบบแก๊สทางการแพทย์</div>
@@ -348,6 +385,7 @@ tr:hover td{background:#f6faff}
 
   <div class="mw">
     <div class="topbar">
+      <button id="mob-btn" onclick="openSb()" aria-label="เมนู">☰</button>
       <div class="tb-title" id="tb-title">Dashboard</div>
       <div class="tb-right">
         <div class="cdot" id="cdot"></div>
@@ -889,7 +927,17 @@ async function fetchAll(sys,bld,fromV,toV,stVal){
 // ════════════════════════════════════════════════════════
 //  NAVIGATION
 // ════════════════════════════════════════════════════════
+function openSb(){
+  document.getElementById('sidebar')?.classList.add('mob-open');
+  document.getElementById('sb-overlay')?.classList.add('mob-open');
+}
+function closeSb(){
+  document.getElementById('sidebar')?.classList.remove('mob-open');
+  document.getElementById('sb-overlay')?.classList.remove('mob-open');
+}
+
 function goSys(sys){
+  closeSb();
   curSys=sys;
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
   const ni=document.getElementById('ni-'+sys); if(ni) ni.classList.add('on');
@@ -933,6 +981,7 @@ function _showTab(t){
 }
 
 function openAdmin(){
+  closeSb();
   pinOnce(async ()=>{
     document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
     document.getElementById('pg-admin').classList.add('on');
@@ -2292,6 +2341,18 @@ CREATE INDEX IF NOT EXISTS idx_ir_sys_status
   ping(); // ping ทันทีที่หน้าโหลด
   setInterval(ping, 6*3600*1000);
 })();
+
+// ════════════════════════════════════════════════════════
+//  MOBILE SIDEBAR
+// ════════════════════════════════════════════════════════
+function openSb(){
+  document.getElementById('sidebar')?.classList.add('mob-open');
+  document.getElementById('sb-overlay')?.classList.add('mob-open');
+}
+function closeSb(){
+  document.getElementById('sidebar')?.classList.remove('mob-open');
+  document.getElementById('sb-overlay')?.classList.remove('mob-open');
+}
 
 // ════════════════════════════════════════════════════════
 //  SUPABASE AUTH — LOGIN / LOGOUT / TOKEN REFRESH
