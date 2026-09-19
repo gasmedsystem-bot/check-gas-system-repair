@@ -245,38 +245,110 @@ tr:hover td{background:#f6faff}
 @media(max-width:860px){.mc-grid{grid-template-columns:1fr}}
 
 /* ── MOBILE ── */
+.fv-dt{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ff-dt-d{max-width:170px;min-width:140px;flex:1}
+.ff-dt-t{max-width:130px;min-width:100px;flex:1}
 #mob-btn{display:none;background:none;border:none;cursor:pointer;padding:6px 8px;border-radius:6px;font-size:20px;color:var(--text);line-height:1;flex-shrink:0}
 #mob-btn:hover{background:var(--bg3)}
 #sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:998}
 @media(max-width:768px){
+  /* sidebar overlay */
   #mob-btn{display:flex;align-items:center}
   .sb{position:fixed;top:0;left:0;height:100%;z-index:999;transform:translateX(-100%);transition:transform .22s ease;width:220px}
   .sb.mob-open{transform:translateX(0)}
   #sb-overlay.mob-open{display:block}
   .mw{width:100%;min-width:0}
-  .topbar{padding:0 10px;gap:8px}
+
+  /* topbar */
+  .topbar{padding:0 10px;gap:6px}
   .tb-title{font-size:13px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .ctxt{display:none}
   #tb-user{display:none}
+  .tb-right .btn{padding:4px 8px;font-size:11px}
+
+  /* tabs */
   .tabs{padding:0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
   .tabs::-webkit-scrollbar{display:none}
   .tab{padding:10px 10px;font-size:11px;flex-shrink:0}
-  .content{padding:10px}
-  .mf-bar{gap:5px;padding:8px}
-  .mf-sep{display:none}
-  .cards{grid-template-columns:repeat(2,1fr)}
+
+  /* content */
+  .content{padding:10px 8px}
+
+  /* stat cards */
+  .cards{grid-template-columns:repeat(2,1fr);gap:8px}
+
+  /* charts */
   .mc-grid{grid-template-columns:1fr}
+  .cgrd{grid-template-columns:1fr}
+
+  /* system grid */
   .sys-grid{grid-template-columns:1fr}
+
+  /* modals */
   .modal{width:96%;max-height:88vh}
   .pmod{width:88vw;padding:20px 16px}
-  .form-tbl .fl{display:block;width:100%;padding:8px 12px 2px;white-space:normal}
-  .form-tbl .fv{display:block;width:100%;padding:4px 12px 10px}
-  .form-tbl tr{display:block;border-bottom:1px solid var(--bg3)}
-  .bld-g{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
-  .uw{max-width:100%}
-  .fbar{gap:5px;padding:8px}
-  .fbar select,.fbar input[type=date]{width:100%;max-width:none}
-  #toasts{left:10px;right:10px;bottom:10px}
+  .ls-card{width:92vw;padding:28px 20px 20px}
+
+  /* ── FORM TABLE — stack label บน value ล่าง เต็มหน้าจอ ── */
+  .form-tbl{width:100%}
+  .form-tbl tr{display:block;border-bottom:1px solid var(--bg3);padding:2px 0}
+  .form-tbl tr:last-child{border-bottom:none}
+  .form-tbl .fl{
+    display:block;width:100%;
+    padding:8px 10px 4px;
+    background:var(--bg3);
+    font-size:12px;font-weight:600;
+    white-space:normal;
+    border-bottom:none
+  }
+  .form-tbl .fv{
+    display:block;width:100%;
+    padding:8px 10px;
+    box-sizing:border-box
+  }
+
+  /* date/time — stack column */
+  .fv-dt{flex-direction:column;gap:6px}
+  .ff-dt-d,.ff-dt-t{
+    max-width:100%;min-width:0;
+    width:100%;box-sizing:border-box
+  }
+
+  /* building grid — 2 cols เต็มหน้าจอ */
+  .bld-g{
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;width:100%
+  }
+  .bc{padding:12px 10px}
+  .bc .bn{font-size:13px}
+
+  /* toggle buttons — wrap */
+  .tgl-g{gap:6px}
+  .tgl{padding:8px 12px;font-size:12px}
+
+  /* number input */
+  .uw{max-width:100%;width:100%}
+  .uw .fc{width:100%;box-sizing:border-box}
+
+  /* filter bar data tab */
+  .fbar{gap:5px;padding:8px;flex-direction:column;align-items:stretch}
+  .fbar>*{width:100%;box-sizing:border-box}
+  .fbar select,.fbar input[type=date]{width:100%;max-width:none;box-sizing:border-box}
+  .fbar>div[style*="margin-left:auto"]{margin-left:0!important}
+
+  /* filter bar dashboard */
+  .mf-bar{flex-direction:column;gap:6px;padding:8px}
+  .mf-sep{display:none}
+  .mf-bar label{display:none}
+  .mf-bar select,.mf-bar input[type=date]{width:100%;box-sizing:border-box}
+  .mf-bar .btn{align-self:flex-start}
+
+  /* quick filter buttons wrap */
+  .mf-bar>:first-child{display:flex;flex-wrap:wrap;gap:4px}
+  .mf-qbtn{padding:5px 10px;font-size:11px}
+
+  /* toasts */
+  #toasts{left:8px;right:8px;bottom:10px}
   .toast{max-width:100%}
 }
 
@@ -1681,9 +1753,9 @@ function renderForm(){
     <div><table class="form-tbl">
       <tr><td class="fl">🏢 ตึก / อาคาร <span style="color:var(--red)">*</span></td><td class="fv">${bldHtml}</td></tr>
       <tr><td class="fl">📅 วันที่-เวลา <span style="color:var(--red)">*</span></td>
-        <td class="fv" style="display:flex;gap:8px;align-items:center">
-          <input type="date" class="fc" id="ff-date" value="${defDate}" style="max-width:170px">
-          <input type="time" class="fc" id="ff-time" value="${defTime}" style="max-width:130px">
+        <td class="fv fv-dt">
+          <input type="date" class="fc ff-dt-d" id="ff-date" value="${defDate}">
+          <input type="time" class="fc ff-dt-t" id="ff-time" value="${defTime}">
         </td></tr>
       ${fieldRows}
       <tr><td class="fl">👤 ลงชื่อผู้ตรวจสอบ <span style="color:var(--red)">*</span></td>
@@ -2341,18 +2413,6 @@ CREATE INDEX IF NOT EXISTS idx_ir_sys_status
   ping(); // ping ทันทีที่หน้าโหลด
   setInterval(ping, 6*3600*1000);
 })();
-
-// ════════════════════════════════════════════════════════
-//  MOBILE SIDEBAR
-// ════════════════════════════════════════════════════════
-function openSb(){
-  document.getElementById('sidebar')?.classList.add('mob-open');
-  document.getElementById('sb-overlay')?.classList.add('mob-open');
-}
-function closeSb(){
-  document.getElementById('sidebar')?.classList.remove('mob-open');
-  document.getElementById('sb-overlay')?.classList.remove('mob-open');
-}
 
 // ════════════════════════════════════════════════════════
 //  SUPABASE AUTH — LOGIN / LOGOUT / TOKEN REFRESH
