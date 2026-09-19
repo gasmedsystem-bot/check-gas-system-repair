@@ -228,6 +228,11 @@ tr:hover td{background:#f6faff}
 .gm-btn.d{color:var(--red);border-color:var(--red)}
 .gm-btn.d:hover{background:var(--red-lt)}
 .gm-btn.t{color:var(--muted)}
+.gm-btn.e{color:var(--blue);border-color:var(--blue)}
+.gm-btn.e:hover{background:#e8f0fe}
+.gm-edit-row{display:none;gap:6px;align-items:center;padding:6px 10px;background:var(--card);border-radius:6px;border:1px solid var(--blue);margin-top:4px}
+.gm-edit-row input{flex:1;padding:4px 8px;border-radius:5px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:12px;font-family:'Sarabun',sans-serif}
+.gm-edit-row.show{display:flex}
 .gm-add-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
 .gm-add-row select,.gm-add-row input{flex:1;min-width:120px}
 .gm-empty{text-align:center;color:var(--muted);font-size:12px;padding:16px 0}
@@ -736,7 +741,8 @@ const SUPA   = 'https://ounsxkmbzoojypwzzaan.supabase.co';
 const AKEY   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91bnN4a21iem9vanlwd3p6YWFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3OTc0MjQsImV4cCI6MjA5NjM3MzQyNH0.ckg7zsI9yfnuALwhge6OTc0twHm4EoyY-g6pLrIKgCU';
 const PIN_K  = 'gm_pin';
 const SES_K  = 'gm_ses';
-const getPin = ()=> localStorage.getItem(PIN_K)||'4321';
+let   gmPin  = localStorage.getItem(PIN_K)||'4321';   // cache — โหลดจาก Supabase ทับหลัง login
+const getPin = ()=> gmPin;
 
 // JWT_K เก็บ Supabase access token (แยกจาก SES_K ที่ใช้กับ PIN session)
 const JWT_K  = 'gm_jwt';
@@ -1087,13 +1093,6 @@ function refresh(){
 //  INIT
 // ════════════════════════════════════════════════════════
 async function init(){
-  // ตรวจสอบ file:// protocol
-  if(location.protocol==='file:'){
-    document.getElementById('cdot').className='cdot off';
-    document.getElementById('ctxt').textContent='⚠️ ต้องเปิดผ่าน HTTP Server';
-    showFileProtocolWarning();
-    return;
-  }
   try{
     const r=await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:getH()});
     const ok=r.ok;
@@ -2042,14 +2041,32 @@ async function loadAdminStats(){
   }
 }
 
-function chgPin(){
+async function gmLoadConfig(){
+  try{
+    const r=await fetch(SUPA+'/rest/v1/gm_config?key=eq.pin&select=value',{headers:getH()});
+    if(!r.ok) return;
+    const d=await r.json();
+    if(d&&d[0]&&d[0].value){ gmPin=d[0].value; }
+  }catch(e){ /* ใช้ค่า fallback ใน gmPin */ }
+}
+
+async function chgPin(){
   const old=document.getElementById('adm-old')?.value||'';
   const nw=document.getElementById('adm-new')?.value||'';
   if(old!==getPin()){ toast('PIN เดิมไม่ถูกต้อง','er'); return; }
   if(!/^\d{4}$/.test(nw)){ toast('PIN ต้องเป็นตัวเลข 4 หลัก','er'); return; }
-  localStorage.setItem(PIN_K,nw);
-  sessionStorage.removeItem(SES_K);
-  toast('เปลี่ยน PIN สำเร็จ — session ถูก reset','ok');
+  try{
+    const r=await fetch(SUPA+'/rest/v1/gm_config?key=eq.pin',{
+      method:'PATCH', headers:getH({'Prefer':'return=minimal'}),
+      body:JSON.stringify({value:nw})
+    });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    gmPin=nw;
+    sessionStorage.removeItem(SES_K);
+    document.getElementById('adm-old').value='';
+    document.getElementById('adm-new').value='';
+    toast('เปลี่ยน PIN สำเร็จ — ใช้งานทุกเครื่องทันที','ok');
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
 }
 
 async function runArchive(){
@@ -2138,9 +2155,18 @@ function gmRenderInspectors(){
   if(!el) return;
   if(!gmInspectors.length){ el.innerHTML='<div class="gm-empty">ยังไม่มีรายชื่อ — เพิ่มด้านล่าง</div>'; return; }
   el.innerHTML = gmInspectors.map(item=>`
-    <div class="gm-item${item.active?'':' inactive'}">
-      <span class="gm-name">${item.active?'👤':'○'} ${item.name}</span>
-      <button class="gm-btn t" onclick="gmToggleInspector('${item.id}',${item.active})">${item.active?'ปิด':'เปิด'}</button>
+    <div>
+      <div class="gm-item${item.active?'':' inactive'}">
+        <span class="gm-name">${item.active?'👤':'○'} ${item.name}</span>
+        <button class="gm-btn e" onclick="gmStartEditInspector('${item.id}')">✏️</button>
+        <button class="gm-btn t" onclick="gmToggleInspector('${item.id}',${item.active})">${item.active?'ปิด':'เปิด'}</button>
+        <button class="gm-btn d" onclick="gmDeleteInspector('${item.id}','${item.name.replace(/'/g,"\\'")}')">🗑️</button>
+      </div>
+      <div class="gm-edit-row" id="gm-insp-edit-${item.id}">
+        <input type="text" value="${item.name}" id="gm-insp-val-${item.id}" placeholder="ชื่อใหม่">
+        <button class="gm-btn e" onclick="gmSaveInspector('${item.id}')">บันทึก</button>
+        <button class="gm-btn" onclick="document.getElementById('gm-insp-edit-${item.id}').classList.remove('show')">ยกเลิก</button>
+      </div>
     </div>`).join('');
 }
 
@@ -2149,10 +2175,19 @@ function gmRenderBuildings(){
   if(!el) return;
   if(!gmBuildings.length){ el.innerHTML='<div class="gm-empty">ยังไม่มีอาคารเพิ่มเติม — เพิ่มด้านล่าง</div>'; return; }
   el.innerHTML = gmBuildings.map(item=>`
-    <div class="gm-item${item.active?'':' inactive'}">
-      <span class="gm-name">🏢 ${item.name}</span>
-      <span class="gm-sys">${SYS[item.system_type]?.ic||''} ${SYS[item.system_type]?.l||item.system_type}</span>
-      <button class="gm-btn t" onclick="gmToggleBuilding('${item.id}',${item.active})">${item.active?'ปิด':'เปิด'}</button>
+    <div>
+      <div class="gm-item${item.active?'':' inactive'}">
+        <span class="gm-name">🏢 ${item.name}</span>
+        <span class="gm-sys">${SYS[item.system_type]?.ic||''} ${SYS[item.system_type]?.l||item.system_type}</span>
+        <button class="gm-btn e" onclick="gmStartEditBuilding('${item.id}')">✏️</button>
+        <button class="gm-btn t" onclick="gmToggleBuilding('${item.id}',${item.active})">${item.active?'ปิด':'เปิด'}</button>
+        <button class="gm-btn d" onclick="gmDeleteBuilding('${item.id}','${item.name.replace(/'/g,"\\'")}')">🗑️</button>
+      </div>
+      <div class="gm-edit-row" id="gm-bld-edit-${item.id}">
+        <input type="text" value="${item.name}" id="gm-bld-val-${item.id}" placeholder="ชื่ออาคารใหม่">
+        <button class="gm-btn e" onclick="gmSaveBuilding('${item.id}')">บันทึก</button>
+        <button class="gm-btn" onclick="document.getElementById('gm-bld-edit-${item.id}').classList.remove('show')">ยกเลิก</button>
+      </div>
     </div>`).join('');
 }
 
@@ -2164,10 +2199,18 @@ function gmRenderFloors(){
   const items = gmFloors.filter(f=>f.building===bld);
   if(!items.length){ el.innerHTML='<div class="gm-empty">ยังไม่มีชั้น/แผนกเพิ่มเติม</div>'; return; }
   el.innerHTML = items.map(item=>`
-    <div class="gm-item${item.active?'':' inactive'}">
-      <span class="gm-name">${item.active?'🏥':'○'} ${item.floor_name}</span>
-      <button class="gm-btn t" onclick="gmToggleFloor('${item.id}',${item.active})">${item.active?'ปิด':'เปิด'}</button>
-      <button class="gm-btn d" onclick="gmDeleteFloor('${item.id}','${item.floor_name.replace(/'/g,"\\'")}')">ลบ</button>
+    <div>
+      <div class="gm-item${item.active?'':' inactive'}">
+        <span class="gm-name">${item.active?'🏥':'○'} ${item.floor_name}</span>
+        <button class="gm-btn e" onclick="gmStartEditFloor('${item.id}')">✏️</button>
+        <button class="gm-btn t" onclick="gmToggleFloor('${item.id}',${item.active})">${item.active?'ปิด':'เปิด'}</button>
+        <button class="gm-btn d" onclick="gmDeleteFloor('${item.id}','${item.floor_name.replace(/'/g,"\\'")}')">🗑️</button>
+      </div>
+      <div class="gm-edit-row" id="gm-fl-edit-${item.id}">
+        <input type="text" value="${item.floor_name}" id="gm-fl-val-${item.id}" placeholder="ชื่อชั้น/แผนกใหม่">
+        <button class="gm-btn e" onclick="gmSaveFloor('${item.id}')">บันทึก</button>
+        <button class="gm-btn" onclick="document.getElementById('gm-fl-edit-${item.id}').classList.remove('show')">ยกเลิก</button>
+      </div>
     </div>`).join('');
 }
 
@@ -2266,7 +2309,87 @@ async function gmToggleFloor(id, curActive){
   }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
 }
 
+// ════════ EDIT ════════
+
+function gmStartEditInspector(id){
+  document.getElementById('gm-insp-edit-'+id)?.classList.add('show');
+  document.getElementById('gm-insp-val-'+id)?.focus();
+}
+async function gmSaveInspector(id){
+  const inp = document.getElementById('gm-insp-val-'+id);
+  const name = (inp?.value||'').trim();
+  if(!name){ toast('กรุณากรอกชื่อ','er'); return; }
+  if(gmInspectors.some(i=>i.id!==id && i.name===name)){ toast('ชื่อนี้มีอยู่แล้ว','er'); return; }
+  try{
+    await gmPatch('gm_inspectors', id, {name});
+    const item = gmInspectors.find(i=>i.id===id);
+    if(item) item.name=name;
+    gmRenderInspectors();
+    toast('แก้ไขชื่อแล้ว','ok');
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+
+function gmStartEditBuilding(id){
+  document.getElementById('gm-bld-edit-'+id)?.classList.add('show');
+  document.getElementById('gm-bld-val-'+id)?.focus();
+}
+async function gmSaveBuilding(id){
+  const inp = document.getElementById('gm-bld-val-'+id);
+  const name = (inp?.value||'').trim();
+  if(!name){ toast('กรุณากรอกชื่ออาคาร','er'); return; }
+  const item = gmBuildings.find(b=>b.id===id);
+  if(!item) return;
+  const dup = gmBuildings.some(b=>b.id!==id && b.system_type===item.system_type && b.name===name);
+  if(dup){ toast('ชื่ออาคารนี้มีอยู่แล้ว','er'); return; }
+  try{
+    await gmPatch('gm_buildings', id, {name});
+    item.name=name;
+    gmRenderBuildings();
+    toast('แก้ไขชื่ออาคารแล้ว','ok');
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+
+function gmStartEditFloor(id){
+  document.getElementById('gm-fl-edit-'+id)?.classList.add('show');
+  document.getElementById('gm-fl-val-'+id)?.focus();
+}
+async function gmSaveFloor(id){
+  const inp = document.getElementById('gm-fl-val-'+id);
+  const floor_name = (inp?.value||'').trim();
+  if(!floor_name){ toast('กรุณากรอกชื่อ','er'); return; }
+  const item = gmFloors.find(f=>f.id===id);
+  if(!item) return;
+  const dup = gmFloors.some(f=>f.id!==id && f.building===item.building && f.floor_name===floor_name);
+  if(dup){ toast('ชื่อนี้มีอยู่แล้ว','er'); return; }
+  try{
+    await gmPatch('gm_floors', id, {floor_name});
+    item.floor_name=floor_name;
+    gmRenderFloors();
+    toast('แก้ไขชื่อแล้ว','ok');
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+
 // ════════ DELETE ════════
+
+async function gmDeleteInspector(id, name){
+  if(!confirm(`ลบ "${name}" ออก?\n⚠️ ข้อมูลที่บันทึกไปแล้วจะยังแสดงชื่อเดิม`)) return;
+  try{
+    await gmDelete('gm_inspectors', id);
+    gmInspectors = gmInspectors.filter(i=>i.id!==id);
+    gmRenderInspectors();
+    toast('ลบแล้ว','ok');
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+
+async function gmDeleteBuilding(id, name){
+  if(!confirm(`ลบ "${name}" ออก?\n⚠️ ข้อมูลที่บันทึกไปแล้วจะยังแสดงชื่ออาคารเดิม`)) return;
+  try{
+    await gmDelete('gm_buildings', id);
+    gmBuildings = gmBuildings.filter(b=>b.id!==id);
+    gmRenderBuildings();
+    toast('ลบแล้ว','ok');
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
 
 async function gmDeleteFloor(id, name){
   if(!confirm(`ลบ "${name}" ออก?\n⚠️ ถ้ามีข้อมูลเก่าใช้ชื่อนี้ — จะยังแสดงเป็นข้อความปกติ`)) return;
@@ -2426,6 +2549,7 @@ function _lsSetBusy(busy){
 }
 function _enterApp(email){
   H = getH(); // อัพเดท H ให้ใช้ JWT ล่าสุด
+  gmLoadConfig(); // โหลด PIN จาก Supabase (async — background)
   document.getElementById('login-screen').classList.add('h');
   const app = document.getElementById('app');
   app.style.display='flex';
@@ -2444,10 +2568,6 @@ function _showLogin(){
 }
 
 async function doLogin(){
-  if(location.protocol==='file:'){
-    _lsSetErr('❌ ต้องเปิดผ่าน HTTP Server — ไม่สามารถเปิดจาก file:// ได้');
-    return;
-  }
   const email=(document.getElementById('ls-email')?.value||'').trim();
   const pass =document.getElementById('ls-pass')?.value||'';
   if(!email||!pass){ _lsSetErr('กรุณากรอก Email และ Password'); return; }
