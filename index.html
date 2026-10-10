@@ -132,12 +132,12 @@ tr:hover td{background:#f6faff}
 .btn-sm{padding:4px 10px;font-size:11px}
 
 /* ── FORM ── */
-.form-tbl{width:100%;border-collapse:collapse}
-.form-tbl tr{border-bottom:1px solid var(--bg3)}
-.form-tbl tr:last-child{border-bottom:none}
-.form-tbl .fl{padding:10px 14px;background:var(--bg3);width:220px;font-size:12px;font-weight:600;color:var(--muted);vertical-align:top;white-space:nowrap}
+.form-tbl{width:100%}
+.form-row{display:flex;border-bottom:1px solid var(--bg3);align-items:stretch}
+.form-row:last-child{border-bottom:none}
+.form-tbl .fl{padding:10px 14px;background:var(--bg3);width:220px;min-width:220px;font-size:12px;font-weight:600;color:var(--muted);white-space:normal;flex-shrink:0;display:flex;flex-direction:column;justify-content:flex-start}
 .form-tbl .fl .fh{font-size:10px;color:var(--blue);font-weight:600;margin-top:2px}
-.form-tbl .fv{padding:8px 14px;vertical-align:middle}
+.form-tbl .fv{padding:8px 14px;flex:1;min-width:0;display:flex;align-items:center}
 .fc{background:var(--card);border:1.5px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px;font-family:'Sarabun',sans-serif;outline:none;transition:.12s;width:100%}
 .fc:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,111,189,.1)}
 .uw{position:relative;display:inline-block;max-width:220px;width:100%}
@@ -218,7 +218,7 @@ tr:hover td{background:#f6faff}
 .admc h3{font-size:13px;font-weight:700;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid var(--bg3)}
 
 /* Admin Management Lists */
-.gm-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;max-height:260px;overflow-y:auto}
+.gm-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
 .gm-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg3);border-radius:6px;border:1px solid var(--border)}
 .gm-item.inactive{opacity:.45}
 .gm-item .gm-name{flex:1;font-size:13px}
@@ -228,9 +228,49 @@ tr:hover td{background:#f6faff}
 .gm-btn.d{color:var(--red);border-color:var(--red)}
 .gm-btn.d:hover{background:var(--red-lt)}
 .gm-btn.t{color:var(--muted)}
+.gm-btn.e{color:var(--blue);border-color:var(--blue)}
+.gm-btn.e:hover{background:#e8f0fe}
+.gm-edit-row{display:none;gap:6px;align-items:center;padding:6px 10px;background:var(--card);border-radius:6px;border:1px solid var(--blue);margin-top:4px}
+.gm-edit-row input{flex:1;padding:4px 8px;border-radius:5px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:12px;font-family:'Sarabun',sans-serif}
+.gm-edit-row.show{display:flex}
 .gm-add-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
 .gm-add-row select,.gm-add-row input{flex:1;min-width:120px}
 .gm-empty{text-align:center;color:var(--muted);font-size:12px;padding:16px 0}
+.gm-group{margin-bottom:10px}
+.gm-group-hd{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;padding:6px 10px;background:var(--bg3);border-radius:6px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.gm-group-cnt{font-size:10px;font-weight:400;color:var(--muted);margin-left:auto;background:var(--card);padding:1px 7px;border-radius:8px;border:1px solid var(--border)}
+.gm-move-btns{display:flex;flex-direction:column;gap:1px;flex-shrink:0}
+.gm-mv{background:none;border:1px solid var(--border);border-radius:3px;color:var(--muted);cursor:pointer;font-size:9px;line-height:1;padding:2px 4px;transition:.1s}
+.gm-mv:hover:not([disabled]){background:var(--bg3);color:var(--text)}
+.gm-mv[disabled]{opacity:.25;cursor:default}
+.gm-status-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:8px;flex-shrink:0}
+.gm-status-badge.act{background:var(--green-lt);color:var(--green);border:1px solid #b7dfc9}
+/* System editor (Admin) */
+.sf-head{display:grid;grid-template-columns:1fr auto;gap:12px;margin-bottom:12px}
+.sf-head label{font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px}
+.sf-icrow{display:flex;gap:6px;align-items:center}
+.sf-icons{display:flex;flex-wrap:wrap;gap:2px;max-width:260px}
+.sf-icons button{background:none;border:1px solid var(--border);border-radius:4px;cursor:pointer;font-size:14px;padding:1px 4px;line-height:1.3}
+.sf-icons button:hover{background:var(--bg3)}
+.sf-sub{font-size:12px;font-weight:700;margin:8px 0}
+.sf-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:6px}
+.sf-row .fc{width:auto;min-width:0}
+.sf-row .sf-l{flex:2 1 200px}.sf-row .sf-t{flex:0 0 110px}.sf-row .sf-s{flex:1 1 90px}.sf-row .sf-o{flex:2 1 170px}
+.sf-row .sf-bad{border-color:#f3c6c1}
+.sf-fixed{color:var(--muted);font-size:12px}
+.sf-off{opacity:.7;border-style:dashed}
+.sf-offnote{flex:1 1 100%;font-size:11px;color:var(--yellow)}
+.sf-thb{flex:1 1 100%;background:var(--card);border:1px dashed var(--border);border-radius:6px;padding:8px 10px;display:flex;flex-direction:column;gap:5px}
+.sf-thb-h{font-size:11px;color:var(--muted)}
+.sf-thb-r{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.sf-thb-r span{flex:1 1 180px;font-size:12px}
+.sf-thb-r .fc{flex:0 1 110px;width:auto;min-width:0}
+.sf-note{font-size:11px;color:var(--muted);background:var(--bg3);border-radius:6px;padding:8px 10px;margin:10px 0;line-height:1.7}
+.sf-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.sf-chips span{background:var(--blue-lt);color:var(--blue);border-radius:10px;padding:2px 9px;font-size:11px}
+.sf-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;border-top:1px solid var(--bg3);padding-top:12px}
+@media(max-width:768px){.sf-head{grid-template-columns:1fr}.sf-row .sf-t{flex:1 1 110px}.sf-thb-r span{flex:1 1 100%}.sf-thb-r .fc{flex:1 1 40%}}
+.gm-status-badge.off{background:var(--bg3);color:var(--muted);border:1px solid var(--border)}
 
 /* ── MAIN DASHBOARD FILTER ── */
 .mf-bar{display:flex;flex-wrap:wrap;gap:7px;align-items:center;background:var(--bg3);padding:9px 12px;border-radius:var(--r);border:1px solid var(--border);margin-bottom:12px}
@@ -290,22 +330,20 @@ tr:hover td{background:#f6faff}
   .pmod{width:88vw;padding:20px 16px}
   .ls-card{width:92vw;padding:28px 20px 20px}
 
-  /* ── FORM TABLE — stack label บน value ล่าง เต็มหน้าจอ ── */
-  .form-tbl{width:100%}
-  .form-tbl tr{display:block;border-bottom:1px solid var(--bg3);padding:2px 0}
-  .form-tbl tr:last-child{border-bottom:none}
+  /* ── FORM — stack label บน value ล่าง เต็มหน้าจอ ── */
+  .form-row{flex-direction:column;border-bottom:1px solid var(--bg3)}
   .form-tbl .fl{
-    display:block;width:100%;
-    padding:8px 10px 4px;
+    width:100%;min-width:0;
+    padding:10px 12px 6px;
     background:var(--bg3);
-    font-size:12px;font-weight:600;
+    font-size:13px;font-weight:600;
     white-space:normal;
-    border-bottom:none
+    border-bottom:1px solid var(--border)
   }
   .form-tbl .fv{
-    display:block;width:100%;
-    padding:8px 10px;
-    box-sizing:border-box
+    width:100%;padding:10px 12px;
+    box-sizing:border-box;
+    display:block
   }
 
   /* date/time — stack column */
@@ -351,6 +389,92 @@ tr:hover td{background:#f6faff}
   /* toasts */
   #toasts{left:8px;right:8px;bottom:10px}
   .toast{max-width:100%}
+
+  /* ── TOGGLE BUTTONS — ใหญ่ขึ้น กดง่าย ── */
+  .tgl{padding:12px 16px;font-size:13px;border-radius:8px;min-height:44px}
+  .tgl-g{gap:8px}
+
+  /* ── BUILDING CARDS ── */
+  .bld-g{grid-template-columns:1fr 1fr;gap:8px}
+  .bc{padding:14px 12px;min-height:56px}
+  .bc .bn{font-size:13px}
+  .bc .bp{font-size:11px}
+
+  /* ── STAT CARDS ── */
+  .sc-v{font-size:22px}
+  .sc-l{font-size:9px}
+  .sc{padding:10px 12px}
+
+  /* ── SYSTEM GRID CARDS ── */
+  .sysc{padding:12px;gap:10px}
+  .sysc .si{font-size:20px}
+  .sysc .sn{font-size:13px}
+  .sysc .ss{font-size:11px}
+
+  /* ── ADMIN SECTION ── */
+  .gm-item{padding:10px 10px;gap:8px;flex-wrap:wrap}
+  .gm-name{font-size:13px;min-width:0;flex:1}
+  .gm-btn{padding:6px 12px;font-size:12px;min-height:36px}
+  .gm-add-row{flex-direction:column;gap:8px}
+  .gm-add-row>*{width:100%;box-sizing:border-box}
+  .gm-edit-row{flex-wrap:wrap;gap:8px;padding:8px 10px}
+  .gm-edit-row input{min-height:36px;font-size:13px}
+
+  .gm-item{flex-wrap:wrap;row-gap:6px}
+  .gm-mv{padding:3px 6px;font-size:10px}
+  .gm-status-badge{font-size:10px}
+
+  /* ── ADMIN CARD ── */
+  .admc{padding:12px}
+  .admc h3{font-size:14px}
+
+  /* ── BUTTONS ── */
+  .btn{padding:9px 14px;font-size:13px;min-height:40px}
+  .btn-sm{padding:6px 12px;font-size:12px;min-height:34px}
+
+  /* ── FORM HINT/LABEL ── */
+  .fhint{font-size:11px}
+
+  /* ── NUMBER INPUT ── */
+  .fc{font-size:16px;padding:10px 12px}/* 16px ป้องกัน iOS zoom */
+  .fc.fc-sel{font-size:16px}
+
+  /* ── SELECT ── */
+  select.fc{font-size:16px}
+
+  /* ── FILTER BAR ── */
+  .fbar select,.fbar input[type=date]{height:36px;font-size:14px}
+  .mf-qbtn{min-height:36px;font-size:12px;padding:6px 12px}
+
+  /* ── PAGINATION ── */
+  .pgs button{min-height:36px;padding:6px 12px;font-size:12px}
+  .pinfo{font-size:12px}
+
+  /* ── TABLE ── */
+  td{font-size:12px;padding:8px 8px}
+  th{font-size:9px;padding:7px 8px}
+
+  /* ── SECTION HEADER ── */
+  .sec-h h3{font-size:13px}
+  .sec-b{padding:10px}
+  .fsec-h h3{font-size:14px}
+  .fsec-h{padding:12px 14px}
+}
+
+/* ── FORM FOOTER ── */
+.form-footer{display:flex;gap:8px;margin-top:4px;padding:4px 0}
+@media(max-width:768px){
+  .form-footer{
+    position:sticky;bottom:0;
+    background:var(--bg);
+    padding:10px 0 12px;
+    gap:10px;
+    border-top:1px solid var(--border);
+    margin-top:8px;
+    z-index:10;
+  }
+  .form-footer .btn{flex:1;justify-content:center;min-height:48px;font-size:14px;font-weight:600}
+  .form-footer .btn-s{background:var(--green);border-color:var(--green)}
 }
 
 /* ── LOGIN SCREEN ── */
@@ -407,6 +531,28 @@ tr:hover td{background:#f6faff}
   </div>
 </div>
 
+<!-- Admin: แก้ไขระบบ Gas / ตัวสร้างแบบฟอร์ม -->
+<div class="modal-wrap h" id="ov-sysed">
+  <div class="modal" style="max-width:820px">
+    <div class="modal-h">
+      <h3 id="sysed-title">ระบบ Gas</h3>
+      <button class="close" onclick="gmSysEdClose()">✕</button>
+    </div>
+    <div class="modal-b" id="sysed-body"></div>
+  </div>
+</div>
+
+<!-- Admin: ถามก่อนเปลี่ยนชื่อในข้อมูลที่บันทึกไปแล้ว -->
+<div class="modal-wrap h" id="ov-gmask">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-h">
+      <h3 id="gmask-title">ยืนยัน</h3>
+      <button class="close" onclick="gmAskDone(-1)">✕</button>
+    </div>
+    <div class="modal-b" id="gmask-body" style="font-size:13px;line-height:1.7"></div>
+  </div>
+</div>
+
 <!-- ══ LOGIN SCREEN ══ -->
 <div id="login-screen">
   <div class="ls-card">
@@ -442,15 +588,7 @@ tr:hover td{background:#f6faff}
     <div class="sb-sec">หน้าหลัก</div>
     <div class="ni on" onclick="goSys('main')" id="ni-main"><span class="ic">📊</span>Dashboard</div>
     <div class="sb-sec">ระบบ Gas</div>
-    <div class="ni" onclick="goSys('o2_manifold')"   id="ni-o2_manifold"><span class="ic">🫁</span>O2 Manifold</div>
-    <div class="ni" onclick="goSys('nitrogen')"      id="ni-nitrogen"><span class="ic">🔵</span>Nitrogen Manifold</div>
-    <div class="ni" onclick="goSys('nitrous_oxide')" id="ni-nitrous_oxide"><span class="ic">💉</span>Nitrous Oxide Manifold</div>
-    <div class="ni" onclick="goSys('co2')"           id="ni-co2"><span class="ic">🟤</span>CO₂ Manifold</div>
-    <div class="ni" onclick="goSys('medical_air')"   id="ni-medical_air"><span class="ic">💨</span>Medical Air</div>
-    <div class="ni" onclick="goSys('vacuum')"        id="ni-vacuum"><span class="ic">🌀</span>Medical Vacuum</div>
-    <div class="ni" onclick="goSys('wagd')"          id="ni-wagd"><span class="ic">🔄</span>WAGD</div>
-    <div class="ni" onclick="goSys('liquid_o2')"     id="ni-liquid_o2"><span class="ic">🧊</span>Liquid O2</div>
-    <div class="ni" onclick="goSys('area_alarm')"    id="ni-area_alarm"><span class="ic">🚨</span>Area Alarm</div>
+    <div id="sb-sys"></div>
     <div class="sb-bot">
       <div class="ni" onclick="openAdmin()" id="ni-admin"><span class="ic">🔧</span>Admin</div>
     </div>
@@ -496,15 +634,6 @@ tr:hover td{background:#f6faff}
           <label style="font-size:11px;font-weight:600;color:var(--muted)">ระบบ</label>
           <select id="mf-sys" onchange="loadMain()" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:4px 8px;border-radius:6px;font-size:12px;height:30px;outline:none">
             <option value="">ทุกระบบ</option>
-            <option value="o2_manifold">🫁 O2 Manifold</option>
-            <option value="nitrogen">🔵 Nitrogen</option>
-            <option value="nitrous_oxide">💉 Nitrous Oxide</option>
-            <option value="co2">🟤 CO₂</option>
-            <option value="medical_air">💨 Medical Air</option>
-            <option value="vacuum">🌀 Medical Vacuum</option>
-            <option value="wagd">🔄 WAGD</option>
-            <option value="liquid_o2">🧊 Liquid O2</option>
-            <option value="area_alarm">🚨 Area Alarm</option>
           </select>
           <button class="btn btn-o btn-sm" onclick="mfQuick('today')" style="margin-left:auto">↺ รีเซ็ต</button>
         </div>
@@ -602,11 +731,22 @@ tr:hover td{background:#f6faff}
       <!-- ══ ADMIN ══ -->
       <div class="pg" id="pg-admin">
         <div class="admc">
-          <h3>🔑 เปลี่ยน PIN</h3>
+          <h3>🔑 เปลี่ยน PIN บันทึกข้อมูล</h3>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:10px">ใช้ยืนยันก่อนบันทึกข้อมูลทุกครั้ง — ทุกเครื่องใช้รหัสนี้ร่วมกัน</p>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px">
-            <div><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">PIN ปัจจุบัน</label><input type="password" class="fc" id="adm-old" maxlength="4" placeholder="4 หลัก"></div>
-            <div><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">PIN ใหม่</label><input type="password" class="fc" id="adm-new" maxlength="4" placeholder="4 หลัก"></div>
+            <div><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">PIN ปัจจุบัน</label><input type="password" class="fc" id="adm-old" maxlength="4" placeholder="4 หลัก" inputmode="numeric"></div>
+            <div><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">PIN ใหม่</label><input type="password" class="fc" id="adm-new" maxlength="4" placeholder="4 หลัก" inputmode="numeric"></div>
             <div style="display:flex;align-items:flex-end"><button class="btn btn-o" onclick="chgPin()">บันทึก PIN ใหม่</button></div>
+          </div>
+        </div>
+
+        <div class="admc">
+          <h3>🔧 เปลี่ยน PIN Admin</h3>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:10px">ใช้เข้าหน้า Admin เท่านั้น — แยกจาก PIN บันทึกข้อมูล</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px">
+            <div><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">PIN Admin ปัจจุบัน</label><input type="password" class="fc" id="adm-aold" maxlength="4" placeholder="4 หลัก" inputmode="numeric"></div>
+            <div><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">PIN Admin ใหม่</label><input type="password" class="fc" id="adm-anew" maxlength="4" placeholder="4 หลัก" inputmode="numeric"></div>
+            <div style="display:flex;align-items:flex-end"><button class="btn btn-o" onclick="chgAdminPin()">บันทึก PIN Admin ใหม่</button></div>
           </div>
         </div>
         <div class="admc">
@@ -653,6 +793,20 @@ CREATE INDEX IF NOT EXISTS idx_ir_sys_status
           </div>
         </div>
 
+        <!-- ── ระบบ Gas ── -->
+        <div class="admc">
+          <h3>⚙️ จัดการระบบ Gas</h3>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:10px">
+            เปลี่ยนชื่อ/ไอคอน, ปิด/เปิด, เลื่อนลำดับในเมนู และเพิ่มระบบใหม่พร้อมกำหนดหัวข้อตรวจเอง<br>
+            ระบบที่ปิดจะไม่แสดงในเมนู Dashboard และหน้าบันทึก แต่ข้อมูลเดิมยังอยู่ครบ
+          </p>
+          <div class="gm-list" id="gm-sys-list"><div class="gm-empty">กำลังโหลด…</div></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-p btn-sm" onclick="gmSysEdOpen()">+ เพิ่มระบบใหม่</button>
+            <button class="btn btn-o btn-sm" onclick="gmRecalcAll()" title="ปรับป้ายปกติ/Alert ของข้อมูลเดิมให้ตรงกับเกณฑ์ปัจจุบัน">🔄 คำนวณสถานะใหม่ทั้งหมด</button>
+          </div>
+        </div>
+
         <!-- ── ผู้ตรวจสอบ ── -->
         <div class="admc">
           <h3>👤 จัดการรายชื่อผู้ตรวจสอบ</h3>
@@ -672,22 +826,19 @@ CREATE INDEX IF NOT EXISTS idx_ir_sys_status
             เพิ่มอาคารใหม่ในแต่ละระบบ — อาคารที่ปิดจะไม่แสดงในหน้าบันทึก<br>
             <span style="color:var(--red);font-weight:600">⚠️ อย่าแก้ชื่ออาคารที่มีข้อมูลเก่าอยู่แล้ว — filter จะไม่ตรง</span>
           </p>
-          <div class="gm-add-row" style="margin-bottom:10px">
+          <div class="gm-add-row" style="margin-bottom:8px">
             <select class="fc" id="gm-bld-sys" style="max-width:180px">
               <option value="">-- เลือกระบบ --</option>
-              <option value="o2_manifold">O2 Manifold</option>
-              <option value="nitrogen">Nitrogen Manifold</option>
-              <option value="nitrous_oxide">Nitrous Oxide Manifold</option>
-              <option value="co2">CO₂ Manifold</option>
-              <option value="medical_air">Medical Air</option>
-              <option value="vacuum">Medical Vacuum</option>
-              <option value="wagd">WAGD</option>
-              <option value="liquid_o2">Liquid O2</option>
-              <option value="area_alarm">Area Alarm</option>
             </select>
             <input type="text" class="fc" id="gm-bld-input" placeholder="ชื่ออาคาร/ถัง" maxlength="80" style="max-width:240px"
               onkeydown="if(event.key==='Enter')gmAddBuilding()">
             <button class="btn btn-p btn-sm" onclick="gmAddBuilding()">+ เพิ่ม</button>
+          </div>
+          <div class="gm-add-row" style="margin-bottom:10px">
+            <select class="fc" id="gm-bld-filter" onchange="gmRenderBuildings()" style="max-width:220px">
+              <option value="">-- ทั้งหมด --</option>
+            </select>
+            <span style="font-size:11px;color:var(--muted)">💡 เลือกระบบเพื่อกรอง หรือแสดงทั้งหมด — เลื่อน ▲▼ เพื่อจัดลำดับ</span>
           </div>
           <div class="gm-list" id="gm-bld-list"><div class="gm-empty">กำลังโหลด…</div></div>
         </div>
@@ -695,16 +846,17 @@ CREATE INDEX IF NOT EXISTS idx_ir_sys_status
         <!-- ── ชั้น/แผนก Area Alarm ── -->
         <div class="admc">
           <h3>🚨 จัดการชั้น/แผนก Area Alarm</h3>
-          <p style="font-size:12px;color:var(--muted);margin-bottom:10px">เพิ่ม/ปิด/ลบ ชั้นและแผนกในแต่ละอาคาร Area Alarm</p>
-          <div class="gm-add-row" style="margin-bottom:10px">
-            <select class="fc" id="gm-fl-bld" onchange="gmLoadFloors()" style="max-width:220px">
-              <option value="">-- เลือกอาคาร --</option>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:10px">เพิ่ม/เปิดปิด/เลื่อน/ลบ ชั้นและแผนกในแต่ละอาคาร Area Alarm</p>
+          <div class="gm-add-row" style="margin-bottom:8px">
+            <select class="fc" id="gm-fl-bld" onchange="gmRenderFloors()" style="max-width:220px">
+              <option value="">-- ทั้งหมด --</option>
             </select>
             <input type="text" class="fc" id="gm-fl-input" placeholder="ชื่อชั้น/หอผู้ป่วย/แผนก" maxlength="80" style="max-width:240px"
               onkeydown="if(event.key==='Enter')gmAddFloor()">
             <button class="btn btn-p btn-sm" onclick="gmAddFloor()">+ เพิ่ม</button>
           </div>
-          <div class="gm-list" id="gm-fl-list"><div class="gm-empty">เลือกอาคารก่อน</div></div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">💡 เลือกอาคารเพื่อกรอง หรือแสดงทั้งหมด — เลื่อน ▲▼ เพื่อจัดลำดับ</div>
+          <div class="gm-list" id="gm-fl-list"><div class="gm-empty">กำลังโหลด…</div></div>
         </div>
       </div>
 
@@ -733,10 +885,14 @@ CREATE INDEX IF NOT EXISTS idx_ir_sys_status
 //  CONFIG
 // ════════════════════════════════════════════════════════
 const SUPA   = 'https://ounsxkmbzoojypwzzaan.supabase.co';
-const AKEY   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91bnN4a21iem9vanlwd3p6YWFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3OTc0MjQsImV4cCI6MjA5NjM3MzQyNH0.ckg7zsI9yfnuALwhge6OTc0twHm4EoyY-g6pLrIKgCU';
+// Publishable key (แทน anon JWT แบบเก่าที่ Supabase จะเลิกใช้) — ส่งใน header apikey เท่านั้น ห้ามใส่ใน Authorization
+const AKEY   = 'sb_publishable_Ua2c25XkCb5AW_36hDLr9A_ztiErPZF';
 const PIN_K  = 'gm_pin';
 const SES_K  = 'gm_ses';
-const getPin = ()=> localStorage.getItem(PIN_K)||'4321';
+let   gmPin      = localStorage.getItem(PIN_K)||'4321'; // cache PIN บันทึกข้อมูล
+let   gmAdminPin = '9999';                             // cache PIN Admin
+const getPin      = ()=> gmPin;
+const getAdminPin = ()=> gmAdminPin;
 
 // JWT_K เก็บ Supabase access token (แยกจาก SES_K ที่ใช้กับ PIN session)
 const JWT_K  = 'gm_jwt';
@@ -745,8 +901,9 @@ const EXP_K  = 'gm_exp';
 
 // getH() — คืน header ที่ใช้ JWT token ล่าสุดเสมอ
 function getH(extra){
-  const tok = sessionStorage.getItem(JWT_K) || AKEY;
-  return {'apikey':AKEY,'Authorization':'Bearer '+tok,'Content-Type':'application/json',...(extra||{})};
+  const tok = sessionStorage.getItem(JWT_K);
+  // ยังไม่ login → ส่งแค่ apikey (publishable key ไม่ใช่ JWT จึงใส่ใน Authorization ไม่ได้)
+  return {'apikey':AKEY,...(tok?{'Authorization':'Bearer '+tok}:{}),'Content-Type':'application/json',...(extra||{})};
 }
 // H ใช้เป็น shorthand — อัพเดทหลัง login ทุกครั้ง
 let H = getH();
@@ -850,6 +1007,83 @@ const COLS = {
 COLS.nitrogen=COLS.nitrous_oxide=COLS.co2=COLS.o2_manifold;
 
 // ════════════════════════════════════════════════════════
+//  SYSTEM REGISTRY — ตั้งค่าระบบ Gas จาก Admin (gm_config key = gm_systems)
+//  ระบบเดิม: แก้ได้ ชื่อ / ไอคอน / ปิด-เปิด / ลำดับ  (หัวข้อตรวจคงตามโค้ด)
+//  ระบบใหม่: กำหนดหัวข้อตรวจเองทั้งหมด → เติมเข้า SYS / FIELDS / COLS / TH ตอนรัน
+// ════════════════════════════════════════════════════════
+const SYS_DEF    = JSON.parse(JSON.stringify(SYS));      // ค่าเดิมของระบบในโค้ด
+const FIELDS_DEF = JSON.parse(JSON.stringify(FIELDS));
+const COLS_DEF   = JSON.parse(JSON.stringify(COLS));
+const TH_DEF     = JSON.parse(JSON.stringify(TH));
+const SYS_BUILTIN = Object.keys(SYS_DEF);
+let gmSysCfg = {v:1, order:[...SYS_BUILTIN], sys:{}};
+let gmSysCfgRow = false;                                // มีแถว gm_systems ใน gm_config แล้วหรือยัง
+let gmSysLoadOk = false;                                // โหลดการตั้งค่าสำเร็จแล้ว (ก่อนหน้านั้นห้ามบันทึกทับ)
+let _gmCustomKeys = [];
+
+function gmRangeTxt(f){
+  const u=f.u?' '+f.u:'';
+  if(f.mn!=null && f.mx!=null) return `${f.mn}–${f.mx}${u}`;
+  if(f.mn!=null) return `≥ ${f.mn}${u}`;
+  if(f.mx!=null) return `≤ ${f.mx}${u}`;
+  return 'ไม่กำหนดเกณฑ์';
+}
+// คอลัมน์ตาราง + เกณฑ์ (ค่ากลาง '*' และรายอาคาร) จากหัวข้อที่ตั้งใน Admin
+function gmGenCols(fields){ return ['วันที่-เวลา','อาคาร',...fields.map(f=>f.l+(f.u?`(${f.u})`:'')+(f.off?' (เดิม)':'')),'สถานะ','ผู้ตรวจ','']; }
+function gmBuildTH(fields){
+  const th={'*':{}};
+  fields.filter(f=>f.t==='n').forEach(f=>{
+    th['*'][f.k]={mn:f.mn??null, mx:f.mx??null, h:gmRangeTxt(f)};
+    Object.entries(f.thb||{}).forEach(([b,c])=>{
+      if(!c || (c.mn==null && c.mx==null)) return;
+      (th[b]=th[b]||{})[f.k]={mn:c.mn??null, mx:c.mx??null, h:gmRangeTxt({...f, mn:c.mn??null, mx:c.mx??null})};
+    });
+  });
+  return th;
+}
+
+function gmApplySysCfg(cfg){
+  // ล้างระบบใหม่ที่เคยเติมไว้ แล้วคืนค่าระบบเดิมทั้งหมด ก่อนใช้การตั้งค่าใหม่
+  _gmCustomKeys.forEach(k=>{ delete SYS[k]; delete FIELDS[k]; delete COLS[k]; delete TH[k]; });
+  _gmCustomKeys=[];
+  SYS_BUILTIN.forEach(k=>{
+    SYS[k]={...SYS_DEF[k]};
+    FIELDS[k]=JSON.parse(JSON.stringify(FIELDS_DEF[k]));
+    COLS[k]=[...COLS_DEF[k]];
+    TH[k]=JSON.parse(JSON.stringify(TH_DEF[k]||{}));
+  });
+  Object.entries(cfg.sys||{}).forEach(([k,c])=>{
+    if(!c || typeof c!=='object') return;
+    if(SYS_DEF[k]){
+      if(c.l) SYS[k].l=c.l;
+      if(c.ic) SYS[k].ic=c.ic;
+      if(c.off) SYS[k].off=true;
+      if(Array.isArray(c.fields) && c.fields.length){        // ระบบเดิมที่ปรับหัวข้อใน Admin
+        FIELDS[k]=c.fields.map(f=>JSON.parse(JSON.stringify(f)));
+        COLS[k]=gmGenCols(FIELDS[k]);
+        TH[k]=gmBuildTH(FIELDS[k]);
+        SYS[k].gen=true;
+      }
+      return;
+    }
+    if(!c.custom || !Array.isArray(c.fields) || !c.fields.length) return;
+    SYS[k]={l:c.l||k, ic:c.ic||'🧪', col:c.col||'#475569', custom:true, ...(c.off?{off:true}:{})};
+    FIELDS[k]=c.fields.map(f=>JSON.parse(JSON.stringify(f)));
+    COLS[k]=gmGenCols(FIELDS[k]);
+    TH[k]=gmBuildTH(FIELDS[k]);
+    _gmCustomKeys.push(k);
+  });
+  gmSysCfg={v:1, order:Array.isArray(cfg.order)?cfg.order:[...SYS_BUILTIN], sys:cfg.sys||{}};
+}
+
+// รายชื่อระบบตามลำดับที่ตั้งไว้ (all=true รวมระบบที่ปิด)
+function gmSysKeys(all){
+  const ord=(gmSysCfg.order||[]).filter((k,i,a)=>SYS[k] && a.indexOf(k)===i);
+  Object.keys(SYS).forEach(k=>{ if(!ord.includes(k)) ord.push(k); });
+  return all ? ord : ord.filter(k=>!SYS[k].off);
+}
+
+// ════════════════════════════════════════════════════════
 //  STATE
 // ════════════════════════════════════════════════════════
 let curSys=null, curTab='dash', dtPage=1, lastRows=[], charts={};
@@ -862,6 +1096,9 @@ let gmInspectors=[];   // [{id,name,active}]
 let gmBuildings=[];    // [{id,system_type,name,active}]
 let gmFloors=[];       // [{id,building,floor_name,active}]
 let gmLoaded=false;    // โหลดแล้วหรือยัง
+let gmBldTomb=[];     // อาคารค่าเริ่มต้นที่ลบแล้ว (sort_order=-1)
+let gmFlTomb=[];      // ชั้นค่าเริ่มต้นที่ลบแล้ว (sort_order=-1)
+let gmTablesOk=false; // ตาราง gm_ พร้อมใช้งาน
 
 // ════════════════════════════════════════════════════════
 //  PIN ENGINE
@@ -893,7 +1130,8 @@ function ppkdel(){ _pinBuf=_pinBuf.slice(0,-1); _updDots(); }
 function ppkclose(){ _pinBuf=''; _updDots(); document.getElementById('ov-pin').classList.add('h'); }
 function _updDots(){ for(let i=0;i<4;i++) document.getElementById('pd'+i).classList.toggle('on',i<_pinBuf.length); }
 function _chkPin(){
-  if(_pinBuf===getPin()){
+  const expected = _pinMode==='admin' ? getAdminPin() : getPin();
+  if(_pinBuf===expected){
     _pinBuf=''; _updDots();
     document.getElementById('ov-pin').classList.add('h');
     document.getElementById('pin-err').textContent='';
@@ -1026,9 +1264,9 @@ function goSys(sys){
   document.getElementById('sys-tabs').classList.remove('h');
   document.getElementById('tb-title').textContent=(SYS[sys]?.ic||'')+' '+(SYS[sys]?.l||sys);
 
-  // populate building filter
-  const blds=BLD[sys]||[];
-  document.getElementById('f-bld').innerHTML='<option value="">ทุกอาคาร</option>'+blds.map(b=>`<option value="${b}">${b}</option>`).join('');
+  // populate building filter (อาคารที่เปิด + ชื่อเก่าที่ยังมีข้อมูลจริง)
+  document.getElementById('f-bld').innerHTML='<option value="">ทุกอาคาร</option>';
+  gmFillBldFilter(sys);
 
   // reset tabs
   goTab('dash',true);
@@ -1050,12 +1288,13 @@ function _showTab(t){
   document.getElementById('tc-'+t)?.classList.add('on');
   if(t==='dash') loadSysDash();
   else if(t==='data'){ dtPage=1; loadData(); }
-  else if(t==='form') renderForm();
+  else if(t==='form') gmLoadAll().then(()=>{ if(curTab==='form') renderForm(); });  // รอข้อมูล Admin ก่อน ไม่ให้แสดงรายชื่อที่ลบแล้ว
 }
 
 function openAdmin(){
   closeSb();
-  pinOnce(async ()=>{
+  // ใช้ Admin PIN แยกต่างหากจาก PIN บันทึกข้อมูล
+  _pinCb=async()=>{
     document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
     document.getElementById('pg-admin').classList.add('on');
     document.getElementById('sys-tabs').classList.add('h');
@@ -1063,13 +1302,14 @@ function openAdmin(){
     document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
     document.getElementById('ni-admin')?.classList.add('on');
     loadAdminStats();
-    // โหลด GM data และ render ทุก section
-    await gmLoadAll();
+    await Promise.all([gmLoadAll(true), gmLoadSystems()]);   // ข้อมูลล่าสุด ป้องกันนำเข้าซ้ำเมื่อเครื่องอื่นนำเข้าไปแล้ว
+    await gmAutoImport();   // นำเข้าค่าเริ่มต้นของกลุ่มที่ยังไม่เคยนำเข้า (ครั้งเดียว)
     gmRenderInspectors();
     gmRenderBuildings();
     gmPopulateFloorBldSelect();
-    gmRenderFloors();
-  });
+  };
+  _pinMode='admin';
+  _showPin('🔧','Admin PIN','กรอก PIN Admin เพื่อเข้าจัดการระบบ',true);
 }
 
 function refresh(){
@@ -1087,13 +1327,6 @@ function refresh(){
 //  INIT
 // ════════════════════════════════════════════════════════
 async function init(){
-  // ตรวจสอบ file:// protocol
-  if(location.protocol==='file:'){
-    document.getElementById('cdot').className='cdot off';
-    document.getElementById('ctxt').textContent='⚠️ ต้องเปิดผ่าน HTTP Server';
-    showFileProtocolWarning();
-    return;
-  }
   try{
     const r=await fetch(SUPA+'/rest/v1/inspection_records?limit=1',{headers:getH()});
     const ok=r.ok;
@@ -1110,6 +1343,9 @@ async function init(){
   const p=new URLSearchParams(location.search);
   const sys=p.get('sys');
 
+  // โหลดการตั้งค่าระบบ Gas ก่อน (เมนู / ระบบใหม่ / ระบบที่ปิด)
+  await gmLoadSystems();
+
   // โหลด GM data ล่วงหน้า (background) — ไม่บล็อก UI
   gmLoadAll().catch(()=>{});
 
@@ -1118,7 +1354,11 @@ async function init(){
     goSys(sys); _showTab('data');
     setTimeout(()=>{
       const bld=p.get('bld'), from=p.get('from'), to=p.get('to');
-      if(bld){ document.getElementById('f-bld').value=bld; }
+      if(bld){
+        const s=document.getElementById('f-bld');
+        if(![...s.options].some(o=>o.value===bld)) s.insertAdjacentHTML('beforeend',`<option value="${gmH(bld)}">${gmH(bld)}</option>`);
+        s.value=bld;
+      }
       if(from){ document.getElementById('f-from').value=from; }
       if(to){ document.getElementById('f-to').value=to; }
       loadData();
@@ -1236,7 +1476,7 @@ async function loadMain(){
     // ── 2. ภาพรวมทุกระบบ — GROUP BY system_type (ไม่ดึง rows ดิบ) ──────
     // ใช้ select=system_type,status + HEAD count ต่อระบบ
     // เพื่อรองรับข้อมูลไม่จำกัด ใช้ Promise.all 9 requests พร้อมกัน
-    const sysKeys = Object.keys(SYS);
+    const sysKeys = gmSysKeys();
     const [sysCountRes, sysAlRes, sysLastRes] = await Promise.all([
       // count per system
       Promise.all(sysKeys.map(k=>
@@ -1333,7 +1573,7 @@ function _drawMainCharts(rows){
   });
 
   const dates=Object.keys(byDate).sort().slice(-60);
-  const sysKeys=Object.keys(SYS);
+  const sysKeys=gmSysKeys();
   const COLORS=['#1a6fbd','#0891b2','#0f766e','#7c3aed','#92400e','#0369a1','#1d4ed8','#dc2626','#b07d00'];
 
   // A — รายการตรวจต่อวัน
@@ -1358,7 +1598,7 @@ function _drawMainCharts(rows){
   const pieLabels=sysKeys.map(k=>SYS[k].ic+' '+SYS[k].l);
   const ctxC=document.getElementById('mc-ch-pie');
   if(ctxC) mfCharts.C=new Chart(ctxC,{type:'doughnut',
-    data:{labels:pieLabels,datasets:[{data:pieData,backgroundColor:COLORS,borderWidth:1}]},
+    data:{labels:pieLabels,datasets:[{data:pieData,backgroundColor:sysKeys.map((k,i)=>COLORS[i%COLORS.length]),borderWidth:1}]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{position:'right',labels:{font:{size:9},color:'#6b7f96',boxWidth:10}}}}});
 
@@ -1464,7 +1704,7 @@ async function loadSysDash(){
   }catch(e){ toast('โหลดล้มเหลว: '+e.message,'er'); }
 }
 
-function getNumFields(sys){ return (FIELDS[sys]||[]).filter(f=>f.t==='n').slice(0,3); }
+function getNumFields(sys){ return (FIELDS[sys]||[]).filter(f=>f.t==='n' && !f.off).slice(0,3); }   // หัวข้อที่ซ่อนไม่มีข้อมูลใหม่ จึงไม่ใช้ในกราฟ
 
 function drawCharts(sys,rows){
   Object.values(charts).forEach(c=>c.destroy&&c.destroy()); charts={};
@@ -1536,7 +1776,7 @@ function mkRowCells(sys,r){
     area_alarm:()=>base+`<td>${d.floor_location||'—'}</td><td>${stag(d.sound)}</td><td>${stag(d.light)}</td><td>${stag(d.display)}</td>`,
   };
   m.nitrogen=m.nitrous_oxide=m.co2=m.o2_manifold;
-  const cells=(m[sys]?.()||base)+`<td>${mkBadge(r.status)}</td><td style="color:var(--muted)">${r.inspector||'—'}</td>`;
+  const cells=((SYS[sys]?.gen?null:m[sys]?.())||gmGenericCells(sys,d,base,r.building))+`<td>${mkBadge(r.status)}</td><td style="color:var(--muted)">${r.inspector||'—'}</td>`;
   return cells+acts;
 }
 
@@ -1552,7 +1792,9 @@ function clearF(){ ['f-bld','f-from','f-to','f-st'].forEach(id=>document.getElem
 
 async function delRec(id){
   pinOnce(async ()=>{
-    if(!confirm('ยืนยันลบรายการนี้?')) return;
+    const rr=lastRows.find(x=>String(x.id)===String(id));
+    const what=rr?`ข้อมูล ${gmH(rr.building)} วันที่ ${fmtDate(rr.recorded_at)}`:'รายการนี้';
+    if(!await gmConfirmDel(what,'ลบถาวร กู้คืนไม่ได้')) return;
     const r=await fetch(SUPA+'/rest/v1/inspection_records?id=eq.'+id,{method:'DELETE',headers:H});
     if(!r.ok){ toast('ลบไม่สำเร็จ','er'); return; }
     toast('ลบสำเร็จ','ok'); loadData();
@@ -1583,7 +1825,7 @@ function rowToArr(sys,r){
     area_alarm:[d.floor_location??'',d.sound??'',d.light??'',d.display??''],
   };
   spec.nitrogen=spec.nitrous_oxide=spec.co2=spec.o2_manifold;
-  return [...base,...(spec[sys]||[]),r.status||'',r.inspector||'',r.note||''];
+  return [...base,...((SYS[sys]?.gen?null:spec[sys])||gmGenericArr(sys,d)),r.status||'',r.inspector||'',r.note||''];
 }
 
 function getExportCols(sys){
@@ -1699,50 +1941,57 @@ function renderForm(){
   // Building selector
   let bldHtml='';
   if(['o2_manifold','nitrogen','nitrous_oxide','co2','liquid_o2'].includes(sys)){
-    bldHtml=`<div class="bld-g">${blds.map(b=>`<div class="bc" id="bc-${esc(b)}" onclick="selBld('${b}')">
+    bldHtml=`<div class="bld-g">${blds.map(b=>`<div class="bc" id="bc-${esc(b)}" onclick="selBld('${gmQ(b)}')">
       <div class="bn">🏛 ${b}</div>
     </div>`).join('')}</div><div id="bld-txt" style="font-size:11px;color:var(--muted)">— ยังไม่ได้เลือก —</div>`;
   } else if(sys==='area_alarm'){
     bldHtml=`<select class="fc" id="ff-building" onchange="onAlBldChange(this.value)" style="max-width:300px">
-      <option value="">-- เลือกอาคาร --</option>${blds.map(b=>`<option value="${b}">${b}</option>`).join('')}
+      <option value="">-- เลือกอาคาร --</option>${blds.map(b=>`<option value="${gmH(b)}">${gmH(b)}</option>`).join('')}
     </select>`;
   } else {
-    bldHtml=`<select class="fc" id="ff-building" style="max-width:300px">
-      <option value="">-- เลือกตึก/อาคาร --</option>${blds.map(b=>`<option value="${b}">${b}</option>`).join('')}
+    bldHtml=`<select class="fc" id="ff-building" onchange="onBldSel(this.value)" style="max-width:300px">
+      <option value="">-- เลือกตึก/อาคาร --</option>${blds.map(b=>`<option value="${gmH(b)}">${gmH(b)}</option>`).join('')}
     </select>`;
   }
+
+  if(!blds.length) bldHtml+=`<div style="font-size:11px;color:var(--red);margin-top:4px">ยังไม่มีอาคารของระบบนี้ — เพิ่มได้ที่ Admin › จัดการอาคาร/ถัง</div>`;
 
   // Inspector datalist — merge preset จาก gm_inspectors (ยังพิมพ์เองได้)
   const inspNames = gmGetInspectors();
   const inspDL = inspNames.length
-    ? `<datalist id="dl-inspector">${inspNames.map(n=>`<option value="${n}">`).join('')}</datalist>`
+    ? `<datalist id="dl-inspector">${inspNames.map(n=>`<option value="${gmH(n)}">`).join('')}</datalist>`
     : '';
 
   // Field rows
   const fieldRows=fields.map(f=>{
-    if(f.t==='afloor') return `<tr><td class="fl">🏢 ชั้น/หอผู้ป่วย <span style="color:var(--red)">*</span><input type="hidden" id="ff-floor_location"></td>
-      <td class="fv" id="floor-row" style="display:none">
-        <select class="fc" id="ff-floor-sel" onchange="document.getElementById('ff-floor_location').value=this.value" style="max-width:320px">
+    if(f.off) return '';   // หัวข้อที่ซ่อน: ไม่ให้บันทึกใหม่ (ข้อมูลเก่ายังแสดงในตาราง)
+    if(f.t==='afloor') return `<div class="form-row"><div class="fl">🏢 ชั้น/หอผู้ป่วย <span style="color:var(--red)">*</span><input type="hidden" id="ff-floor_location"></div>
+      <div class="fv" id="floor-row" style="display:none">
+        <select class="fc" id="ff-floor-sel" onchange="document.getElementById('ff-floor_location').value=this.value">
           <option value="">-- เลือกชั้น/แผนก --</option>
         </select>
-      </td></tr>`;
+      </div></div>`;
     if(f.t==='n'){
-      return `<tr><td class="fl">${f.l}${f.u?` (${f.u})`:''}<span style="color:var(--red)"> *</span>
-        <div class="fh" id="fh-${f.k}">—</div></td>
-        <td class="fv"><div class="uw"><input type="number" class="fc" id="ff-${f.k}" placeholder="—" step="any" oninput="chkVal('${f.k}')">
-        ${f.u?`<span class="ut">${f.u}</span>`:''}</div></td></tr>`;
+      return `<div class="form-row"><div class="fl">${f.l}${f.u?` (${f.u})`:''}<span style="color:var(--red)"> *</span>
+        <div class="fh" id="fh-${f.k}">—</div></div>
+        <div class="fv"><div class="uw"><input type="number" class="fc" id="ff-${f.k}" placeholder="—" step="any" oninput="chkVal('${f.k}')">
+        ${f.u?`<span class="ut">${f.u}</span>`:''}</div></div></div>`;
     }
     if(f.t==='sel'){
-      return `<tr><td class="fl">${f.l}<input type="hidden" id="ff-${f.k}"></td>
-        <td class="fv"><div class="tgl-g">${f.o.map(o=>`<button type="button" class="tgl" id="tgl-${f.k}-${esc(o)}" onclick="selTgl('${f.k}','${o}',this)">${o}</button>`).join('')}</div></td></tr>`;
+      return `<div class="form-row"><div class="fl">${f.l}<input type="hidden" id="ff-${f.k}"></div>
+        <div class="fv"><div class="tgl-g">${f.o.map(o=>`<button type="button" class="tgl" id="tgl-${f.k}-${esc(o)}" onclick="selTgl('${f.k}','${o}',this)">${o}</button>`).join('')}</div></div></div>`;
+    }
+    if(f.t==='txt'){
+      return `<div class="form-row"><div class="fl">${f.l}</div>
+        <div class="fv"><input type="text" class="fc" id="ff-${f.k}" placeholder="—" maxlength="200"></div></div>`;
     }
     if(f.t==='tgl'){
-      return `<tr><td class="fl">${f.l}${f.hint?`<div class="fh" style="color:var(--muted)">${f.hint}</div>`:''}<input type="hidden" id="ff-${f.k}"></td>
-        <td class="fv"><div class="tgl-g">${f.o.map(o=>{
-          const cls=o==='ปกติ'||o==='สะอาด'?'ok':o.includes('ไม่')||o.includes('ผิด')?'er':'na';
-          const ico=o==='ปกติ'?'✅ ':o==='สะอาด'?'✨ ':o.includes('ไม่ปกติ')||o.includes('ผิด')?'⚠️ ':o.includes('ไม่สะอาด')?'🚫 ':'— ';
+      return `<div class="form-row"><div class="fl">${f.l}${f.hint?`<div class="fh" style="color:var(--muted)">${f.hint}</div>`:''}<input type="hidden" id="ff-${f.k}"></div>
+        <div class="fv"><div class="tgl-g">${f.o.map(o=>{
+          const cls=Array.isArray(f.bad)?(f.bad.includes(o)?'er':(f.bad.length?'ok':'na')):o==='ปกติ'||o==='สะอาด'?'ok':o.includes('ไม่')||o.includes('ผิด')?'er':'na';
+          const ico=Array.isArray(f.bad)?(f.bad.includes(o)?'⚠️ ':(f.bad.length?'✅ ':'')):o==='ปกติ'?'✅ ':o==='สะอาด'?'✨ ':o.includes('ไม่ปกติ')||o.includes('ผิด')?'⚠️ ':o.includes('ไม่สะอาด')?'🚫 ':'— ';
           return `<button type="button" class="tgl" id="tgl-${f.k}-${esc(o)}" data-cls="${cls}" onclick="selTgl('${f.k}','${o}',this)">${ico}${o}</button>`;
-        }).join('')}</div></td></tr>`;
+        }).join('')}</div></div></div>`;
     }
     return '';
   }).join('');
@@ -1751,22 +2000,22 @@ function renderForm(){
   ${inspDL}
   <div class="fsec">
     <div class="fsec-h"><h3>✏️ บันทึกการตรวจสอบ ${s.l}</h3></div>
-    <div><table class="form-tbl">
-      <tr><td class="fl">🏢 ตึก / อาคาร <span style="color:var(--red)">*</span></td><td class="fv">${bldHtml}</td></tr>
-      <tr><td class="fl">📅 วันที่-เวลา <span style="color:var(--red)">*</span></td>
-        <td class="fv fv-dt">
+    <div class="form-tbl">
+      <div class="form-row"><div class="fl">🏢 ตึก / อาคาร <span style="color:var(--red)">*</span></div><div class="fv">${bldHtml}</div></div>
+      <div class="form-row"><div class="fl">📅 วันที่-เวลา <span style="color:var(--red)">*</span></div>
+        <div class="fv fv-dt">
           <input type="date" class="fc ff-dt-d" id="ff-date" value="${defDate}">
           <input type="time" class="fc ff-dt-t" id="ff-time" value="${defTime}">
-        </td></tr>
+        </div></div>
       ${fieldRows}
-      <tr><td class="fl">👤 ลงชื่อผู้ตรวจสอบ <span style="color:var(--red)">*</span></td>
-        <td class="fv"><input type="text" class="fc" id="ff-inspector" placeholder="ชื่อ-นามสกุล" style="max-width:300px"
-          list="dl-inspector" autocomplete="off"></td></tr>
-      <tr><td class="fl">📝 หมายเหตุ</td>
-        <td class="fv"><input type="text" class="fc" id="ff-note" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)"></td></tr>
-    </table></div>
+      <div class="form-row"><div class="fl">👤 ลงชื่อผู้ตรวจสอบ <span style="color:var(--red)">*</span></div>
+        <div class="fv"><input type="text" class="fc" id="ff-inspector" placeholder="ชื่อ-นามสกุล"
+          list="dl-inspector" autocomplete="off"></div></div>
+      <div class="form-row"><div class="fl">📝 หมายเหตุ</div>
+        <div class="fv"><input type="text" class="fc" id="ff-note" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)"></div></div>
+    </div>
   </div>
-  <div style="display:flex;gap:8px;margin-top:4px">
+  <div class="form-footer">
     <button class="btn btn-s" id="btn-save" onclick="submitForm()">🖫 บันทึกข้อมูล</button>
     <button class="btn btn-o" onclick="renderForm()">✕ ล้างฟอร์ม</button>
   </div>`;
@@ -1789,13 +2038,21 @@ function selBld(bld){
   (FIELDS[curSys]||[]).filter(f=>f.t==='n').forEach(f=>{ const el=document.getElementById('ff-'+f.k); if(el&&el.value) chkVal(f.k); });
 }
 
+// ระบบที่เลือกอาคารด้วย dropdown — แสดงเกณฑ์ของอาคารที่เลือก แล้วตรวจค่าที่กรอกไว้ใหม่
+function onBldSel(bld){
+  updateTH(bld);
+  (FIELDS[curSys]||[]).filter(f=>f.t==='n').forEach(f=>{ const el=document.getElementById('ff-'+f.k); if(el&&el.value) chkVal(f.k); });
+}
+
 function onAlBldChange(bld){
   const flRow=document.getElementById('floor-row');
   const sel=document.getElementById('ff-floor-sel');
   // ใช้ gmGetFloors — merge ALFLOORS เดิม + gm_floors
   const floors = gmGetFloors(bld);
+  const hid=document.getElementById('ff-floor_location'); if(hid) hid.value='';   // ไม่ให้ชั้นของอาคารเดิมค้าง
+  onBldSel(bld);
   if(bld && floors.length){
-    sel.innerHTML='<option value="">-- เลือกชั้น/แผนก --</option>'+floors.map(f=>`<option value="${f}">${f}</option>`).join('');
+    sel.innerHTML='<option value="">-- เลือกชั้น/แผนก --</option>'+floors.map(f=>`<option value="${gmH(f)}">${gmH(f)}</option>`).join('');
     if(flRow) flRow.style.display='';
   } else if(bld){
     sel.innerHTML='<option value="">-- ยังไม่มีชั้น/แผนก --</option>';
@@ -1847,6 +2104,31 @@ function selTgl(field,val,btn){
   btn.classList.add(cls);
 }
 
+// ── คำนวณสถานะ (ใช้ทั้งตอนบันทึกและตอนแก้ไข) ──────────────
+// ข้อความผิดปกติ / ค่าตัวเลขนอกเกณฑ์ (รวมเกณฑ์รายอาคาร) / ตัวเลือกผิดปกติของระบบใหม่
+// หัวข้อนี้เก็บเป็นตัวเลขไหม — ระบบที่หัวข้อตั้งจาก Admin ใช้ชนิดปัจจุบันเท่านั้น
+function gmIsNum(sys,f,NUM){ return (SYS[sys]?.gen||SYS[sys]?.custom) ? f.t==='n' : (NUM.includes(f.k)||f.t==='n'); }
+
+function calcStatus(sys,bld,data){
+  const FAIL=/ผิดปกติ|ไม่สะอาด|ไม่ปกติ|ปิดรอซ่อม|ปิดชำรุด|ไม่มีเสียง/i;
+  let status='normal';
+  if(SYS[sys]?.custom || SYS[sys]?.gen){
+    // หัวข้อกำหนดจาก Admin → ผิดปกติเฉพาะตัวเลือกที่กำหนดไว้ในช่อง "ผิดปกติ"
+    if((FIELDS[sys]||[]).some(f=>Array.isArray(f.bad) && f.bad.includes(data[f.k]))) status='alert';
+  }else{
+    for(const v of Object.values(data)){ if(typeof v==='string'&&FAIL.test(v)){status='alert';break;} }
+  }
+  const thSys=TH[sys]||{};
+  const merged={...(thSys['*']||{}),...(thSys[bld]||{})};
+  Object.entries(merged).forEach(([field,cfg])=>{
+    const v=data[field];
+    if(v===null||v===undefined||v==='') return;
+    if(cfg.mn!=null&&v<cfg.mn) status='alert';
+    if(cfg.mx!=null&&v>cfg.mx) status='alert';
+  });
+  return status;
+}
+
 async function submitForm(){
   const sys=curSys;
   let bld='';
@@ -1878,25 +2160,11 @@ async function submitForm(){
     const el=document.getElementById('ff-'+f.k);
     if(!el) return;
     const v=el.value;
-    data[f.k]=NUM.includes(f.k)?(v!==''?Number(v):null):(v||null);
+    data[f.k]=gmIsNum(sys,f,NUM)?(v!==''?Number(v):null):(v||null);
   });
 
-  // Auto status
-  const FAIL=/ผิดปกติ|ไม่สะอาด|ไม่ปกติ|ผิดปกติ|ปิดรอซ่อม|ปิดชำรุด|ไม่มีเสียง/i;
-  let status='normal';
-  for(const v of Object.values(data)){ if(typeof v==='string'&&FAIL.test(v)){status='alert';break;} }
-  // Numeric range check using TH config
-  const thSys=TH[sys]||{};
-  const thBase=thSys['*']||{};
-  const thBld=thSys[bld]||{};
-  const merged={...thBase,...thBld};
-  Object.entries(merged).forEach(([field,cfg])=>{
-    const v=data[field];
-    if(v===null||v===undefined) return;
-    const mn=cfg.mn; const mx=cfg.mx;
-    if(mn!==null&&v<mn) status='alert';
-    if(mx!==null&&v>mx) status='alert';
-  });
+  // Auto status (ใช้ร่วมกับการแก้ไข)
+  const status=calcStatus(sys,bld,data);
 
   const btn=document.getElementById('btn-save');
   btn.disabled=true; btn.textContent='⏳ กำลังบันทึก…';
@@ -1931,26 +2199,28 @@ function _doEdit(id){
   const sys=r.system_type;
   const fields=FIELDS[sys]||[];
   const NUM=['pressure_right','pressure_left','pressure_out','room_temp','storage_pressure','working_pressure','pressure','volume','pressure_tank','reg_from_tank','reg_working'];
-  const recDate=r.recorded_at?.slice(0,10)||'';
-  const recTime=r.recorded_at?.slice(11,16)||'';
+  // แสดงเป็นเวลาไทย (ฐานข้อมูลส่งเวลาเป็น UTC) — ตอนบันทึกจะแปลงกลับด้วย +07:00
+  const _bkk=r.recorded_at?new Date(new Date(r.recorded_at).getTime()+7*3600*1000).toISOString():'';
+  const recDate=_bkk.slice(0,10);
+  const recTime=_bkk.slice(11,16);
 
   let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
     <div><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">วันที่</label><input type="date" class="fc" id="ed-date" value="${recDate}"></div>
     <div><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">เวลา</label><input type="time" class="fc" id="ed-time" value="${recTime}"></div>
-    <div><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">ผู้ตรวจสอบ</label><input type="text" class="fc" id="ed-inspector" value="${r.inspector||''}"></div>
-    <div><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">หมายเหตุ</label><input type="text" class="fc" id="ed-note" value="${r.note||''}"></div>
+    <div><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">ผู้ตรวจสอบ</label><input type="text" class="fc" id="ed-inspector" value="${gmH(r.inspector||'')}"></div>
+    <div><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">หมายเหตุ</label><input type="text" class="fc" id="ed-note" value="${gmH(r.note||'')}"></div>
   </div>
   <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--bg3)">ค่าที่ตรวจวัด</div>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px">`;
 
   fields.forEach(f=>{
     if(f.k==='floor_location'){
-      html+=`<div style="grid-column:span 2"><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">${f.l}</label>
-        <input type="text" class="fc" id="ed-${f.k}" value="${d[f.k]||''}"></div>`;
+      html+=`<div style="grid-column:span 2"><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">${f.l}${f.off?' (เดิม)':''}</label>
+        <input type="text" class="fc" id="ed-${f.k}" value="${gmH(d[f.k]||'')}"></div>`;
     } else {
       const v=d[f.k]??'';
-      html+=`<div><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">${f.l}</label>
-        <input type="${NUM.includes(f.k)?'number':'text'}" class="fc" id="ed-${f.k}" value="${v}" step="any"></div>`;
+      html+=`<div><label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px">${f.l}${f.off?' (เดิม)':''}</label>
+        <input type="${gmIsNum(sys,f,NUM)?'number':'text'}" class="fc" id="ed-${f.k}" value="${gmH(v)}" step="any"></div>`;
     }
   });
   html+='</div>';
@@ -1976,15 +2246,15 @@ async function saveEdit(){
   const sys=editSys;
   const fields=FIELDS[sys]||[];
   const NUM=['pressure_right','pressure_left','pressure_out','room_temp','storage_pressure','working_pressure','pressure','volume','pressure_tank','reg_from_tank','reg_working'];
-  const data={};
+  // เริ่มจากข้อมูลเดิม แล้วเขียนทับเฉพาะช่องที่แก้ (ค่าของหัวข้อที่ไม่แสดงแล้วจะไม่หาย)
+  const orig=lastRows.find(x=>String(x.id)===String(editId));
+  const data={...(orig?.data||{})};
   fields.forEach(f=>{
     const el=document.getElementById('ed-'+f.k);
     if(!el) return;
-    data[f.k]=NUM.includes(f.k)?(el.value!==''?Number(el.value):null):(el.value||null);
+    data[f.k]=gmIsNum(sys,f,NUM)?(el.value!==''?Number(el.value):null):(el.value||null);
   });
-  const FAIL=/ผิดปกติ|ไม่สะอาด|ไม่มีเสียง/i;
-  let status='normal';
-  for(const v of Object.values(data)){ if(typeof v==='string'&&FAIL.test(v)){status='alert';break;} }
+  const status=calcStatus(sys,orig?.building||'',data);
   const dateV=document.getElementById('ed-date')?.value;
   const timeV=document.getElementById('ed-time')?.value||'00:00';
   const payload={data,status,inspector:document.getElementById('ed-inspector')?.value||null,note:document.getElementById('ed-note')?.value||null};
@@ -2003,7 +2273,7 @@ async function saveEdit(){
 // ════════════════════════════════════════════════════════
 async function loadAdminStats(){
   try{
-    const sysKeys=Object.keys(SYS);
+    const sysKeys=gmSysKeys(true);
     const results=await Promise.all([
       fetch(SUPA+'/rest/v1/inspection_records',{method:'HEAD',headers:{...H,'Prefer':'count=exact'}}),
       ...sysKeys.map(sk=>fetch(SUPA+'/rest/v1/inspection_records?system_type=eq.'+encodeURIComponent(sk),{method:'HEAD',headers:{...H,'Prefer':'count=exact'}}))
@@ -2042,14 +2312,53 @@ async function loadAdminStats(){
   }
 }
 
-function chgPin(){
+async function gmLoadConfig(){
+  try{
+    const r=await fetch(SUPA+'/rest/v1/gm_config?key=in.(pin,admin_pin)&select=key,value',{headers:getH()});
+    if(!r.ok) return;
+    const d=await r.json();
+    if(Array.isArray(d)) d.forEach(row=>{
+      if(row.key==='pin'&&row.value)      gmPin=row.value;
+      if(row.key==='admin_pin'&&row.value) gmAdminPin=row.value;
+    });
+  }catch(e){ /* ใช้ค่า fallback */ }
+}
+
+async function chgPin(){
   const old=document.getElementById('adm-old')?.value||'';
   const nw=document.getElementById('adm-new')?.value||'';
   if(old!==getPin()){ toast('PIN เดิมไม่ถูกต้อง','er'); return; }
   if(!/^\d{4}$/.test(nw)){ toast('PIN ต้องเป็นตัวเลข 4 หลัก','er'); return; }
-  localStorage.setItem(PIN_K,nw);
-  sessionStorage.removeItem(SES_K);
-  toast('เปลี่ยน PIN สำเร็จ — session ถูก reset','ok');
+  try{
+    const r=await fetch(SUPA+'/rest/v1/gm_config?key=eq.pin',{
+      method:'PATCH', headers:getH({'Prefer':'return=minimal'}),
+      body:JSON.stringify({value:nw})
+    });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    gmPin=nw;
+    sessionStorage.removeItem(SES_K);
+    document.getElementById('adm-old').value='';
+    document.getElementById('adm-new').value='';
+    toast('เปลี่ยน PIN สำเร็จ — ใช้งานทุกเครื่องทันที','ok');
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+
+async function chgAdminPin(){
+  const old=document.getElementById('adm-aold')?.value||'';
+  const nw=document.getElementById('adm-anew')?.value||'';
+  if(old!==getAdminPin()){ toast('PIN Admin เดิมไม่ถูกต้อง','er'); return; }
+  if(!/^\d{4}$/.test(nw)){ toast('PIN ต้องเป็นตัวเลข 4 หลัก','er'); return; }
+  try{
+    const r=await fetch(SUPA+'/rest/v1/gm_config?key=eq.admin_pin',{
+      method:'PATCH', headers:getH({'Prefer':'return=minimal'}),
+      body:JSON.stringify({value:nw})
+    });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    gmAdminPin=nw;
+    document.getElementById('adm-aold').value='';
+    document.getElementById('adm-anew').value='';
+    toast('เปลี่ยน PIN Admin สำเร็จ','ok');
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
 }
 
 async function runArchive(){
@@ -2090,8 +2399,17 @@ async function gmDelete(table, id){
 }
 
 // ── โหลดข้อมูลทั้งหมดครั้งเดียว ─────────────────────────
+// หลักการ: Admin คือแหล่งข้อมูลเดียวของหน้าบันทึก
+//  - แถวปกติ (sort_order >= 0)  → แสดงใน Admin และหน้าบันทึก (เฉพาะที่เปิด)
+//  - แถวที่ลบแล้ว (sort_order = -1, active=false) → ใช้จำว่าค่าเริ่มต้นนี้ถูกลบ ไม่ให้กลับมาอีก
+let _gmLoadP=null;   // กำลังโหลดอยู่ → ให้ผู้เรียกพร้อมกันรอก้อนเดียวกัน
 async function gmLoadAll(force=false){
   if(gmLoaded && !force) return;
+  if(_gmLoadP && !force) return _gmLoadP;
+  _gmLoadP = _gmLoadAllRun();
+  try{ await _gmLoadP; } finally{ _gmLoadP=null; }
+}
+async function _gmLoadAllRun(){
   try{
     const [ins, bld, fl] = await Promise.all([
       gmFetch('gm_inspectors','?order=sort_order.asc,created_at.asc'),
@@ -2099,31 +2417,107 @@ async function gmLoadAll(force=false){
       gmFetch('gm_floors','?order=building.asc,sort_order.asc,created_at.asc'),
     ]);
     gmInspectors = ins||[];
-    gmBuildings  = bld||[];
-    gmFloors     = fl||[];
+    gmBuildings  = (bld||[]).filter(b=>!(b.sort_order<0));
+    gmBldTomb    = (bld||[]).filter(b=>b.sort_order<0);
+    gmFloors     = (fl||[]).filter(f=>!(f.sort_order<0));
+    gmFlTomb     = (fl||[]).filter(f=>f.sort_order<0);
+    gmTablesOk = true;
     gmLoaded = true;
   }catch(e){
-    // ถ้าตารางยังไม่มี (ยังไม่ได้รัน SQL) — ใช้ array ว่าง
-    gmInspectors=[]; gmBuildings=[]; gmFloors=[]; gmLoaded=true;
+    // ถ้าตารางยังไม่มี (ยังไม่ได้รัน SQL) — ใช้ array ว่าง แล้วหน้าบันทึกใช้ค่าเริ่มต้น
+    gmInspectors=[]; gmBuildings=[]; gmFloors=[]; gmBldTomb=[]; gmFlTomb=[];
+    gmTablesOk=false; gmLoaded=false;   // โหลดไม่สำเร็จ → ครั้งหน้าลองใหม่
+    toast('โหลดรายชื่ออาคาร/ชั้นจาก Admin ไม่สำเร็จ — ใช้รายชื่อเริ่มต้นชั่วคราว','er');
     console.warn('GM tables not found, using empty arrays:', e.message);
   }
 }
 
-// ── merge BLD เดิม + gm_buildings ให้ renderForm ใช้ ─────
+// ── helper ──────────────────────────────────────────────
+function gmQ(s){ return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;'); } // ใส่ใน onclick='...'
+function gmH(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }  // ใส่ใน value="..."
+async function gmPatchWhere(table, filter, body){
+  const r = await fetch(SUPA+'/rest/v1/'+table+'?'+filter, {method:'PATCH', headers:{...H,'Prefer':'return=minimal'}, body:JSON.stringify(body)});
+  if(!r.ok) throw new Error('HTTP '+r.status);
+}
+const gmBldManaged = sys => gmBuildings.some(b=>b.system_type===sys) || gmBldTomb.some(b=>b.system_type===sys);
+const gmFlManaged  = bld => gmFloors.some(f=>f.building===bld)     || gmFlTomb.some(f=>f.building===bld);
+
+// ── รายชื่ออาคารสำหรับหน้าบันทึก ─────────────────────────
+// ระบบที่อยู่ใน Admin แล้ว → ใช้รายการ Admin (เฉพาะที่เปิด ตามลำดับ) / ยังไม่เคยนำเข้า → ค่าเริ่มต้น
 function gmGetBuildings(sys){
-  const base = BLD[sys]||[];
-  const extra = gmBuildings.filter(b=>b.system_type===sys && b.active).map(b=>b.name);
-  // deduplicate — extra เท่านั้นที่อาจซ้ำกับ base
-  const seen = new Set(base);
-  return [...base, ...extra.filter(n=>!seen.has(n))];
+  if(gmBldManaged(sys)) return gmBuildings.filter(b=>b.system_type===sys && b.active).map(b=>b.name);
+  return [...(BLD[sys]||[])];
 }
 
-// ── merge ALFLOORS เดิม + gm_floors ให้ onAlBldChange ใช้ ─
+// ── รายชื่อชั้น/แผนกสำหรับหน้าบันทึก (หลักการเดียวกับอาคาร) ─
 function gmGetFloors(building){
-  const base = ALFLOORS[building]||[];
-  const extra = gmFloors.filter(f=>f.building===building && f.active).map(f=>f.floor_name);
+  if(gmFlManaged(building)) return gmFloors.filter(f=>f.building===building && f.active).map(f=>f.floor_name);
+  return [...(ALFLOORS[building]||[])];
+}
+
+// ── อาคาร Area Alarm ที่ใช้ในส่วนจัดการชั้น/แผนก ────────
+// = อาคาร Area Alarm ทั้งหมดใน Admin (รวมที่ปิด) + อาคารที่มีชั้นค้างอยู่แต่ไม่อยู่ในรายการ
+function gmAlarmBuildings(){
+  const base = gmBldManaged('area_alarm')
+    ? gmBuildings.filter(b=>b.system_type==='area_alarm').map(b=>b.name)
+    : [...(BLD.area_alarm||[])];
   const seen = new Set(base);
-  return [...base, ...extra.filter(n=>!seen.has(n))];
+  gmFloors.forEach(f=>{ if(!seen.has(f.building)){ seen.add(f.building); base.push(f.building); } });
+  return base;
+}
+
+// ── dropdown กรองอาคาร (แท็บข้อมูลทั้งหมด) ───────────────
+// อาคารที่เปิด ตามลำดับ Admin + กลุ่ม "ข้อมูลเก่า" = ชื่อที่ปิด/ลบ/เปลี่ยนแล้ว แต่ยังมีข้อมูลบันทึกอยู่จริง
+// ต่อท้ายตัวเลือกเดิมเสมอ (ไม่ล้าง) เพื่อไม่ทับค่าที่เลือกไว้แล้ว เช่นจากลิงก์ QR
+async function gmFillBldFilter(sys){
+  await gmLoadAll();
+  const sel=document.getElementById('f-bld');
+  if(!sel || curSys!==sys) return;
+  const has=()=>new Set([...sel.options].map(o=>o.value));
+  const opt=b=>`<option value="${gmH(b)}">${gmH(b)}</option>`;
+  const active=gmGetBuildings(sys);
+  let h=has();
+  sel.insertAdjacentHTML('beforeend', active.filter(b=>!h.has(b)).map(opt).join(''));
+  const cands=[...new Set([
+    ...gmBuildings.filter(b=>b.system_type===sys && !b.active).map(b=>b.name),
+    ...gmBldTomb.filter(b=>b.system_type===sys).map(b=>b.name),
+    ...(BLD[sys]||[]),
+  ])].filter(n=>!active.includes(n));
+  if(!cands.length) return;
+  const counts=await Promise.all(cands.map(n=>gmRecCount(gmRecFilter(sys,n)).catch(()=>0)));
+  if(curSys!==sys) return;                       // ผู้ใช้เปลี่ยนหน้าไปแล้ว
+  h=has();
+  const old=cands.filter((n,i)=>counts[i]>0 && !h.has(n));
+  if(old.length) sel.insertAdjacentHTML('beforeend', `<optgroup label="ข้อมูลเก่า (ปิด/ลบ/เปลี่ยนชื่อแล้ว)">${old.map(opt).join('')}</optgroup>`);
+}
+
+// ── จัดเลข sort_order ใหม่ 0..n-1 ตามลำดับใน list แล้วบันทึกเฉพาะที่เปลี่ยน ─
+async function gmReorder(table, list){
+  const ups=[];
+  list.forEach((it,i)=>{ if(it.sort_order!==i){ it.sort_order=i; ups.push(gmPatch(table,it.id,{sort_order:i})); } });
+  await Promise.all(ups);
+}
+
+// ── นำเข้าค่าเริ่มต้นอัตโนมัติ: เฉพาะกลุ่มที่ยังไม่เคยอยู่ใน Admin ─
+// ผลลัพธ์ในหน้าบันทึกเหมือนเดิมทุกอย่าง แต่ทุกรายการจะแก้/ปิด/เลื่อน/ลบ ได้จาก Admin
+async function gmAutoImport(){
+  if(!gmTablesOk) return;
+  let n=0;
+  try{
+    const bRows=[];
+    Object.keys(BLD).forEach(sys=>{
+      if(gmBldManaged(sys)) return;
+      (BLD[sys]||[]).forEach((name,i)=>bRows.push({system_type:sys, name, active:true, sort_order:i}));
+    });
+    if(bRows.length){ const res=await gmPost('gm_buildings', bRows); gmBuildings.push(...res); n+=res.length; }
+    const fRows=[];
+    gmAlarmBuildings().forEach(bld=>{
+      if(gmFlManaged(bld)) return;
+      (ALFLOORS[bld]||[]).forEach((floor_name,i)=>fRows.push({building:bld, floor_name, active:true, sort_order:i}));
+    });
+    if(fRows.length){ const res=await gmPost('gm_floors', fRows); gmFloors.push(...res); n+=res.length; }
+    if(n) toast(`นำเข้าข้อมูลเริ่มต้น ${n} รายการ — แก้ไขได้ทั้งหมดใน Admin`,'ok');
+  }catch(e){ toast('นำเข้าข้อมูลเริ่มต้นไม่สำเร็จ: '+e.message,'er'); }
 }
 
 // ── merge Inspectors สำหรับ datalist ────────────────────
@@ -2137,58 +2531,205 @@ function gmRenderInspectors(){
   const el = document.getElementById('gm-insp-list');
   if(!el) return;
   if(!gmInspectors.length){ el.innerHTML='<div class="gm-empty">ยังไม่มีรายชื่อ — เพิ่มด้านล่าง</div>'; return; }
-  el.innerHTML = gmInspectors.map(item=>`
-    <div class="gm-item${item.active?'':' inactive'}">
-      <span class="gm-name">${item.active?'👤':'○'} ${item.name}</span>
-      <button class="gm-btn t" onclick="gmToggleInspector('${item.id}',${item.active})">${item.active?'ปิด':'เปิด'}</button>
+  el.innerHTML = gmInspectors.map((item,idx)=>`
+    <div>
+      <div class="gm-item${item.active?'':' inactive'}">
+        <div class="gm-move-btns">
+          <button class="gm-mv" onclick="gmMoveInspector(${idx},-1)" ${idx===0?'disabled':''} title="เลื่อนขึ้น">▲</button>
+          <button class="gm-mv" onclick="gmMoveInspector(${idx},1)" ${idx===gmInspectors.length-1?'disabled':''} title="เลื่อนลง">▼</button>
+        </div>
+        <span class="gm-name">${item.active?'👤':'○'} ${item.name}</span>
+        <span class="gm-status-badge ${item.active?'act':'off'}">${item.active?'ใช้งาน':'ปิด'}</span>
+        <button class="gm-btn e" onclick="gmStartEditInspector('${item.id}')">✏️ แก้ไข</button>
+        <button class="gm-btn t" onclick="gmToggleInspector('${item.id}',${item.active})">${item.active?'⊘ ปิด':'✓ เปิด'}</button>
+        <button class="gm-btn d" onclick="gmDeleteInspector('${item.id}','${gmQ(item.name)}')">🗑️</button>
+      </div>
+      <div class="gm-edit-row" id="gm-insp-edit-${item.id}">
+        <input type="text" value="${gmH(item.name)}" id="gm-insp-val-${item.id}" placeholder="ชื่อใหม่">
+        <button class="gm-btn e" onclick="gmSaveInspector('${item.id}')">💾 บันทึก</button>
+        <button class="gm-btn" onclick="document.getElementById('gm-insp-edit-${item.id}').classList.remove('show')">ยกเลิก</button>
+      </div>
     </div>`).join('');
+}
+
+// แถว "ค่าเริ่มต้นที่ยังไม่ได้นำเข้า" (เกิดจากการนำเข้าทีละรายการในเวอร์ชันก่อน)
+function gmPendingRow(icon, name, importJs, dismissJs){
+  return `<div class="gm-item" style="opacity:.6">
+    <div class="gm-move-btns"><button class="gm-mv" disabled>▲</button><button class="gm-mv" disabled>▼</button></div>
+    <span class="gm-name">${icon} ${name}</span>
+    <span class="gm-status-badge off">ไม่แสดงในหน้าบันทึก</span>
+    <button class="gm-btn e" onclick="${importJs}">📥 นำเข้า</button>
+    <button class="gm-btn d" onclick="${dismissJs}" title="ลบออกถาวร">🗑️</button>
+  </div>`;
 }
 
 function gmRenderBuildings(){
   const el = document.getElementById('gm-bld-list');
   if(!el) return;
-  if(!gmBuildings.length){ el.innerHTML='<div class="gm-empty">ยังไม่มีอาคารเพิ่มเติม — เพิ่มด้านล่าง</div>'; return; }
-  el.innerHTML = gmBuildings.map(item=>`
-    <div class="gm-item${item.active?'':' inactive'}">
-      <span class="gm-name">🏢 ${item.name}</span>
-      <span class="gm-sys">${SYS[item.system_type]?.ic||''} ${SYS[item.system_type]?.l||item.system_type}</span>
-      <button class="gm-btn t" onclick="gmToggleBuilding('${item.id}',${item.active})">${item.active?'ปิด':'เปิด'}</button>
-    </div>`).join('');
+  const filterSys = document.getElementById('gm-bld-filter')?.value||'';
+  const allSys = [...new Set([...gmSysKeys(true), ...Object.keys(BLD), ...gmBuildings.map(b=>b.system_type)])];
+  const sysList = filterSys ? [filterSys] : allSys;
+  let html='';
+  sysList.forEach(sys=>{
+    const s=SYS[sys]||{ic:'🏢',l:sys};
+    const managed = gmBldManaged(sys);
+    const dbItems = gmBuildings.filter(b=>b.system_type===sys);
+    const known = new Set([...dbItems.map(b=>b.name), ...gmBldTomb.filter(b=>b.system_type===sys).map(b=>b.name)]);
+    // ระบบที่ยังไม่อยู่ใน Admin (ตารางยังไม่พร้อม/นำเข้าไม่สำเร็จ) → แสดงค่าเริ่มต้นแบบอ่านอย่างเดียว
+    const defaults = managed ? (BLD[sys]||[]).filter(n=>!known.has(n)) : (BLD[sys]||[]);
+    const total = defaults.length + dbItems.length;
+    if(!total){
+      if(filterSys || s.custom) html+=`<div class="gm-group"><div class="gm-group-hd">${s.ic} ${s.l} <span class="gm-group-cnt">0 รายการ</span></div><div class="gm-empty">ยังไม่มีอาคารในระบบนี้ — เลือกระบบนี้ด้านบนแล้วกด + เพิ่ม</div></div>`;
+      return;
+    }
+    html+=`<div class="gm-group">
+      <div class="gm-group-hd">${s.ic} ${s.l} <span class="gm-group-cnt">${dbItems.filter(b=>b.active).length}/${total} ใช้งาน</span></div>`;
+    defaults.forEach(name=>{
+      html += managed
+        ? gmPendingRow('🏢', name, `gmImportDefaultBuilding('${sys}','${gmQ(name)}')`, `gmDismissDefaultBuilding('${sys}','${gmQ(name)}')`)
+        : `<div class="gm-item" style="opacity:.6"><span class="gm-name">🏢 ${name}</span><span class="gm-status-badge act">ค่าเริ่มต้น</span></div>`;
+    });
+    dbItems.forEach((item,idx)=>{
+      html+=`<div>
+        <div class="gm-item${item.active?'':' inactive'}">
+          <div class="gm-move-btns">
+            <button class="gm-mv" onclick="gmMoveBuilding('${sys}',${idx},-1)" ${idx===0?'disabled':''} title="เลื่อนขึ้น">▲</button>
+            <button class="gm-mv" onclick="gmMoveBuilding('${sys}',${idx},1)" ${idx===dbItems.length-1?'disabled':''} title="เลื่อนลง">▼</button>
+          </div>
+          <span class="gm-name">🏢 ${item.name}</span>
+          <span class="gm-status-badge ${item.active?'act':'off'}">${item.active?'ใช้งาน':'ปิด'}</span>
+          <button class="gm-btn e" onclick="gmStartEditBuilding('${item.id}')">✏️ แก้ไข</button>
+          <button class="gm-btn t" onclick="gmToggleBuilding('${item.id}',${item.active})">${item.active?'⊘ ปิด':'✓ เปิด'}</button>
+          <button class="gm-btn d" onclick="gmDeleteBuilding('${item.id}','${gmQ(item.name)}')">🗑️</button>
+        </div>
+        <div class="gm-edit-row" id="gm-bld-edit-${item.id}">
+          <input type="text" value="${gmH(item.name)}" id="gm-bld-val-${item.id}" placeholder="ชื่ออาคารใหม่">
+          <button class="gm-btn e" onclick="gmSaveBuilding('${item.id}')">💾 บันทึก</button>
+          <button class="gm-btn" onclick="document.getElementById('gm-bld-edit-${item.id}').classList.remove('show')">ยกเลิก</button>
+        </div>
+      </div>`;
+    });
+    html+=`</div>`;
+  });
+  el.innerHTML=html||'<div class="gm-empty">ยังไม่มีอาคาร — เพิ่มด้านบน</div>';
 }
 
 function gmRenderFloors(){
-  const bld = document.getElementById('gm-fl-bld')?.value||'';
-  const el  = document.getElementById('gm-fl-list');
+  const el = document.getElementById('gm-fl-list');
   if(!el) return;
-  if(!bld){ el.innerHTML='<div class="gm-empty">เลือกอาคารก่อน</div>'; return; }
-  const items = gmFloors.filter(f=>f.building===bld);
-  if(!items.length){ el.innerHTML='<div class="gm-empty">ยังไม่มีชั้น/แผนกเพิ่มเติม</div>'; return; }
-  el.innerHTML = items.map(item=>`
-    <div class="gm-item${item.active?'':' inactive'}">
-      <span class="gm-name">${item.active?'🏥':'○'} ${item.floor_name}</span>
-      <button class="gm-btn t" onclick="gmToggleFloor('${item.id}',${item.active})">${item.active?'ปิด':'เปิด'}</button>
-      <button class="gm-btn d" onclick="gmDeleteFloor('${item.id}','${item.floor_name.replace(/'/g,"\\'")}')">ลบ</button>
-    </div>`).join('');
+  const selBld = document.getElementById('gm-fl-bld')?.value||'';
+  const blds = gmAlarmBuildings();
+  const alarmSet = new Set(gmBldManaged('area_alarm')
+    ? gmBuildings.filter(b=>b.system_type==='area_alarm').map(b=>b.name) : (BLD.area_alarm||[]));
+  const list = selBld ? blds.filter(b=>b===selBld) : blds;
+  let html='';
+  list.forEach(bld=>{
+    const bi = blds.indexOf(bld);               // ใช้เป็น id ของช่องแก้ชื่ออาคาร
+    const managed = gmFlManaged(bld);
+    const dbItems = gmFloors.filter(f=>f.building===bld);
+    const known = new Set([...dbItems.map(f=>f.floor_name), ...gmFlTomb.filter(f=>f.building===bld).map(f=>f.floor_name)]);
+    const defaults = managed ? (ALFLOORS[bld]||[]).filter(n=>!known.has(n)) : (ALFLOORS[bld]||[]);
+    const total = defaults.length + dbItems.length;
+    const bldRow = gmBuildings.find(b=>b.system_type==='area_alarm' && b.name===bld);
+    const note = !alarmSet.has(bld) ? ' <span style="color:var(--red);text-transform:none">(ไม่อยู่ในรายการอาคาร Area Alarm)</span>'
+               : (bldRow && !bldRow.active ? ' <span style="text-transform:none">(อาคารปิดอยู่)</span>' : '');
+    html+=`<div class="gm-group">
+      <div class="gm-group-hd">🏢 ${bld}${note}
+        <button class="gm-btn e" style="margin-left:8px;text-transform:none" onclick="gmStartEditAlarmBld(${bi})">✏️ แก้ชื่ออาคาร</button>
+        <span class="gm-group-cnt">${dbItems.filter(f=>f.active).length}/${total} ใช้งาน</span></div>
+      <div class="gm-edit-row" id="gm-flb-edit-${bi}">
+        <input type="text" value="${gmH(bld)}" id="gm-flb-val-${bi}" placeholder="ชื่ออาคารใหม่">
+        <button class="gm-btn e" onclick="gmSaveAlarmBld('${gmQ(bld)}',${bi})">💾 บันทึก</button>
+        <button class="gm-btn" onclick="document.getElementById('gm-flb-edit-${bi}').classList.remove('show')">ยกเลิก</button>
+      </div>`;
+    if(!total) html+=`<div class="gm-empty">ยังไม่มีชั้น/แผนก — เลือกอาคารนี้ด้านบนแล้วกด + เพิ่ม</div>`;
+    defaults.forEach(name=>{
+      html += managed
+        ? gmPendingRow('🏥', name, `gmImportDefaultFloor('${gmQ(bld)}','${gmQ(name)}')`, `gmDismissDefaultFloor('${gmQ(bld)}','${gmQ(name)}')`)
+        : `<div class="gm-item" style="opacity:.6"><span class="gm-name">🏥 ${name}</span><span class="gm-status-badge act">ค่าเริ่มต้น</span></div>`;
+    });
+    dbItems.forEach((item,idx)=>{
+      html+=`<div>
+        <div class="gm-item${item.active?'':' inactive'}">
+          <div class="gm-move-btns">
+            <button class="gm-mv" onclick="gmMoveFloor('${gmQ(bld)}',${idx},-1)" ${idx===0?'disabled':''} title="เลื่อนขึ้น">▲</button>
+            <button class="gm-mv" onclick="gmMoveFloor('${gmQ(bld)}',${idx},1)" ${idx===dbItems.length-1?'disabled':''} title="เลื่อนลง">▼</button>
+          </div>
+          <span class="gm-name">${item.active?'🏥':'○'} ${item.floor_name}</span>
+          <span class="gm-status-badge ${item.active?'act':'off'}">${item.active?'ใช้งาน':'ปิด'}</span>
+          <button class="gm-btn e" onclick="gmStartEditFloor('${item.id}')">✏️ แก้ไข</button>
+          <button class="gm-btn t" onclick="gmToggleFloor('${item.id}',${item.active})">${item.active?'⊘ ปิด':'✓ เปิด'}</button>
+          <button class="gm-btn d" onclick="gmDeleteFloor('${item.id}','${gmQ(item.floor_name)}')">🗑️</button>
+        </div>
+        <div class="gm-edit-row" id="gm-fl-edit-${item.id}">
+          <input type="text" value="${gmH(item.floor_name)}" id="gm-fl-val-${item.id}" placeholder="ชื่อชั้น/แผนกใหม่">
+          <button class="gm-btn e" onclick="gmSaveFloor('${item.id}')">💾 บันทึก</button>
+          <button class="gm-btn" onclick="document.getElementById('gm-fl-edit-${item.id}').classList.remove('show')">ยกเลิก</button>
+        </div>
+      </div>`;
+    });
+    html+=`</div>`;
+  });
+  el.innerHTML=html||'<div class="gm-empty">ยังไม่มีอาคาร Area Alarm</div>';
 }
 
 // populate area alarm building dropdown in admin
 function gmPopulateFloorBldSelect(){
   const sel = document.getElementById('gm-fl-bld');
   if(!sel) return;
-  const blds = BLD.area_alarm||[];
-  sel.innerHTML = '<option value="">-- เลือกอาคาร --</option>'
-    + blds.map(b=>`<option value="${b}">${b}</option>`).join('');
+  const blds = gmAlarmBuildings();
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">-- ทั้งหมด --</option>'
+    + blds.map(b=>`<option value="${gmH(b)}" ${b===cur?'selected':''}>${b}</option>`).join('');
+  gmRenderFloors();
 }
 
 function gmLoadFloors(){
   gmRenderFloors();
 }
 
+// ════════ IMPORT / DISMISS ค่าเริ่มต้นที่ค้าง ════════
+
+async function gmImportDefaultBuilding(sys, name){
+  try{
+    const res = await gmPost('gm_buildings',{system_type:sys, name, active:true, sort_order:gmBuildings.filter(b=>b.system_type===sys).length});
+    gmBuildings.push(res[0]);
+    gmRenderBuildings(); gmPopulateFloorBldSelect();
+    toast('นำเข้าแล้ว — แสดงในหน้าบันทึก','ok');
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+async function gmDismissDefaultBuilding(sys, name){
+  if(!await gmConfirmDel(`อาคาร "${gmH(name)}"`,'จะไม่แสดงใน Admin และหน้าบันทึกอีก (เพิ่มกลับได้ด้วยปุ่ม + เพิ่ม)')) return;
+  try{
+    const res = await gmPost('gm_buildings',{system_type:sys, name, active:false, sort_order:-1});
+    gmBldTomb.push(res[0]);
+    gmRenderBuildings(); gmPopulateFloorBldSelect();
+    toast('ลบแล้ว','ok');
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+async function gmImportDefaultFloor(bld, name){
+  try{
+    const res = await gmPost('gm_floors',{building:bld, floor_name:name, active:true, sort_order:gmFloors.filter(f=>f.building===bld).length});
+    gmFloors.push(res[0]);
+    gmRenderFloors();
+    toast('นำเข้าแล้ว — แสดงในหน้าบันทึก','ok');
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+async function gmDismissDefaultFloor(bld, name){
+  if(!await gmConfirmDel(`ชั้น/แผนก "${gmH(name)}"`,'จะไม่แสดงใน Admin และหน้าบันทึกอีก (เพิ่มกลับได้ด้วยปุ่ม + เพิ่ม)')) return;
+  try{
+    const res = await gmPost('gm_floors',{building:bld, floor_name:name, active:false, sort_order:-1});
+    gmFlTomb.push(res[0]);
+    gmRenderFloors();
+    toast('ลบแล้ว','ok');
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+
 // ════════ ADD ════════
 
 async function gmAddInspector(){
   const inp = document.getElementById('gm-insp-input');
-  const name = (inp?.value||'').trim();
+  const name = gmClean(inp?.value);
   if(!name){ toast('กรุณากรอกชื่อ','er'); return; }
   if(gmInspectors.some(i=>i.name===name)){ toast('ชื่อนี้มีอยู่แล้ว','er'); return; }
   try{
@@ -2202,15 +2743,28 @@ async function gmAddInspector(){
 
 async function gmAddBuilding(){
   const sys  = (document.getElementById('gm-bld-sys')?.value||'').trim();
-  const name = (document.getElementById('gm-bld-input')?.value||'').trim();
+  const name = gmClean(document.getElementById('gm-bld-input')?.value);
   if(!sys)  { toast('กรุณาเลือกระบบ','er'); return; }
   if(!name) { toast('กรุณากรอกชื่ออาคาร','er'); return; }
-  const all = gmGetBuildings(sys);
-  if(all.includes(name)){ toast('ชื่ออาคารนี้มีอยู่แล้ว','er'); return; }
+  const db = gmBuildings.filter(b=>b.system_type===sys);
+  if(db.some(b=>b.name===name)){ toast('ชื่ออาคารนี้มีอยู่แล้ว','er'); return; }
   try{
-    const res = await gmPost('gm_buildings',{system_type:sys, name, active:true, sort_order:gmBuildings.filter(b=>b.system_type===sys).length});
-    gmBuildings.push(res[0]);
-    gmRenderBuildings();
+    const tomb = gmBldTomb.find(b=>b.system_type===sys && b.name===name);
+    if(tomb){
+      // เคยลบไปแล้ว → ใช้แถวเดิมกลับมา
+      await gmPatch('gm_buildings', tomb.id, {active:true, sort_order:db.length});
+      tomb.active=true; tomb.sort_order=db.length;
+      gmBldTomb = gmBldTomb.filter(b=>b!==tomb);
+      gmBuildings.push(tomb);
+    }else{
+      // ระบบที่ยังไม่อยู่ใน Admin → นำเข้าค่าเริ่มต้นก่อน ไม่ให้อาคารเดิมหายจากหน้าบันทึก
+      const rows = [];
+      if(!gmBldManaged(sys)) (BLD[sys]||[]).filter(n=>n!==name).forEach(n=>rows.push({system_type:sys, name:n, active:true, sort_order:rows.length}));
+      rows.push({system_type:sys, name, active:true, sort_order:db.length+rows.length});
+      const res = await gmPost('gm_buildings', rows);
+      gmBuildings.push(...res);
+    }
+    gmRenderBuildings(); gmPopulateFloorBldSelect();
     const inp = document.getElementById('gm-bld-input');
     if(inp) inp.value='';
     toast('เพิ่มอาคารแล้ว','ok');
@@ -2219,14 +2773,25 @@ async function gmAddBuilding(){
 
 async function gmAddFloor(){
   const bld  = (document.getElementById('gm-fl-bld')?.value||'').trim();
-  const name = (document.getElementById('gm-fl-input')?.value||'').trim();
+  const name = gmClean(document.getElementById('gm-fl-input')?.value);
   if(!bld)  { toast('กรุณาเลือกอาคาร','er'); return; }
   if(!name) { toast('กรุณากรอกชั้น/แผนก','er'); return; }
-  const all = gmGetFloors(bld);
-  if(all.includes(name)){ toast('ชื่อนี้มีอยู่แล้ว','er'); return; }
+  const db = gmFloors.filter(f=>f.building===bld);
+  if(db.some(f=>f.floor_name===name)){ toast('ชื่อนี้มีอยู่แล้ว','er'); return; }
   try{
-    const res = await gmPost('gm_floors',{building:bld, floor_name:name, active:true, sort_order:gmFloors.filter(f=>f.building===bld).length});
-    gmFloors.push(res[0]);
+    const tomb = gmFlTomb.find(f=>f.building===bld && f.floor_name===name);
+    if(tomb){
+      await gmPatch('gm_floors', tomb.id, {active:true, sort_order:db.length});
+      tomb.active=true; tomb.sort_order=db.length;
+      gmFlTomb = gmFlTomb.filter(f=>f!==tomb);
+      gmFloors.push(tomb);
+    }else{
+      const rows = [];
+      if(!gmFlManaged(bld)) (ALFLOORS[bld]||[]).filter(n=>n!==name).forEach(n=>rows.push({building:bld, floor_name:n, active:true, sort_order:rows.length}));
+      rows.push({building:bld, floor_name:name, active:true, sort_order:db.length+rows.length});
+      const res = await gmPost('gm_floors', rows);
+      gmFloors.push(...res);
+    }
     gmRenderFloors();
     const inp = document.getElementById('gm-fl-input');
     if(inp) inp.value='';
@@ -2251,8 +2816,8 @@ async function gmToggleBuilding(id, curActive){
     await gmPatch('gm_buildings', id, {active:!curActive});
     const item = gmBuildings.find(b=>b.id===id);
     if(item) item.active=!curActive;
-    gmRenderBuildings();
-    toast(curActive?'ปิดอาคารแล้ว':'เปิดอาคารแล้ว','ok');
+    gmRenderBuildings(); gmRenderFloors();
+    toast(curActive?'ปิดอาคารแล้ว — ไม่แสดงในหน้าบันทึก':'เปิดอาคารแล้ว — แสดงในหน้าบันทึก','ok');
   }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
 }
 
@@ -2262,21 +2827,940 @@ async function gmToggleFloor(id, curActive){
     const item = gmFloors.find(f=>f.id===id);
     if(item) item.active=!curActive;
     gmRenderFloors();
-    toast(curActive?'ปิดแล้ว':'เปิดแล้ว','ok');
+    toast(curActive?'ปิดแล้ว — ไม่แสดงในหน้าบันทึก':'เปิดแล้ว — แสดงในหน้าบันทึก','ok');
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+
+// ════════ EDIT ════════
+
+function gmStartEditInspector(id){
+  document.getElementById('gm-insp-edit-'+id)?.classList.add('show');
+  document.getElementById('gm-insp-val-'+id)?.focus();
+}
+async function gmSaveInspector(id){
+  const inp = document.getElementById('gm-insp-val-'+id);
+  const name = gmClean(inp?.value);
+  if(!name){ toast('กรุณากรอกชื่อ','er'); return; }
+  if(gmInspectors.some(i=>i.id!==id && i.name===name)){ toast('ชื่อนี้มีอยู่แล้ว','er'); return; }
+  try{
+    await gmPatch('gm_inspectors', id, {name});
+    const item = gmInspectors.find(i=>i.id===id);
+    if(item) item.name=name;
+    gmRenderInspectors();
+    toast('แก้ไขชื่อแล้ว','ok');
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+
+function gmStartEditBuilding(id){
+  document.getElementById('gm-bld-edit-'+id)?.classList.add('show');
+  document.getElementById('gm-bld-val-'+id)?.focus();
+}
+
+// ════════ เปลี่ยนชื่อในข้อมูลที่บันทึกไปแล้ว (inspection_records) ════════
+// ลำดับงาน: นับ → ถาม → แก้ข้อมูลเก่า → แก้ชื่อใน Admin
+// กันข้อมูลรวมกัน: ถ้าชื่อใหม่มีข้อมูลอยู่แล้ว จะไม่ยอมแก้ข้อมูลเก่า
+
+let _gmAskRes=null, _gmAskVals=[], _gmBusy=false;
+function gmAsk(title, html, btns){
+  return new Promise(res=>{
+    if(_gmAskRes) _gmAskRes(null);            // ปิดคำถามค้าง (ถ้ามี) เป็นยกเลิก
+    _gmAskRes=res; _gmAskVals=btns.map(b=>b.val);
+    document.getElementById('gmask-title').textContent=title;
+    document.getElementById('gmask-body').innerHTML = html
+      + '<div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:16px">'
+      + btns.map((b,i)=>`<button class="btn ${b.cls||'btn-o'}" onclick="gmAskDone(${i})">${b.label}</button>`).join('')
+      + '</div>';
+    document.getElementById('ov-gmask').classList.remove('h');
+  });
+}
+function gmAskDone(i){
+  document.getElementById('ov-gmask').classList.add('h');
+  const r=_gmAskRes; _gmAskRes=null;
+  if(r) r(i<0 ? null : _gmAskVals[i]);
+}
+
+// เตือนก่อนลบ — ใช้กับทุกปุ่มลบ → true เมื่อกดยืนยันลบเท่านั้น
+async function gmConfirmDel(what, detail){
+  const v = await gmAsk('⚠️ ยืนยันการลบ',
+    `<div style="font-size:14px">ต้องการลบ <b>${what}</b> ใช่ไหม?</div>
+     ${detail?`<div style="background:var(--red-lt);color:var(--red);border:1px solid #f3c6c1;border-radius:6px;padding:10px 12px;margin-top:10px;font-size:12px">${detail}</div>`:''}`,
+    [{label:'ยกเลิก',val:false},{label:'🗑️ ยืนยันลบ',cls:'btn-d',val:true}]);
+  return v===true;
+}
+
+// filter ของ inspection_records ตามระบบ/อาคาร (และชั้น ถ้าระบุ)
+function gmRecFilter(sys, bld, floor){
+  let f='system_type=eq.'+encodeURIComponent(sys)+'&building=eq.'+encodeURIComponent(bld);
+  if(floor!==undefined) f+='&'+encodeURIComponent('data->>floor_location')+'=eq.'+encodeURIComponent(floor);
+  return f;
+}
+async function gmRecCount(filter){
+  const r=await fetch(SUPA+'/rest/v1/inspection_records?select=id&'+filter,{method:'HEAD',headers:getH({'Prefer':'count=exact'})});
+  if(!r.ok) throw new Error('นับข้อมูลเก่าไม่สำเร็จ (HTTP '+r.status+')');
+  const m=(r.headers.get('content-range')||'').match(/\/(\d+)$/);
+  return m?parseInt(m[1]):0;
+}
+
+// ถามผู้ใช้ → 'all' (แก้ข้อมูลเก่าด้วย) | 'admin' (เฉพาะ Admin) | null (ยกเลิก)
+async function gmAskRecords(kind, fOld, fNew, oldName, newName){
+  const [nOld, nNew] = await Promise.all([gmRecCount(fOld), gmRecCount(fNew)]);
+  if(!nOld) return {choice:'admin', n:0};     // ไม่มีข้อมูลเก่า → เปลี่ยนใน Admin อย่างเดียว ไม่ต้องถาม
+  const o=gmH(oldName), n=gmH(newName);
+  if(nNew){
+    const c = await gmAsk('เปลี่ยนชื่อ'+kind,
+      `ชื่อเดิม "<b>${o}</b>" มีข้อมูลที่บันทึกไว้ <b>${nOld.toLocaleString()}</b> รายการ<br>
+       ชื่อใหม่ "<b>${n}</b>" มีข้อมูลอยู่แล้ว <b>${nNew.toLocaleString()}</b> รายการ<br>
+       <span style="color:var(--red);font-weight:600">⚠️ เปลี่ยนชื่อในข้อมูลเก่าไม่ได้ เพราะข้อมูลสองชื่อจะรวมกันและแยกกลับไม่ได้</span>`,
+      [{label:'ยกเลิก',val:null},{label:'เปลี่ยนเฉพาะใน Admin',cls:'btn-p',val:'admin'}]);
+    return {choice:c, n:nOld};
+  }
+  const c = await gmAsk('เปลี่ยนชื่อ'+kind,
+    `"<b>${o}</b>" → "<b>${n}</b>"<br>
+     พบข้อมูลที่บันทึกไว้ภายใต้ชื่อเดิม <b>${nOld.toLocaleString()}</b> รายการ
+     <div style="background:var(--bg3);border-radius:6px;padding:10px 12px;margin-top:10px;font-size:12px">
+       <b>เปลี่ยนข้อมูลเก่าด้วย</b> — Dashboard / ตัวกรอง / Export รวมเป็นชื่อเดียว (ข้อมูลเก่าจะไม่เหลือชื่อเดิม)<br>
+       <b>เฉพาะใน Admin</b> — ข้อมูลเก่ายังเป็นชื่อเดิม
+     </div>`,
+    [{label:'ยกเลิก',val:null},{label:'เฉพาะใน Admin',val:'admin'},{label:`เปลี่ยนข้อมูลเก่าด้วย (${nOld.toLocaleString()})`,cls:'btn-p',val:'all'}]);
+  return {choice:c, n:nOld};
+}
+
+// เปลี่ยนชื่ออาคารในข้อมูลเก่า — คำสั่งเดียว สำเร็จหรือไม่สำเร็จทั้งก้อน
+async function gmRecRenameBuilding(sys, old, name){
+  const r=await fetch(SUPA+'/rest/v1/inspection_records?select=id&'+gmRecFilter(sys,old),
+    {method:'PATCH',headers:getH({'Prefer':'return=representation'}),body:JSON.stringify({building:name})});
+  if(!r.ok) throw new Error('แก้ข้อมูลเก่าไม่สำเร็จ (HTTP '+r.status+')');
+  return (await r.json()).length;
+}
+
+// เปลี่ยนชื่อชั้นในข้อมูลเก่า (อยู่ใน data.floor_location) — ต้องแก้ทีละรายการ
+async function gmRecRenameFloor(bld, old, name){
+  const f=gmRecFilter('area_alarm', bld, old);
+  let done=0;
+  for(;;){
+    const r=await fetch(SUPA+'/rest/v1/inspection_records?select=id,data&limit=500&'+f,{headers:getH()});
+    if(!r.ok) throw new Error('อ่านข้อมูลเก่าไม่สำเร็จ (HTTP '+r.status+')');
+    const rows=await r.json();
+    if(!rows.length) break;
+    let n=0;
+    for(let i=0;i<rows.length;i+=10){
+      const res=await Promise.all(rows.slice(i,i+10).map(async row=>{
+        const x=await fetch(SUPA+'/rest/v1/inspection_records?select=id&id=eq.'+row.id,
+          {method:'PATCH',headers:getH({'Prefer':'return=representation'}),body:JSON.stringify({data:{...(row.data||{}),floor_location:name}})});
+        if(!x.ok) throw new Error('HTTP '+x.status);
+        return (await x.json()).length;
+      }));
+      n+=res.reduce((a,b)=>a+b,0);
+    }
+    done+=n;
+    if(n<rows.length) throw new Error(`แก้ได้ ${done} รายการ — บางรายการไม่มีสิทธิ์แก้`);
+  }
+  return done;
+}
+
+// เปลี่ยนชื่ออาคาร (ใช้ร่วมกันทั้งส่วนอาคาร และหัวกลุ่มในส่วนชั้น/แผนก)
+//  - ชื่อเดิมเป็นค่าเริ่มต้น → จำไว้ว่าลบแล้ว ไม่ให้กลับมาค้างเป็นรายการรอนำเข้า
+//  - อาคาร Area Alarm → ย้ายชั้น/แผนกทั้งหมดไปอยู่ใต้ชื่อใหม่ด้วย
+async function gmRenameBuilding(item, name){
+  const sys = item.system_type, old = item.name;
+  if(name===old) return true;
+  if(gmBuildings.some(b=>b.id!==item.id && b.system_type===sys && b.name===name)){ toast('ชื่ออาคารนี้มีอยู่แล้ว','er'); return false; }
+  const tombNew = gmBldTomb.find(b=>b.system_type===sys && b.name===name);
+  if(tombNew){ await gmDelete('gm_buildings', tombNew.id); gmBldTomb = gmBldTomb.filter(b=>b!==tombNew); }
+  await gmPatch('gm_buildings', item.id, {name});
+  item.name = name;
+  if((BLD[sys]||[]).includes(old) && !gmBldTomb.some(b=>b.system_type===sys && b.name===old)){
+    const res = await gmPost('gm_buildings',{system_type:sys, name:old, active:false, sort_order:-1});
+    gmBldTomb.push(res[0]);
+  }
+  if(sys==='area_alarm') await gmMoveFloorsToBuilding(old, name);
+  await gmRekeyThbSafe(sys, old, name);
+  return true;
+}
+
+// เกณฑ์รายอาคารผูกกับชื่ออาคาร → เปลี่ยนชื่ออาคารแล้วต้องย้ายเกณฑ์ไปชื่อใหม่ด้วย
+// ระบบเดิมที่ยังไม่ได้ปรับ จะถูกแปลงเป็นแบบปรับหัวข้อ (เนื้อหาเหมือนเดิม) เพื่อเก็บเกณฑ์ภายใต้ชื่อใหม่
+function gmHasThb(sys, bld){ return !!(TH[sys] && TH[sys][bld] && Object.keys(TH[sys][bld]).length); }
+async function gmRekeyThb(sys, old, name){
+  if(!gmHasThb(sys, old) || !SYS[sys]) return false;
+  const fields = (SYS[sys].custom || SYS[sys].gen) ? JSON.parse(JSON.stringify(FIELDS[sys])) : gmEditableFields(sys);
+  fields.forEach(f=>{ delete f._open; if(f.thb && f.thb[old]){ f.thb[name]=f.thb[old]; delete f.thb[old]; } });
+  const cfg=gmSysCfgClone(), o={...(cfg.sys[sys]||{})};
+  o.fields=fields;
+  if(o.next==null){
+    const nums=fields.map(f=>parseInt(String(f.k).replace(/^f/,''))).filter(n=>!isNaN(n));
+    o.next=Math.max(0, ...nums);
+  }
+  cfg.sys[sys]=o;
+  await gmSaveSysCfg(cfg);
+  return true;
+}
+async function gmRekeyThbSafe(sys, old, name){
+  try{ await gmRekeyThb(sys, old, name); }
+  catch(e){ throw new Error('เปลี่ยนชื่ออาคารแล้ว แต่ย้ายเกณฑ์รายอาคารไม่สำเร็จ ('+e.message+') — ตั้งเกณฑ์ของอาคารนี้ใหม่ที่ ⚙️ จัดการระบบ Gas'); }
+}
+
+// ย้ายชั้น/แผนกจากชื่ออาคารเดิม → ชื่อใหม่ (รวมรายการที่ลบไว้)
+async function gmMoveFloorsToBuilding(old, name){
+  const hadFloors = gmFlManaged(old);
+  if(hadFloors){
+    await gmPatchWhere('gm_floors', 'building=eq.'+encodeURIComponent(old), {building:name});
+    gmFloors.forEach(f=>{ if(f.building===old) f.building=name; });
+    gmFlTomb.forEach(f=>{ if(f.building===old) f.building=name; });
+  }else if((ALFLOORS[old]||[]).length){
+    // ยังใช้ชั้นค่าเริ่มต้นอยู่ → นำเข้าภายใต้ชื่อใหม่ ไม่ให้ชั้นหายจากหน้าบันทึก
+    const res = await gmPost('gm_floors', ALFLOORS[old].map((floor_name,i)=>({building:name, floor_name, active:true, sort_order:i})));
+    gmFloors.push(...res);
+  }
+}
+
+// ข้อความสรุปหลังเปลี่ยนชื่อ
+function gmRenameMsg(choice, nRec){
+  return choice==='all'
+    ? `แก้ไขชื่อแล้ว — หน้าบันทึกใช้ชื่อใหม่ และเปลี่ยนข้อมูลเก่า ${nRec.toLocaleString()} รายการ`
+    : 'แก้ไขชื่อแล้ว — หน้าบันทึกใช้ชื่อใหม่';
+}
+
+async function gmSaveBuilding(id){
+  if(_gmBusy) return;
+  const inp = document.getElementById('gm-bld-val-'+id);
+  const name = gmClean(inp?.value);
+  if(!name){ toast('กรุณากรอกชื่ออาคาร','er'); return; }
+  const item = gmBuildings.find(b=>b.id===id);
+  if(!item) return;
+  const sys = item.system_type, old = item.name;
+  if(name===old){ document.getElementById('gm-bld-edit-'+id)?.classList.remove('show'); return; }
+  if(gmBuildings.some(b=>b.id!==id && b.system_type===sys && b.name===name)){ toast('ชื่ออาคารนี้มีอยู่แล้ว','er'); return; }
+  _gmBusy=true;
+  let nRec=0, choice=null;
+  try{
+    ({choice} = await gmAskRecords('อาคาร', gmRecFilter(sys,old), gmRecFilter(sys,name), old, name));
+    if(!choice) return;
+    if(choice==='all') nRec = await gmRecRenameBuilding(sys, old, name);
+    if(!await gmRenameBuilding(item, name)) return;
+    gmRenderBuildings(); gmPopulateFloorBldSelect();
+    toast(gmRenameMsg(choice, nRec),'ok');
+  }catch(e){
+    toast((nRec?`เปลี่ยนข้อมูลเก่า ${nRec} รายการแล้ว แต่ `:'')+'ผิดพลาด: '+e.message+(nRec?' — กดบันทึกชื่อใหม่อีกครั้ง':''),'er');
+  }finally{ _gmBusy=false; }
+}
+
+// แก้ชื่ออาคารจากหัวกลุ่มในส่วนชั้น/แผนก Area Alarm
+function gmStartEditAlarmBld(bi){
+  document.getElementById('gm-flb-edit-'+bi)?.classList.add('show');
+  document.getElementById('gm-flb-val-'+bi)?.focus();
+}
+async function gmSaveAlarmBld(old, bi){
+  if(_gmBusy) return;
+  const name = gmClean(document.getElementById('gm-flb-val-'+bi)?.value);
+  if(!name){ toast('กรุณากรอกชื่ออาคาร','er'); return; }
+  if(name===old){ document.getElementById('gm-flb-edit-'+bi)?.classList.remove('show'); return; }
+  const item = gmBuildings.find(b=>b.system_type==='area_alarm' && b.name===old);
+  if(!item && gmAlarmBuildings().includes(name)){ toast('ชื่ออาคารนี้มีอยู่แล้ว','er'); return; }
+  if(item && gmBuildings.some(b=>b.id!==item.id && b.system_type==='area_alarm' && b.name===name)){ toast('ชื่ออาคารนี้มีอยู่แล้ว','er'); return; }
+  _gmBusy=true;
+  let nRec=0, choice=null;
+  try{
+    ({choice} = await gmAskRecords('อาคาร', gmRecFilter('area_alarm',old), gmRecFilter('area_alarm',name), old, name));
+    if(!choice) return;
+    if(choice==='all') nRec = await gmRecRenameBuilding('area_alarm', old, name);
+    if(item){
+      if(!await gmRenameBuilding(item, name)) return;
+    }else{
+      // อาคารที่มีชั้นค้างแต่ไม่อยู่ในรายการอาคาร Area Alarm → ย้ายชั้นอย่างเดียว
+      await gmMoveFloorsToBuilding(old, name);
+      await gmRekeyThbSafe('area_alarm', old, name);
+    }
+    const sel = document.getElementById('gm-fl-bld');
+    if(sel && sel.value===old) sel.value='';
+    gmRenderBuildings(); gmPopulateFloorBldSelect();
+    toast(gmRenameMsg(choice, nRec),'ok');
+  }catch(e){
+    toast((nRec?`เปลี่ยนข้อมูลเก่า ${nRec} รายการแล้ว แต่ `:'')+'ผิดพลาด: '+e.message+(nRec?' — กดบันทึกชื่อใหม่อีกครั้ง':''),'er');
+  }finally{ _gmBusy=false; }
+}
+
+function gmStartEditFloor(id){
+  document.getElementById('gm-fl-edit-'+id)?.classList.add('show');
+  document.getElementById('gm-fl-val-'+id)?.focus();
+}
+async function gmSaveFloor(id){
+  const inp = document.getElementById('gm-fl-val-'+id);
+  const floor_name = gmClean(inp?.value);
+  if(!floor_name){ toast('กรุณากรอกชื่อ','er'); return; }
+  const item = gmFloors.find(f=>f.id===id);
+  if(!item) return;
+  const bld = item.building, old = item.floor_name;
+  if(floor_name===old){ document.getElementById('gm-fl-edit-'+id)?.classList.remove('show'); return; }
+  if(gmFloors.some(f=>f.id!==id && f.building===bld && f.floor_name===floor_name)){ toast('ชื่อนี้มีอยู่แล้ว','er'); return; }
+  if(_gmBusy) return;
+  _gmBusy=true;
+  let nRec=0, choice=null;
+  try{
+    ({choice} = await gmAskRecords('ชั้น/แผนก', gmRecFilter('area_alarm',bld,old), gmRecFilter('area_alarm',bld,floor_name), old, floor_name));
+    if(!choice) return;
+    if(choice==='all') nRec = await gmRecRenameFloor(bld, old, floor_name);
+    const tombNew = gmFlTomb.find(f=>f.building===bld && f.floor_name===floor_name);
+    if(tombNew){ await gmDelete('gm_floors', tombNew.id); gmFlTomb = gmFlTomb.filter(f=>f!==tombNew); }
+    await gmPatch('gm_floors', id, {floor_name});
+    item.floor_name=floor_name;
+    if((ALFLOORS[bld]||[]).includes(old) && !gmFlTomb.some(f=>f.building===bld && f.floor_name===old)){
+      const res = await gmPost('gm_floors',{building:bld, floor_name:old, active:false, sort_order:-1});
+      gmFlTomb.push(res[0]);
+    }
+    gmRenderFloors();
+    toast(gmRenameMsg(choice, nRec),'ok');
+  }catch(e){
+    toast((nRec?`เปลี่ยนข้อมูลเก่า ${nRec} รายการแล้ว แต่ `:'')+'ผิดพลาด: '+e.message+(nRec?' — กดบันทึกชื่อใหม่อีกครั้ง':''),'er');
+  }finally{ _gmBusy=false; }
+}
+
+// ════════ MOVE (sort_order) ════════
+
+async function gmMoveInspector(idx, dir){
+  const arr = gmInspectors;
+  const ni = idx+dir;
+  if(ni<0||ni>=arr.length) return;
+  [arr[idx],arr[ni]]=[arr[ni],arr[idx]];
+  gmRenderInspectors();
+  try{
+    await Promise.all([
+      gmPatch('gm_inspectors',arr[idx].id,{sort_order:idx}),
+      gmPatch('gm_inspectors',arr[ni].id,{sort_order:ni}),
+    ]);
+    arr[idx].sort_order=idx; arr[ni].sort_order=ni;
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+
+async function gmMoveBuilding(sys, idx, dir){
+  const filtered = gmBuildings.filter(b=>b.system_type===sys);
+  const ni = idx+dir;
+  if(ni<0||ni>=filtered.length) return;
+  // swap ใน gmBuildings global โดยหา index จริงจาก id
+  const giA = gmBuildings.findIndex(b=>b.id===filtered[idx].id);
+  const giB = gmBuildings.findIndex(b=>b.id===filtered[ni].id);
+  [gmBuildings[giA], gmBuildings[giB]] = [gmBuildings[giB], gmBuildings[giA]];
+  gmRenderBuildings();
+  if(sys==='area_alarm') gmPopulateFloorBldSelect();
+  try{
+    await gmReorder('gm_buildings', gmBuildings.filter(b=>b.system_type===sys));
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+
+async function gmMoveFloor(bld, idx, dir){
+  const filtered = gmFloors.filter(f=>f.building===bld);
+  const ni = idx+dir;
+  if(ni<0||ni>=filtered.length) return;
+  const giA = gmFloors.findIndex(f=>f.id===filtered[idx].id);
+  const giB = gmFloors.findIndex(f=>f.id===filtered[ni].id);
+  [gmFloors[giA], gmFloors[giB]] = [gmFloors[giB], gmFloors[giA]];
+  gmRenderFloors();
+  try{
+    await gmReorder('gm_floors', gmFloors.filter(f=>f.building===bld));
   }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
 }
 
 // ════════ DELETE ════════
 
-async function gmDeleteFloor(id, name){
-  if(!confirm(`ลบ "${name}" ออก?\n⚠️ ถ้ามีข้อมูลเก่าใช้ชื่อนี้ — จะยังแสดงเป็นข้อความปกติ`)) return;
+async function gmDeleteInspector(id, name){
+  if(!await gmConfirmDel(`ผู้ตรวจสอบ "${gmH(name)}"`,'ข้อมูลที่บันทึกไปแล้วจะยังแสดงชื่อเดิม')) return;
   try{
-    await gmDelete('gm_floors', id);
-    gmFloors = gmFloors.filter(f=>f.id!==id);
-    gmRenderFloors();
+    await gmDelete('gm_inspectors', id);
+    gmInspectors = gmInspectors.filter(i=>i.id!==id);
+    gmRenderInspectors();
     toast('ลบแล้ว','ok');
   }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
 }
+
+// ลบ: ถ้าเป็นชื่อค่าเริ่มต้น → เก็บไว้เป็น "ลบแล้ว" (ไม่ให้กลับมาอีก) / ชื่อที่เพิ่มเอง → ลบจริง
+async function gmDeleteBuilding(id, name){
+  if(!await gmConfirmDel(`อาคาร "${gmH(name)}"`,'จะไม่แสดงในหน้าบันทึก — ข้อมูลที่บันทึกไปแล้วยังแสดงชื่ออาคารเดิม')) return;
+  const item = gmBuildings.find(b=>b.id===id);
+  if(!item) return;
+  try{
+    if((BLD[item.system_type]||[]).includes(item.name)){
+      await gmPatch('gm_buildings', id, {active:false, sort_order:-1});
+      item.active=false; item.sort_order=-1;
+      gmBldTomb.push(item);
+    }else{
+      await gmDelete('gm_buildings', id);
+    }
+    gmBuildings = gmBuildings.filter(b=>b.id!==id);
+    gmRenderBuildings(); gmPopulateFloorBldSelect();
+    toast('ลบแล้ว','ok');
+    await gmReorder('gm_buildings', gmBuildings.filter(b=>b.system_type===item.system_type));
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+
+async function gmDeleteFloor(id, name){
+  if(!await gmConfirmDel(`ชั้น/แผนก "${gmH(name)}"`,'จะไม่แสดงในหน้าบันทึก — ข้อมูลที่บันทึกไปแล้วยังแสดงชื่อเดิม')) return;
+  const item = gmFloors.find(f=>f.id===id);
+  if(!item) return;
+  try{
+    if((ALFLOORS[item.building]||[]).includes(item.floor_name)){
+      await gmPatch('gm_floors', id, {active:false, sort_order:-1});
+      item.active=false; item.sort_order=-1;
+      gmFlTomb.push(item);
+    }else{
+      await gmDelete('gm_floors', id);
+    }
+    gmFloors = gmFloors.filter(f=>f.id!==id);
+    gmRenderFloors();
+    toast('ลบแล้ว','ok');
+    await gmReorder('gm_floors', gmFloors.filter(f=>f.building===item.building));
+  }catch(e){ toast('ผิดพลาด: '+e.message,'er'); }
+}
+
+// ════════════════════════════════════════════════════════
+//  ADMIN — จัดการระบบ Gas + ตัวสร้างแบบฟอร์ม
+// ════════════════════════════════════════════════════════
+function gmClean(s){ return String(s??'').replace(/[<>"'`\\]/g,'').trim(); }
+
+async function gmLoadSystems(){
+  try{
+    const r=await fetch(SUPA+'/rest/v1/gm_config?key=eq.gm_systems&select=key,value',{headers:getH()});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const d=await r.json();
+    if(Array.isArray(d) && d.length){
+      gmSysCfgRow=true;
+      let v=d[0].value;
+      if(typeof v==='string') v=JSON.parse(v);
+      if(v && typeof v==='object') gmApplySysCfg(v);
+    }
+    gmSysLoadOk=true;
+  }catch(e){
+    console.warn('gm_systems:', e.message);
+    if(!gmSysLoadOk) toast('โหลดการตั้งค่าระบบ Gas ไม่สำเร็จ — ใช้ค่าเริ่มต้นชั่วคราว (รีโหลดหน้าเพื่อลองใหม่)','er');
+  }
+  gmRenderSysUI();
+}
+
+// บันทึกการตั้งค่าทั้งชุด แล้วใช้ทันที
+async function gmSaveSysCfg(cfg){
+  if(!gmSysLoadOk) throw new Error('ยังโหลดการตั้งค่าระบบไม่สำเร็จ — รีโหลดหน้าก่อนแก้ไข (กันบันทึกทับการตั้งค่าเดิม)');
+  const value=JSON.stringify({v:1, order:cfg.order, sys:cfg.sys});
+  const r = gmSysCfgRow
+    ? await fetch(SUPA+'/rest/v1/gm_config?key=eq.gm_systems',{method:'PATCH',headers:getH({'Prefer':'return=representation'}),body:JSON.stringify({value})})
+    : await fetch(SUPA+'/rest/v1/gm_config',{method:'POST',headers:getH({'Prefer':'return=representation'}),body:JSON.stringify({key:'gm_systems',value})});
+  if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e.message||('HTTP '+r.status)); }
+  const rows=await r.json().catch(()=>null);
+  if(Array.isArray(rows) && !rows.length) throw new Error('ไม่มีสิทธิ์บันทึกการตั้งค่า');
+  gmSysCfgRow=true;
+  gmApplySysCfg(cfg);
+  gmRenderSysUI();
+}
+function gmSysCfgClone(){
+  const c=JSON.parse(JSON.stringify(gmSysCfg));
+  c.sys=c.sys||{}; c.order=gmSysKeys(true);
+  return c;
+}
+
+// สร้างเมนูซ้าย + dropdown ระบบทุกจุดจากการตั้งค่า
+function gmRenderSysUI(){
+  const nav=document.getElementById('sb-sys');
+  if(nav) nav.innerHTML=gmSysKeys().map(k=>`<div class="ni${curSys===k?' on':''}" onclick="goSys('${k}')" id="ni-${k}"><span class="ic">${SYS[k].ic}</span>${gmH(SYS[k].l)}</div>`).join('');
+  const mf=document.getElementById('mf-sys');
+  if(mf){
+    const cur=mf.value;
+    mf.innerHTML='<option value="">ทุกระบบ</option>'+gmSysKeys().map(k=>`<option value="${k}">${SYS[k].ic} ${gmH(SYS[k].l)}</option>`).join('');
+    mf.value=gmSysKeys().includes(cur)?cur:'';
+  }
+  ['gm-bld-sys','gm-bld-filter'].forEach(id=>{
+    const s=document.getElementById(id); if(!s) return;
+    const cur=s.value, first=s.options[0]?.outerHTML||'<option value="">--</option>';
+    s.innerHTML=first+gmSysKeys(true).map(k=>`<option value="${k}">${gmH(SYS[k].l)}${SYS[k].off?' (ปิด)':''}</option>`).join('');
+    s.value=gmSysKeys(true).includes(cur)?cur:'';
+  });
+  gmRenderSystems();
+}
+
+function gmRenderSystems(){
+  const el=document.getElementById('gm-sys-list'); if(!el) return;
+  const ks=gmSysKeys(true);
+  el.innerHTML=ks.map((k,idx)=>{
+    const s=SYS[k], on=!s.off, nF=(FIELDS[k]||[]).length;
+    return `<div class="gm-item${on?'':' inactive'}">
+      <div class="gm-move-btns">
+        <button class="gm-mv" onclick="gmMoveSys(${idx},-1)" ${idx===0?'disabled':''} title="เลื่อนขึ้น">▲</button>
+        <button class="gm-mv" onclick="gmMoveSys(${idx},1)" ${idx===ks.length-1?'disabled':''} title="เลื่อนลง">▼</button>
+      </div>
+      <span class="gm-name">${s.ic} ${gmH(s.l)} <span style="font-size:11px;color:var(--muted)">· ${nF} หัวข้อ · ${s.custom?'ระบบใหม่':s.gen?'ระบบเดิม (ปรับหัวข้อแล้ว)':'ระบบเดิม'}</span></span>
+      <span class="gm-status-badge ${on?'act':'off'}">${on?'ใช้งาน':'ปิด'}</span>
+      <button class="gm-btn e" onclick="gmSysEdOpen('${k}')">✏️ แก้ไข</button>
+      <button class="gm-btn t" onclick="gmToggleSys('${k}')">${on?'⊘ ปิด':'✓ เปิด'}</button>
+      ${s.custom?`<button class="gm-btn d" onclick="gmDeleteSys('${k}')" title="ลบระบบ">🗑️</button>`:''}
+    </div>`;
+  }).join('');
+}
+
+// หน้าของระบบนี้กำลังแสดงอยู่หรือไม่ (ไม่ใช่แค่เคยเปิดล่าสุด) — ใช้ตัดสินว่าจะรีเฟรชหน้าหลังบันทึก
+function gmSysPageOn(k){ return curSys===k && !!document.getElementById('pg-sys')?.classList.contains('on'); }
+
+async function gmSysRun(fn, okMsg){
+  if(_gmBusy) return;
+  _gmBusy=true;
+  try{ await fn(); if(okMsg) toast(okMsg,'ok'); }
+  catch(e){ toast('บันทึกไม่สำเร็จ: '+e.message,'er'); }
+  finally{ _gmBusy=false; }
+}
+
+// ระบบใหม่ต้องมีแถวใน system_types ก่อน (inspection_records.system_type มี FK → system_types.key)
+async function gmSysTypeUpsert(key, l, ic, sort){
+  const r=await fetch(SUPA+'/rest/v1/system_types?on_conflict=key',{
+    method:'POST', headers:getH({'Prefer':'resolution=merge-duplicates,return=minimal'}),
+    body:JSON.stringify({key, label_th:l, label_short:l, icon:ic, sort_order:sort, is_active:true})
+  });
+  if(!r.ok) throw new Error('ลงทะเบียนระบบใน system_types ไม่สำเร็จ ('+r.status+')');
+}
+
+function gmMoveSys(idx, dir){
+  const cfg=gmSysCfgClone(), ni=idx+dir;
+  if(ni<0 || ni>=cfg.order.length) return;
+  [cfg.order[idx], cfg.order[ni]]=[cfg.order[ni], cfg.order[idx]];
+  return gmSysRun(()=>gmSaveSysCfg(cfg));
+}
+
+function gmToggleSys(k){
+  const turnOff=!SYS[k].off;
+  if(turnOff && gmSysKeys().length<=1){ toast('ต้องเปิดใช้งานอย่างน้อย 1 ระบบ','er'); return; }
+  const cfg=gmSysCfgClone();
+  cfg.sys[k]={...(cfg.sys[k]||{})};
+  if(turnOff) cfg.sys[k].off=true; else delete cfg.sys[k].off;
+  return gmSysRun(()=>gmSaveSysCfg(cfg),
+    turnOff?`ปิด ${SYS[k].l} แล้ว — ไม่แสดงในเมนู/Dashboard/หน้าบันทึก (ข้อมูลเดิมยังอยู่)`:`เปิด ${SYS[k].l} แล้ว`);
+}
+
+async function gmDeleteSys(k){
+  if(_gmBusy || !SYS[k]?.custom) return;
+  const name=SYS[k].l;
+  let n=0;
+  try{ n=await gmRecCount('system_type=eq.'+encodeURIComponent(k)); }
+  catch(e){ toast('ตรวจข้อมูลไม่สำเร็จ: '+e.message,'er'); return; }
+  if(n>0){
+    const c=await gmAsk('ลบระบบไม่ได้',
+      `ระบบ "<b>${gmH(name)}</b>" มีข้อมูลที่บันทึกไว้ <b>${n.toLocaleString()}</b> รายการ<br>ถ้าลบ ข้อมูลเหล่านี้จะเปิดดูไม่ได้ จึงให้ใช้ <b>ปิดระบบ</b> แทน (ข้อมูลยังอยู่ เปิดกลับได้)`,
+      [{label:'ยกเลิก',val:null}, ...(SYS[k].off?[]:[{label:'⊘ ปิดระบบแทน',cls:'btn-p',val:'off'}])]);
+    if(c==='off') gmToggleSys(k);
+    return;
+  }
+  if(!await gmConfirmDel(`ระบบ "${gmH(name)}"`,'ลบระบบ หัวข้อตรวจ และรายชื่ออาคารของระบบนี้ (ยังไม่มีข้อมูลที่บันทึก)')) return;
+  const cfg=gmSysCfgClone();
+  delete cfg.sys[k];
+  cfg.order=cfg.order.filter(x=>x!==k);
+  await gmSysRun(async ()=>{
+    await gmSaveSysCfg(cfg);
+    // ลบแถวใน system_types (ไม่มีข้อมูลอ้างถึงแล้ว) — ถ้าลบไม่ได้ก็ไม่กระทบการใช้งาน
+    await fetch(SUPA+'/rest/v1/system_types?key=eq.'+encodeURIComponent(k),{method:'DELETE',headers:getH()}).catch(()=>{});
+    // ลบรายชื่ออาคารของระบบนี้ (รวมที่ลบไว้)
+    const r=await fetch(SUPA+'/rest/v1/gm_buildings?system_type=eq.'+encodeURIComponent(k),{method:'DELETE',headers:getH()});
+    if(r.ok){ gmBuildings=gmBuildings.filter(b=>b.system_type!==k); gmBldTomb=gmBldTomb.filter(b=>b.system_type!==k); }
+    if(gmSysPageOn(k)) goSys('main');
+    gmRenderBuildings();
+  }, `ลบระบบ ${name} แล้ว`);
+}
+
+// ── ตัวแก้ไขระบบ / ตัวสร้างแบบฟอร์ม (ใช้ทั้งระบบเดิมและระบบใหม่) ─────
+let _sysEd=null;
+const GM_SYS_ICONS=['🧪','🫁','💨','🌀','🔵','🟢','🟣','🟠','🧊','⚗️','🔥','💧','🛢️','🚨','⚙️','🩺'];
+const GM_FAIL=/ผิดปกติ|ไม่สะอาด|ไม่ปกติ|ปิดรอซ่อม|ปิดชำรุด|ไม่มีเสียง/i;
+
+// หัวข้อในรูปแบบที่แก้ได้ — ระบบเดิมที่ยังไม่เคยปรับ แปลงจากค่าในโค้ด (เกณฑ์กลาง/รายอาคาร, ตัวเลือกผิดปกติ)
+function gmEditableFields(k){
+  const s=SYS[k], src=JSON.parse(JSON.stringify(FIELDS[k]||[]));
+  if(s.custom || s.gen) return src;
+  const th=TH[k]||{};
+  return src.map(f=>{
+    if(f.t==='n'){
+      const c=(th['*']||{})[f.k]||{};
+      f.u=f.u||''; f.mn=c.mn??null; f.mx=c.mx??null;
+      const thb={};
+      Object.keys(th).filter(b=>b!=='*').forEach(b=>{ const x=th[b][f.k]; if(x) thb[b]={mn:x.mn??null, mx:x.mx??null}; });
+      if(Object.keys(thb).length) f.thb=thb;
+    }else if(f.t==='sel'){ f.t='tgl'; f.bad=[]; }
+    else if(f.t==='tgl' && !Array.isArray(f.bad)){ f.bad=(f.o||[]).filter(o=>GM_FAIL.test(o)); }
+    return f;
+  });
+}
+// รูปแบบมาตรฐานไว้เทียบว่ามีการแก้หัวข้อจริงหรือไม่
+function gmNormFields(arr){
+  return JSON.stringify((arr||[]).map(f=>{
+    const x={k:f.k, l:String(f.l||'').trim(), t:f.t};
+    if(f.t==='n'){
+      x.u=f.u||''; x.mn=f.mn??null; x.mx=f.mx??null;
+      x.thb=Object.keys(f.thb||{}).sort().filter(b=>f.thb[b] && (f.thb[b].mn!=null || f.thb[b].mx!=null))
+        .map(b=>[b, f.thb[b].mn??null, f.thb[b].mx??null]);
+    }
+    if(f.t==='tgl'){ x.o=f.o||[]; x.bad=f.bad||[]; x.hint=f.hint||''; }
+    x.off=!!f.off;
+    return x;
+  }));
+}
+function gmSysBldList(key, fields){
+  const s=new Set(key ? gmGetBuildings(key) : []);
+  if(key) gmBuildings.filter(b=>b.system_type===key).forEach(b=>s.add(b.name));
+  (fields||[]).forEach(f=>Object.keys(f.thb||{}).forEach(b=>s.add(b)));
+  return [...s];
+}
+
+function gmSysEdOpen(key){
+  if(key && SYS[key]){
+    const s=SYS[key], all=gmEditableFields(key);
+    const fixed=all.filter(f=>f.t==='afloor'), fields=all.filter(f=>f.t!=='afloor');
+    const nums=all.map(f=>parseInt(String(f.k).replace(/^f/,''))).filter(n=>!isNaN(n));
+    _sysEd={key, isNew:false, builtin:!!SYS_DEF[key], l:s.l, ic:s.ic, fixed, fields,
+      orig:gmNormFields(fields), saved:new Set(all.map(f=>f.k)),
+      origMap:Object.fromEntries(fields.map(f=>[f.k, JSON.parse(JSON.stringify(f))])),
+      next:Math.max(gmSysCfg.sys[key]?.next||0, ...nums, 0),
+      blds:gmSysBldList(key, fields)};
+  }else{
+    _sysEd={key:null, isNew:true, builtin:false, l:'', ic:'🧪', fixed:[],
+      fields:[{k:'f1', l:'', t:'n', u:'', mn:null, mx:null}], orig:'', saved:new Set(), origMap:{}, next:1, blds:[]};
+  }
+  gmSysEdRender();
+  document.getElementById('ov-sysed').classList.remove('h');
+  setTimeout(()=>document.getElementById('sf-name')?.focus(),50);
+}
+function gmSysEdClose(){
+  document.getElementById('ov-sysed').classList.add('h');
+  _sysEd=null;
+}
+
+function gmSysEdRow(f,i,n){
+  const v=x=>x==null?'':gmH(x);
+  const ok=(f.o||[]).filter(o=>!(f.bad||[]).includes(o));
+  const nThb=Object.values(f.thb||{}).filter(c=>c && (c.mn!=null || c.mx!=null)).length;
+  const blds=_sysEd.blds;
+  return `<div class="sf-row${f.off?' sf-off':''}">
+    <div class="gm-move-btns">
+      <button class="gm-mv" onclick="gmSysEdMove(${i},-1)" ${i===0?'disabled':''} title="เลื่อนขึ้น">▲</button>
+      <button class="gm-mv" onclick="gmSysEdMove(${i},1)" ${i===n-1?'disabled':''} title="เลื่อนลง">▼</button>
+    </div>
+    <input class="fc sf-l" id="sf-l-${i}" value="${v(f.l)}" placeholder="ชื่อหัวข้อ เช่น แรงดันถัง" maxlength="60">
+    <select class="fc sf-t" id="sf-t-${i}" onchange="gmSysEdType(${i},this.value)">
+      <option value="n" ${f.t==='n'?'selected':''}>ตัวเลข</option>
+      <option value="tgl" ${f.t==='tgl'?'selected':''}>ตัวเลือก</option>
+      <option value="txt" ${f.t==='txt'?'selected':''}>ข้อความ</option>
+    </select>
+    ${f.t==='n'?`
+      <input class="fc sf-s" id="sf-u-${i}" title="หน่วย" value="${v(f.u)}" placeholder="หน่วย เช่น PSI" maxlength="15">
+      <input class="fc sf-s" id="sf-mn-${i}" title="ค่าต่ำสุด (เว้นว่างได้)" type="number" step="any" value="${v(f.mn)}" placeholder="ค่าต่ำสุด">
+      <input class="fc sf-s" id="sf-mx-${i}" title="ค่าสูงสุด (เว้นว่างได้)" type="number" step="any" value="${v(f.mx)}" placeholder="ค่าสูงสุด">
+      <button type="button" class="gm-btn${nThb?' e':''}" onclick="gmSysEdThb(${i})" title="กำหนดเกณฑ์แยกรายอาคาร">🏢 รายอาคาร${nThb?` (${nThb})`:''} ${f._open?'▲':'▼'}</button>`:''}
+    ${f.t==='tgl'?`
+      <input class="fc sf-o" id="sf-ok-${i}" title="ตัวเลือกปกติ คั่นด้วย ," value="${v(ok.join(', '))}" placeholder="ตัวเลือกปกติ คั่นด้วย ,">
+      <input class="fc sf-o sf-bad" id="sf-bad-${i}" title="ตัวเลือกผิดปกติ (Alert) คั่นด้วย ," value="${v((f.bad||[]).join(', '))}" placeholder="ตัวเลือกผิดปกติ (Alert) คั่นด้วย , — เว้นว่างได้">
+      <input class="fc sf-o" id="sf-h-${i}" title="คำอธิบายใต้หัวข้อ (ถ้ามี)" value="${v(f.hint)}" placeholder="คำอธิบาย (ถ้ามี) เช่น สัปดาห์ละ 1 ครั้ง" maxlength="60">`:''}
+    <button class="gm-btn t" onclick="gmSysEdHide(${i})" title="${f.off?'แสดงในหน้าบันทึกอีกครั้ง':'ไม่ให้บันทึกใหม่ แต่ข้อมูลเก่ายังแสดงในตาราง'}">${f.off?'👁 แสดง':'🙈 ซ่อน'}</button>
+    <button class="gm-btn d" onclick="gmSysEdDel(${i})" title="ลบหัวข้อ">🗑️</button>
+    ${f.off?`<div class="sf-offnote">ซ่อนแล้ว — ไม่แสดงในหน้าบันทึก · ข้อมูลเก่ายังแสดงในตาราง/Export เป็น "${v(f.l)} (เดิม)"</div>`:''}
+    ${f.t==='n' && f._open?`<div class="sf-thb">
+      <div class="sf-thb-h">เกณฑ์แยกรายอาคาร — เว้นว่าง = ใช้ค่ากลางด้านบน</div>
+      ${blds.length ? blds.map((b,j)=>{ const c=(f.thb||{})[b]||{}; return `<div class="sf-thb-r">
+        <span>${gmH(b)}</span>
+        <input class="fc" id="sf-tbmn-${i}-${j}" type="number" step="any" value="${v(c.mn)}" placeholder="ต่ำสุด" title="ค่าต่ำสุดของ ${gmH(b)}">
+        <input class="fc" id="sf-tbmx-${i}-${j}" type="number" step="any" value="${v(c.mx)}" placeholder="สูงสุด" title="ค่าสูงสุดของ ${gmH(b)}">
+      </div>`; }).join('') : `<div class="sf-thb-h">ยังไม่มีอาคารของระบบนี้ — เพิ่มที่ "จัดการอาคาร/ถัง" ก่อน</div>`}
+    </div>`:''}
+  </div>`;
+}
+
+function gmSysEdRender(){
+  const e=_sysEd; if(!e) return;
+  document.getElementById('sysed-title').textContent = e.isNew ? '+ เพิ่มระบบ Gas ใหม่' : '✏️ แก้ไขระบบ '+e.l;
+  const cfgK=e.key?gmSysCfg.sys[e.key]:null;
+  const changedBuiltin = e.builtin && cfgK && (cfgK.l || cfgK.ic || cfgK.fields);
+  let h=`<div class="sf-head">
+      <div><label>ชื่อระบบ *</label><input class="fc" id="sf-name" value="${gmH(e.l)}" maxlength="60" placeholder="เช่น Oxygen Concentrator"></div>
+      <div><label>ไอคอน</label>
+        <div class="sf-icrow"><input class="fc" id="sf-icon" value="${gmH(e.ic)}" maxlength="4" style="width:60px;text-align:center;font-size:16px">
+        <div class="sf-icons">${GM_SYS_ICONS.map(i=>`<button type="button" onclick="document.getElementById('sf-icon').value='${i}'">${i}</button>`).join('')}</div></div>
+      </div>
+    </div>`;
+  if(e.builtin) h+=`<div class="sf-note">ระบบเดิม — แก้ได้ทุกหัวข้อ รวมถึงเกณฑ์แยกรายอาคาร
+      ${changedBuiltin?'· ปุ่ม <b>↺ คืนค่าเริ่มต้น</b> จะเอาชื่อ ไอคอน หัวข้อ และเกณฑ์กลับเป็นแบบเดิม':''}</div>`;
+  h+=`<div class="sf-sub">หัวข้อตรวจ (${e.fixed.length+e.fields.length})</div>
+    ${e.fixed.map(f=>`<div class="sf-row sf-fixed">🔒 ${gmH(f.l)} — รายการชั้น/แผนกจัดการที่ "จัดการชั้น/แผนก Area Alarm"</div>`).join('')}
+    <div id="sf-fields">${e.fields.map((f,i)=>gmSysEdRow(f,i,e.fields.length)).join('')}</div>
+    <button class="btn btn-o btn-sm" onclick="gmSysEdAdd()">+ เพิ่มหัวข้อ</button>
+    <div class="sf-note"><b>ตัวเลข</b> — ใส่ค่าต่ำสุด/สูงสุดเพื่อแจ้ง Alert เมื่อเกินเกณฑ์ (เว้นว่างได้) · กด 🏢 รายอาคาร เพื่อตั้งเกณฑ์ต่างกันแต่ละอาคาร<br>
+      <b>ตัวเลือก</b> — แสดงเป็นปุ่มให้กด ตัวเลือกในช่อง "ผิดปกติ" จะทำให้รายการเป็น Alert<br>
+      <b>ข้อความ</b> — ช่องพิมพ์อิสระ</div>`;
+  h+=`<div class="sf-foot">
+      ${changedBuiltin?`<button class="btn btn-o" style="margin-right:auto" onclick="gmSysEdReset()">↺ คืนค่าเริ่มต้น</button>`:''}
+      <button class="btn btn-o" onclick="gmSysEdClose()">ยกเลิก</button>
+      <button class="btn btn-p" id="sf-save" onclick="gmSysEdSave()">💾 บันทึก</button>
+    </div>`;
+  document.getElementById('sysed-body').innerHTML=h;
+}
+
+// อ่านค่าจากช่องกรอกกลับเข้า state ก่อนวาดใหม่ทุกครั้ง
+function gmSysEdSync(){
+  const e=_sysEd; if(!e) return;
+  const g=id=>document.getElementById(id);
+  const num=x=>x===''||x==null?null:Number(x);
+  if(g('sf-name')) e.l=g('sf-name').value;
+  if(g('sf-icon')) e.ic=g('sf-icon').value;
+  const sp=s=>String(s||'').split(',').map(gmClean).filter(Boolean);
+  e.fields.forEach((f,i)=>{
+    if(g('sf-l-'+i)) f.l=g('sf-l-'+i).value;
+    if(f.t==='n' && g('sf-u-'+i)){
+      f.u=g('sf-u-'+i).value;
+      f.mn=num(g('sf-mn-'+i).value); f.mx=num(g('sf-mx-'+i).value);
+      if(f._open){
+        const thb={};
+        e.blds.forEach((b,j)=>{
+          const mn=num(g(`sf-tbmn-${i}-${j}`)?.value), mx=num(g(`sf-tbmx-${i}-${j}`)?.value);
+          if(mn!=null || mx!=null) thb[b]={mn, mx};
+        });
+        if(Object.keys(thb).length) f.thb=thb; else delete f.thb;
+      }
+    }
+    if(f.t==='tgl' && g('sf-ok-'+i)){
+      const ok=sp(g('sf-ok-'+i).value), bad=sp(g('sf-bad-'+i).value).filter(b=>!ok.includes(b));
+      f.o=[...ok, ...bad]; f.bad=bad;
+      const hint=gmClean(g('sf-h-'+i).value);
+      if(hint) f.hint=hint; else delete f.hint;
+    }
+  });
+}
+function gmSysEdType(i,t){
+  gmSysEdSync();
+  const f=_sysEd.fields[i];
+  ['u','mn','mx','thb','o','bad','hint','_open'].forEach(x=>delete f[x]);
+  f.t=t;
+  if(t==='n'){ f.u=''; f.mn=null; f.mx=null; }
+  if(t==='tgl'){ f.o=['ปกติ','ไม่ปกติ']; f.bad=['ไม่ปกติ']; }
+  gmSysEdRender();
+}
+function gmSysEdHide(i){
+  gmSysEdSync();
+  const e=_sysEd, f=e.fields[i];
+  if(!f.off && !e.fixed.length && e.fields.filter(x=>!x.off).length<=1){ toast('ต้องมีหัวข้อที่แสดงในหน้าบันทึกอย่างน้อย 1 หัวข้อ','er'); return; }
+  f.off=!f.off; if(!f.off) delete f.off;
+  gmSysEdRender();
+}
+function gmSysEdThb(i){
+  gmSysEdSync();
+  const f=_sysEd.fields[i]; f._open=!f._open;
+  gmSysEdRender();
+}
+function gmSysEdAdd(){
+  gmSysEdSync();
+  const e=_sysEd; e.next++;
+  e.fields.push({k:'f'+e.next, l:'', t:'n', u:'', mn:null, mx:null});
+  gmSysEdRender();
+  document.getElementById('sf-l-'+(e.fields.length-1))?.focus();
+}
+function gmSysEdMove(i,dir){
+  gmSysEdSync();
+  const a=_sysEd.fields, j=i+dir;
+  if(j<0 || j>=a.length) return;
+  [a[i],a[j]]=[a[j],a[i]];
+  gmSysEdRender();
+}
+async function gmSysEdDel(i){
+  gmSysEdSync();
+  const e=_sysEd, f=e.fields[i];
+  if(e.fixed.length+e.fields.length<=1){ toast('ต้องมีหัวข้อตรวจอย่างน้อย 1 หัวข้อ','er'); return; }
+  if(e.saved.has(f.k) &&
+     !await gmConfirmDel(`หัวข้อ "${gmH(f.l||'(ไม่มีชื่อ)')}"`,'ข้อมูลเก่าของหัวข้อนี้ (ถ้ามี) จะไม่แสดงในตาราง/Export อีก (ค่ายังเก็บอยู่) — ถ้าเลิกใช้ แนะนำกด 🙈 ซ่อน แทน ข้อมูลเก่าจะยังแสดงครบ')) return;
+  if(!_sysEd) return;
+  _sysEd.fields.splice(i,1);
+  gmSysEdRender();
+}
+// ระบบเดิม: คืนชื่อ ไอคอน หัวข้อ และเกณฑ์กลับเป็นค่าในโค้ด
+async function gmSysEdReset(){
+  const e=_sysEd; if(!e || !e.builtin) return;
+  const key=e.key, name=SYS_DEF[key].l;
+  const c=await gmAsk('↺ คืนค่าเริ่มต้น',
+    `คืนชื่อ ไอคอน หัวข้อตรวจ และเกณฑ์ของ <b>${gmH(name)}</b> กลับเป็นแบบเดิม?<br><span style="font-size:12px;color:var(--muted)">การปิด/เปิดและลำดับในเมนูยังคงเดิม</span>`,
+    [{label:'ยกเลิก',val:null},{label:'↺ คืนค่าเริ่มต้น',cls:'btn-p',val:'ok'}]);
+  if(c!=='ok') return;
+  const cfg=gmSysCfgClone(), o={...(cfg.sys[key]||{})};
+  ['l','ic','fields'].forEach(x=>delete o[x]);   // เก็บ next ไว้ กันรหัสหัวข้อซ้ำกับข้อมูลเก่า
+  cfg.sys[key]=o;
+  await gmSysRun(async ()=>{
+    await gmSaveSysCfg(cfg);
+    gmSysEdClose();
+    if(gmSysPageOn(key)) goSys(key);
+  }, `คืนค่าเริ่มต้นของ ${name} แล้ว`);
+}
+
+async function gmSysEdSave(){
+  if(_gmBusy || !_sysEd) return;
+  gmSysEdSync();
+  const e=_sysEd;
+  const l=gmClean(e.l), ic=gmClean(e.ic)||'🧪';
+  if(!l){ toast('กรุณากรอกชื่อระบบ','er'); return; }
+  if(gmSysKeys(true).some(k=>k!==e.key && SYS[k].l.trim()===l)){ toast('ชื่อระบบนี้มีอยู่แล้ว','er'); return; }
+  // ตรวจและจัดรูปหัวข้อ
+  const fields=[];
+  for(let i=0;i<e.fields.length;i++){
+    const f=e.fields[i], fl=gmClean(f.l);
+    if(!fl){ toast(`หัวข้อที่ ${i+1}: กรุณากรอกชื่อหัวข้อ`,'er'); return; }
+    const x={k:f.k, l:fl, t:f.t};
+    if(f.t==='n'){
+      x.u=gmClean(f.u);
+      x.mn=Number.isFinite(f.mn)?f.mn:null;
+      x.mx=Number.isFinite(f.mx)?f.mx:null;
+      if(x.mn!=null && x.mx!=null && x.mn>x.mx){ toast(`"${fl}": ค่าต่ำสุดมากกว่าค่าสูงสุด`,'er'); return; }
+      const thb={};
+      for(const [b,c] of Object.entries(f.thb||{})){
+        const mn=Number.isFinite(c?.mn)?c.mn:null, mx=Number.isFinite(c?.mx)?c.mx:null;
+        if(mn==null && mx==null) continue;
+        if(mn!=null && mx!=null && mn>mx){ toast(`"${fl}" อาคาร ${b}: ค่าต่ำสุดมากกว่าค่าสูงสุด`,'er'); return; }
+        thb[b]={mn, mx};
+      }
+      if(Object.keys(thb).length) x.thb=thb;
+    }
+    if(f.t==='tgl'){
+      x.o=f.o||[]; x.bad=f.bad||[];
+      if(x.o.length<2){ toast(`"${fl}": ต้องมีตัวเลือกอย่างน้อย 2 ตัว`,'er'); return; }
+      if(f.hint) x.hint=gmClean(f.hint);
+    }
+    if(f.off) x.off=true;
+    fields.push(x);
+  }
+  if(!e.fixed.length && !fields.some(f=>!f.off)){ toast('ต้องมีหัวข้อที่แสดงในหน้าบันทึกอย่างน้อย 1 หัวข้อ','er'); return; }
+  // ชื่อซ้ำ: ห้ามซ้ำในกลุ่มที่แสดง และในกลุ่มที่ซ่อน (ซ่อนจะแสดงเป็น "ชื่อ (เดิม)" จึงตั้งชื่อเดียวกับหัวข้อใหม่ได้)
+  const shown=[...e.fixed.map(f=>f.l), ...fields.filter(f=>!f.off).map(f=>f.l)], hidden=fields.filter(f=>f.off).map(f=>f.l);
+  if(new Set(shown).size!==shown.length || new Set(hidden).size!==hidden.length){ toast('ชื่อหัวข้อซ้ำกัน','er'); return; }
+
+  // ── ผลกับข้อมูลเก่า: เตือนก่อนบันทึก / ถามคำนวณสถานะใหม่หลังบันทึก ──
+  let rulesChanged=false;
+  if(!e.isNew && e.key){
+    const risks=[];
+    fields.forEach(x=>{
+      const o=e.origMap[x.k]; if(!o) return;
+      const why=[];
+      if(o.t!==x.t){ why.push(`เปลี่ยนชนิดจาก "${GM_TYPE[o.t]||o.t}" เป็น "${GM_TYPE[x.t]||x.t}" — ค่าเก่าจะแสดงผิดรูปแบบ`); rulesChanged=true; }
+      else if(x.t==='n'){
+        if((o.u||'')!==(x.u||'')) why.push(`เปลี่ยนหน่วยจาก "${o.u||'-'}" เป็น "${x.u||'-'}" — ตัวเลขเก่าไม่ถูกแปลงหน่วย`);
+        if(JSON.stringify([o.mn??null, o.mx??null, gmThbKey(o.thb)])!==JSON.stringify([x.mn??null, x.mx??null, gmThbKey(x.thb)])) rulesChanged=true;
+      }else if(x.t==='tgl'){
+        const gone=(o.o||[]).filter(v=>!x.o.includes(v));
+        if(gone.length) why.push(`ตัวเลือกเดิมหายไป: ${gone.join(', ')} — รายการเก่าที่เลือกไว้จะไม่ตรงกับตัวเลือกใหม่`);
+        if(JSON.stringify([...(o.bad||[])].sort())!==JSON.stringify([...(x.bad||[])].sort())) rulesChanged=true;
+      }
+      if(why.length) risks.push({x, why});
+    });
+    if(risks.length){
+      let counts;
+      try{ counts=await Promise.all(risks.map(r=>gmRecCount('system_type=eq.'+encodeURIComponent(e.key)+'&'+encodeURIComponent('data->>'+r.x.k)+'=not.is.null'))); }
+      catch(err){ toast('ตรวจข้อมูลเก่าไม่สำเร็จ: '+err.message,'er'); return; }
+      const hit=risks.map((r,i)=>({...r, n:counts[i]})).filter(r=>r.n>0);
+      if(hit.length){
+        const c=await gmAsk('⚠️ การแก้นี้มีผลกับข้อมูลเก่า',
+          hit.map(r=>`<div style="margin-bottom:8px"><b>${gmH(r.x.l)}</b> — มีข้อมูลแล้ว <b>${r.n.toLocaleString()}</b> รายการ<br>${r.why.map(w=>'• '+gmH(w)).join('<br>')}</div>`).join('')
+          +`<div class="sf-note" style="margin:6px 0 0">แนะนำ: กลับไปแก้ แล้วกด <b>🙈 ซ่อน</b> หัวข้อเดิม + <b>+ เพิ่มหัวข้อ</b> ใหม่แทน — ข้อมูลเก่าจะแสดงครบในคอลัมน์ "(เดิม)"</div>`,
+          [{label:'กลับไปแก้',val:null},{label:'บันทึกต่อ',cls:'btn-d',val:'go'}]);
+        if(c!=='go') return;
+      }
+    }
+  }
+
+  const cfg=gmSysCfgClone();
+  let key=e.key;
+  if(e.builtin){
+    const def=SYS_DEF[key], o={...(cfg.sys[key]||{})};
+    if(l!==def.l) o.l=l; else delete o.l;
+    if(ic!==def.ic) o.ic=ic; else delete o.ic;
+    // เก็บหัวข้อเฉพาะเมื่อแก้จริง — ไม่แก้ = ใช้โค้ดเดิมทุกอย่าง
+    if(gmNormFields(fields)!==e.orig || SYS[key].gen){ o.fields=[...e.fixed, ...fields]; o.next=e.next; }
+    cfg.sys[key]=o;
+  }else{
+    if(!key) key='c_'+Date.now().toString(36);
+    const prev=cfg.sys[key]||{};
+    cfg.sys[key]={custom:true, l, ic, col:prev.col||'#475569', fields, next:e.next, ...(prev.off?{off:true}:{})};
+    if(!cfg.order.includes(key)) cfg.order.push(key);
+  }
+  const btn=document.getElementById('sf-save');
+  if(btn){ btn.disabled=true; btn.textContent='⏳ กำลังบันทึก…'; }
+  let saved=false;
+  await gmSysRun(async ()=>{
+    // ระบบใหม่: ลงทะเบียน/อัปเดตชื่อใน system_types ก่อน — ถ้าไม่สำเร็จจะไม่บันทึกการตั้งค่า
+    if(!e.builtin) await gmSysTypeUpsert(key, l, ic, 100+cfg.order.indexOf(key));
+    await gmSaveSysCfg(cfg);
+    saved=true;
+    gmSysEdClose();
+    gmRenderBuildings();
+    if(gmSysPageOn(key) && SYS[key]) goSys(key);
+  }, e.isNew ? `เพิ่มระบบ ${l} แล้ว — เพิ่มอาคารของระบบนี้ได้ที่ "จัดการอาคาร/ถัง"` : 'บันทึกแล้ว');
+  if(btn){ btn.disabled=false; btn.textContent='💾 บันทึก'; }
+  if(saved && rulesChanged) await gmOfferRecalc(key);
+}
+
+const GM_TYPE={n:'ตัวเลข', tgl:'ตัวเลือก', txt:'ข้อความ', sel:'ตัวเลือก', afloor:'ชั้น/แผนก'};
+function gmThbKey(thb){ return Object.keys(thb||{}).sort().filter(b=>thb[b] && (thb[b].mn!=null || thb[b].mx!=null)).map(b=>[b, thb[b].mn??null, thb[b].mx??null]); }
+
+// ════════ คำนวณสถานะ (ปกติ/Alert) ของข้อมูลที่บันทึกแล้วใหม่ ตามเกณฑ์ปัจจุบัน ════════
+// แก้เฉพาะช่อง status ไม่แตะค่าที่บันทึก
+async function gmRecalcStatus(keys){
+  let seen=0, chg=0, toAl=0, toOk=0;
+  for(const sys of keys){
+    const ids={alert:[], normal:[]};
+    for(let off=0;;off+=1000){
+      const r=await fetch(SUPA+'/rest/v1/inspection_records?select=id,building,data,status&system_type=eq.'+encodeURIComponent(sys)+'&order=id.asc&limit=1000&offset='+off,{headers:getH()});
+      if(!r.ok) throw new Error('อ่านข้อมูลไม่สำเร็จ (HTTP '+r.status+')');
+      const rows=await r.json();
+      rows.forEach(x=>{ seen++; const st=calcStatus(sys, x.building, x.data||{}); if(st!==x.status) ids[st].push(x.id); });
+      if(rows.length<1000) break;
+    }
+    for(const st of ['alert','normal']){
+      for(let i=0;i<ids[st].length;i+=200){
+        const part=ids[st].slice(i,i+200);
+        const r=await fetch(SUPA+'/rest/v1/inspection_records?select=id&id=in.('+part.join(',')+')',
+          {method:'PATCH',headers:getH({'Prefer':'return=representation'}),body:JSON.stringify({status:st})});
+        if(!r.ok) throw new Error('บันทึกสถานะไม่สำเร็จ (HTTP '+r.status+')');
+        const n=(await r.json()).length;
+        chg+=n; if(st==='alert') toAl+=n; else toOk+=n;
+      }
+    }
+  }
+  return {seen, chg, toAl, toOk};
+}
+async function gmRunRecalc(keys){
+  if(_gmBusy) return;
+  _gmBusy=true;
+  toast('กำลังคำนวณสถานะใหม่…','if');
+  try{
+    const r=await gmRecalcStatus(keys);
+    toast(`ตรวจแล้ว ${r.seen.toLocaleString()} รายการ — เปลี่ยนสถานะ ${r.chg.toLocaleString()} รายการ (เป็น Alert ${r.toAl}, เป็นปกติ ${r.toOk})`,'ok');
+  }catch(e){ toast('คำนวณไม่สำเร็จ: '+e.message,'er'); }
+  finally{ _gmBusy=false; }
+}
+async function gmOfferRecalc(key){
+  let n=0;
+  try{ n=await gmRecCount('system_type=eq.'+encodeURIComponent(key)); }catch(_){ return; }
+  if(!n) return;
+  const c=await gmAsk('🔄 คำนวณสถานะใหม่?',
+    `เกณฑ์หรือตัวเลือกผิดปกติของ <b>${gmH(SYS[key]?.l||key)}</b> เปลี่ยนแล้ว<br>
+     ข้อมูลเดิม <b>${n.toLocaleString()}</b> รายการยังใช้สถานะตามเกณฑ์เก่า — คำนวณใหม่ตามเกณฑ์ปัจจุบันไหม?
+     <div style="font-size:12px;color:var(--muted);margin-top:6px">แก้เฉพาะป้ายปกติ/Alert ไม่แตะค่าที่บันทึก · สั่งภายหลังได้ที่ปุ่ม 🔄 คำนวณสถานะใหม่ทั้งหมด</div>`,
+    [{label:'ไม่ต้อง',val:null},{label:'🔄 คำนวณใหม่',cls:'btn-p',val:'go'}]);
+  if(c==='go') await gmRunRecalc([key]);
+}
+async function gmRecalcAll(){
+  const c=await gmAsk('🔄 คำนวณสถานะใหม่ทั้งหมด',
+    `ตรวจข้อมูลที่บันทึกไว้ทุกระบบ แล้วปรับป้าย <b>ปกติ/Alert</b> ให้ตรงกับเกณฑ์และตัวเลือกผิดปกติปัจจุบัน
+     <div style="font-size:12px;color:var(--muted);margin-top:6px">แก้เฉพาะสถานะ ไม่แตะค่าที่บันทึก · ใช้หลังเปลี่ยนเกณฑ์</div>`,
+    [{label:'ยกเลิก',val:null},{label:'🔄 คำนวณใหม่',cls:'btn-p',val:'go'}]);
+  if(c==='go') await gmRunRecalc(gmSysKeys(true));
+}
+
+// ── ระบบที่หัวข้อมาจาก Admin (ระบบใหม่ / ระบบเดิมที่ปรับแล้ว): แสดงแถวในตาราง และ export ──
+function gmGenericCells(sys,d,base,bld){
+  const thS=TH[sys]||{}, th={...(thS['*']||{}), ...(thS[bld]||{})};
+  return base+(FIELDS[sys]||[]).map(f=>{
+    const v=d[f.k];
+    if(f.t==='n') return ncell(v, th[f.k]?.mn??null, th[f.k]?.mx??null);
+    if(v==null || v==='') return `<td><span style="color:var(--muted)">—</span></td>`;
+    if(f.t==='tgl' && Array.isArray(f.bad)) return `<td><span class="stag ${f.bad.includes(v)?'st-er':'st-ok'}">${gmH(v)}</span></td>`;
+    if(f.t==='tgl' || f.t==='sel') return `<td>${stag(v)}</td>`;
+    return `<td>${gmH(v)}</td>`;
+  }).join('');
+}
+function gmGenericArr(sys,d){ return (FIELDS[sys]||[]).map(f=>d[f.k]??''); }
 
 // ════════════════════════════════════════════════════════
 //  HELPERS
@@ -2409,7 +3893,7 @@ CREATE INDEX IF NOT EXISTS idx_ir_sys_status
 // ป้องกัน Supabase Free Tier pause แม้ยังไม่ได้เข้าระบบ
 (function startKeepalive(){
   const ping = ()=> fetch(SUPA+'/rest/v1/inspection_records?limit=1',{
-    headers:{'apikey':AKEY,'Authorization':'Bearer '+AKEY}
+    headers:{'apikey':AKEY}
   }).catch(()=>{});
   ping(); // ping ทันทีที่หน้าโหลด
   setInterval(ping, 6*3600*1000);
@@ -2426,6 +3910,7 @@ function _lsSetBusy(busy){
 }
 function _enterApp(email){
   H = getH(); // อัพเดท H ให้ใช้ JWT ล่าสุด
+  gmLoadConfig(); // โหลด PIN จาก Supabase (async — background)
   document.getElementById('login-screen').classList.add('h');
   const app = document.getElementById('app');
   app.style.display='flex';
@@ -2444,10 +3929,6 @@ function _showLogin(){
 }
 
 async function doLogin(){
-  if(location.protocol==='file:'){
-    _lsSetErr('❌ ต้องเปิดผ่าน HTTP Server — ไม่สามารถเปิดจาก file:// ได้');
-    return;
-  }
   const email=(document.getElementById('ls-email')?.value||'').trim();
   const pass =document.getElementById('ls-pass')?.value||'';
   if(!email||!pass){ _lsSetErr('กรุณากรอก Email และ Password'); return; }
@@ -2526,9 +4007,10 @@ async function ensureToken(){
 }
 
 // auto-refresh ทุก 50 นาที
-setInterval(async ()=>{ if(sessionStorage.getItem(JWT_K)) await ensureToken(); },50*60*1000);
+setInterval(async ()=>{ if(sessionStorage.getItem(JWT_K)) await ensureToken(); },2*60*1000);   // เช็คทุก 2 นาที → ต่ออายุทันในช่วง 5 นาทีสุดท้าย
 
 // ตรวจ session เมื่อโหลดหน้า
+gmRenderSysUI();   // เมนูระบบ Gas เริ่มต้น (ก่อนโหลดการตั้งค่า)
 (function checkLoginGate(){
   const tok=sessionStorage.getItem(JWT_K);
   const exp=Number(sessionStorage.getItem(EXP_K)||0);
